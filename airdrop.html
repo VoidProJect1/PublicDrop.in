@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="description" content="PublicDrop Airdrops — Find the best crypto airdrops, claim free tokens, and maximize your crypto rewards.">
+<title>Crypto Airdrops — PublicDrop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#F5F5F0;--bg2:#EEEEE8;--s1:#FFFFFF;--s2:#F0F0EA;--s3:#E5E5DE;--s4:#D8D8D0;
+  --border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.12);--border3:rgba(0,0,0,.22);
+  --t1:#0A0A0A;--t2:#555550;--t3:#888882;--t4:#BBBBB5;
+  --up:#00905A;--up-dim:rgba(0,144,90,.08);--up-border:rgba(0,144,90,.2);
+  --dn:#CC2233;--dn-dim:rgba(204,34,51,.08);--dn-border:rgba(204,34,51,.2);
+  --purple:#6D28D9;--purple-dim:rgba(109,40,217,.08);--purple-border:rgba(109,40,217,.2);
+  --accent:#0A0A0A;--accent-dim:rgba(10,10,10,.06);
+  --shadow:0 2px 16px rgba(0,0,0,.08);--shadow-md:0 4px 24px rgba(0,0,0,.12);--shadow-lg:0 8px 40px rgba(0,0,0,.14);
+  --mono:'JetBrains Mono',monospace;
+  --r:14px;--rs:10px;--rx:8px;--rpill:999px;
+  --header-h:60px;
+}
+[data-theme="dark"] {
+  --bg:#0A0A0C;--bg2:#101013;--s1:#111115;--s2:#18181D;--s3:#1F1F26;--s4:#26262F;
+  --border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.1);--border3:rgba(255,255,255,.18);
+  --t1:#F5F5F2;--t2:#9A9A94;--t3:#5A5A58;--t4:#35353A;
+  --up:#00C896;--up-dim:rgba(0,200,150,.1);--up-border:rgba(0,200,150,.25);
+  --dn:#FF4560;--dn-dim:rgba(255,69,96,.1);--dn-border:rgba(255,69,96,.25);
+  --purple:#A78BFA;--purple-dim:rgba(167,139,250,.1);--purple-border:rgba(167,139,250,.25);
+  --accent:#F5F5F2;--accent-dim:rgba(245,245,242,.06);
+  --shadow:0 2px 16px rgba(0,0,0,.5);--shadow-md:0 4px 24px rgba(0,0,0,.6);--shadow-lg:0 8px 40px rgba(0,0,0,.7);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .3s,color .3s;}
+a{text-decoration:none;color:inherit;}
+button{cursor:pointer;font-family:inherit;}
+img{display:block;}
+
+/* TICKER */
+.ticker-bar{background:var(--t1);height:36px;overflow:hidden;display:flex;align-items:center;}
+.ticker-wrap{display:flex;animation:ticker 80s linear infinite;white-space:nowrap;}
+.ticker-wrap:hover{animation-play-state:paused;}
+.tick-item{display:inline-flex;align-items:center;gap:7px;padding:0 20px;height:36px;font-size:11px;font-weight:600;color:rgba(255,255,255,.5);border-right:1px solid rgba(255,255,255,.1);flex-shrink:0;}
+.tick-sym{color:#fff;font-family:var(--mono);font-size:10px;font-weight:700;}
+.tick-up{color:#4DFFB8;font-family:var(--mono);font-size:10px;}
+.tick-dn{color:#FF8096;font-family:var(--mono);font-size:10px;}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* HEADER */
+header{background:var(--s1);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:500;box-shadow:var(--shadow);}
+.hdr{max-width:1440px;margin:0 auto;padding:0 20px;height:var(--header-h);display:flex;align-items:center;gap:14px;}
+.logo{display:flex;align-items:center;gap:9px;flex-shrink:0;}
+.logo-mark{width:34px;height:34px;background:var(--t1);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-mark svg{width:20px;height:20px;}
+.logo-text{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;letter-spacing:-.4px;color:var(--t1);display:flex;align-items:center;}
+.logo-text span{color:var(--t3);}
+.main-nav{display:flex;align-items:center;gap:2px;margin-left:6px;}
+.nav-link{padding:6px 12px;border-radius:var(--rx);font-size:13px;font-weight:600;color:var(--t2);border:none;background:transparent;transition:all .15s;white-space:nowrap;}
+.nav-link:hover,.nav-link.active{color:var(--t1);background:var(--s3);}
+.hdr-right{display:flex;gap:8px;margin-left:auto;align-items:center;}
+.theme-toggle{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border2);background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;flex-shrink:0;transition:all .2s;}
+.theme-toggle:hover{border-color:var(--border3);background:var(--s3);}
+.mob-menu-btn{display:none;width:36px;height:36px;border-radius:var(--rx);border:1.5px solid var(--border2);background:var(--s2);align-items:center;justify-content:center;flex-direction:column;gap:4px;cursor:pointer;}
+.mob-menu-btn span{display:block;width:16px;height:2px;background:var(--t1);border-radius:2px;}
+.mob-nav-overlay{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .25s;}
+.mob-nav-overlay.open{opacity:1;pointer-events:all;}
+.mob-nav-panel{position:fixed;top:0;right:-100%;width:min(320px,90vw);height:100%;background:var(--s1);z-index:450;padding:24px 20px;box-shadow:var(--shadow-lg);transition:right .3s cubic-bezier(.25,.46,.45,.94);overflow-y:auto;}
+.mob-nav-panel.open{right:0;}
+.mob-close-btn{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border2);background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--t2);cursor:pointer;}
+.mob-nav-links{display:flex;flex-direction:column;gap:4px;margin-top:20px;}
+.mob-nav-link{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:var(--rx);font-size:15px;font-weight:600;color:var(--t1);border:none;background:transparent;text-align:left;transition:background .15s;}
+.mob-nav-link:hover,.mob-nav-link.active{background:var(--s2);}
+
+/* MAIN */
+main{max-width:1440px;margin:0 auto;padding:24px 20px 80px;}
+
+/* HERO */
+.hero{background:var(--t1);border-radius:var(--r);padding:48px 52px;margin-bottom:24px;position:relative;overflow:hidden;color:#fff;text-align:center;}
+.hero-grid-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;}
+.hero-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:250px;background:radial-gradient(ellipse,rgba(255,255,255,.04) 0%,transparent 65%);pointer-events:none;}
+.hero-c{position:relative;z-index:1;}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:var(--rpill);padding:4px 14px;font-size:10.5px;font-weight:700;color:rgba(255,255,255,.7);letter-spacing:.6px;text-transform:uppercase;margin-bottom:20px;}
+.hero-h{font-family:'Syne',sans-serif;font-size:clamp(26px,5vw,54px);font-weight:800;letter-spacing:-2px;line-height:1.04;margin-bottom:14px;color:#fff;}
+.hero-h .dim{color:rgba(255,255,255,.3);}
+.hero-sub{color:rgba(255,255,255,.5);font-size:14.5px;max-width:480px;margin:0 auto 28px;line-height:1.7;}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:36px;}
+.btn-white{padding:10px 22px;background:#fff;color:#000;border-radius:var(--rpill);font-size:13px;font-weight:700;border:none;transition:all .18s;display:inline-flex;align-items:center;gap:6px;}
+.btn-white:hover{background:rgba(255,255,255,.9);transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,.3);}
+.btn-ghost{padding:10px 22px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.85);border-radius:var(--rpill);font-size:13px;font-weight:700;border:1px solid rgba(255,255,255,.2);transition:all .18s;display:inline-flex;align-items:center;gap:6px;}
+.btn-ghost:hover{background:rgba(255,255,255,.15);}
+.hero-stats{display:flex;justify-content:center;gap:0;border-top:1px solid rgba(255,255,255,.08);padding-top:28px;flex-wrap:wrap;}
+.hs{padding:0 32px;text-align:center;border-right:1px solid rgba(255,255,255,.08);}
+.hs:last-child{border-right:none;}
+.hs-val{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;letter-spacing:-1px;color:#fff;}
+.hs-lbl{font-size:11px;color:rgba(255,255,255,.4);margin-top:3px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+
+/* HOW IT WORKS */
+.how-section{background:var(--s1);border:1.5px solid var(--border);border-radius:var(--r);padding:28px 32px;margin-bottom:24px;}
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;}
+.how-step{padding:18px 22px;border-right:1px solid var(--border);position:relative;}
+.how-step:last-child{border-right:none;}
+.how-num{font-family:'Syne',sans-serif;font-size:40px;font-weight:800;color:var(--t4);line-height:1;margin-bottom:12px;letter-spacing:-2px;}
+.how-ico{font-size:24px;margin-bottom:10px;}
+.how-title{font-family:'Syne',sans-serif;font-size:14.5px;font-weight:700;margin-bottom:6px;color:var(--t1);}
+.how-desc{font-size:12.5px;color:var(--t2);line-height:1.6;}
+
+/* FILTER BAR */
+.filter-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+.filter-tabs{display:flex;gap:2px;background:var(--s2);padding:3px;border-radius:var(--rpill);overflow-x:auto;scrollbar-width:none;}
+.filter-tabs::-webkit-scrollbar{display:none;}
+.ft{padding:6px 16px;border-radius:var(--rpill);font-size:12px;font-weight:700;cursor:pointer;border:none;background:transparent;color:var(--t3);font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap;}
+.ft:hover{color:var(--t1);}
+.ft.active{background:var(--t1);color:var(--bg);}
+.sort-wrap{display:flex;gap:8px;align-items:center;}
+.sort-sel{padding:6px 12px;background:var(--s2);border:1.5px solid var(--border2);border-radius:var(--rx);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;color:var(--t2);cursor:pointer;outline:none;transition:border-color .2s;}
+.sort-sel:focus{border-color:var(--t1);}
+.search-filter{padding:7px 14px;background:var(--s2);border:1.5px solid var(--border2);border-radius:var(--rpill);font-family:'DM Sans',sans-serif;font-size:13px;color:var(--t1);outline:none;min-width:200px;transition:border-color .2s;}
+.search-filter:focus{border-color:var(--t1);}
+.search-filter::placeholder{color:var(--t3);}
+
+/* GRID */
+.airdrops-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;}
+
+/* AIRDROP CARD */
+.ac{background:var(--s1);border:1.5px solid var(--border);border-radius:var(--r);transition:all .2s;overflow:hidden;position:relative;}
+.ac:hover{border-color:var(--border3);transform:translateY(-3px);box-shadow:var(--shadow-md);}
+.ac-body{padding:22px 22px 16px;}
+.ac-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+.ac-logo{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;border:1.5px solid var(--border2);background:var(--s2);}
+.ac-badges{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.badge{font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:3px 9px;border-radius:var(--rpill);}
+.b-live{background:var(--up-dim);color:var(--up);border:1px solid var(--up-border);}
+.b-soon{background:var(--s3);color:var(--t3);border:1px solid var(--border2);}
+.b-hot{background:var(--dn-dim);color:var(--dn);border:1px solid var(--dn-border);}
+.b-purple{background:var(--purple-dim);color:var(--purple);border:1px solid var(--purple-border);}
+.ac-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;margin-bottom:2px;letter-spacing:-.3px;color:var(--t1);}
+.ac-sym{font-size:10.5px;font-family:var(--mono);color:var(--t3);font-weight:600;text-transform:uppercase;}
+.ac-reward{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:-.5px;margin:10px 0 2px;color:var(--t1);}
+.ac-usd{font-size:11.5px;color:var(--t3);font-family:var(--mono);margin-bottom:6px;}
+.ac-desc{font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:12px;}
+.tasks{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;}
+.task{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t2);}
+.task-dot{width:6px;height:6px;border-radius:50%;background:var(--t4);flex-shrink:0;}
+.task.done .task-dot{background:var(--up);}
+.task.done{color:var(--t3);text-decoration:line-through;}
+.ac-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.meta-tag{font-size:10.5px;font-weight:600;padding:3px 9px;background:var(--s2);border:1px solid var(--border);border-radius:var(--rpill);color:var(--t3);}
+.ac-footer{padding:14px 22px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--s2);}
+.ac-deadline{font-size:11.5px;font-family:var(--mono);color:var(--t3);}
+.claim-btn{padding:8px 18px;border-radius:var(--rpill);background:var(--t1);color:var(--bg);border:none;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:6px;}
+.claim-btn:hover{opacity:.85;transform:translateY(-1px);}
+.claim-btn.claimed{background:var(--up-dim);color:var(--up);border:1px solid var(--up-border);}
+.participants-bar{height:3px;background:var(--s3);border-radius:2px;overflow:hidden;margin-bottom:8px;}
+.participants-fill{height:100%;border-radius:2px;background:var(--t1);}
+.participants-text{font-size:10.5px;color:var(--t3);font-family:var(--mono);}
+
+/* SECTION HEADER */
+.section-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.section-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;display:flex;align-items:center;gap:8px;}
+.section-tag{font-size:11px;font-weight:700;padding:3px 9px;background:var(--s3);border-radius:var(--rpill);color:var(--t3);font-family:var(--mono);}
+
+/* FOOTER */
+footer{background:var(--s1);border-top:1px solid var(--border);padding:36px 20px;}
+.footer-inner{max-width:1440px;margin:0 auto;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:28px;}
+.footer-brand .brand-name{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--t1);margin-bottom:8px;}
+.footer-brand p{color:var(--t3);font-size:13px;line-height:1.7;max-width:240px;}
+.footer-tags{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;}
+.f-tag{font-size:10px;font-weight:700;padding:3px 9px;background:var(--s2);border:1px solid var(--border);border-radius:var(--rpill);color:var(--t3);}
+.footer-col h4{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--t4);margin-bottom:12px;}
+.footer-col ul{list-style:none;}
+.footer-col ul li{margin-bottom:8px;}
+.footer-col ul li a{color:var(--t2);font-size:13px;font-weight:500;transition:color .15s;}
+.footer-col ul li a:hover{color:var(--t1);}
+.footer-bottom{border-top:1px solid var(--border);padding-top:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-bottom p{color:var(--t3);font-size:11.5px;}
+.footer-disclaimer{color:var(--t4);font-size:11px;margin-top:4px;}
+.footer-socials{display:flex;gap:6px;}
+.f-social{width:30px;height:30px;border-radius:var(--rx);border:1px solid var(--border);background:var(--s2);display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:11.5px;font-weight:700;transition:all .15s;}
+.f-social:hover{border-color:var(--border3);color:var(--t1);}
+
+/* TOAST */
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--t1);color:var(--bg);padding:10px 22px;border-radius:var(--rpill);font-size:13px;font-weight:700;box-shadow:var(--shadow-lg);z-index:9999;transition:transform .36s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none;max-width:90vw;}
+#toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ANIM */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.anim{animation:fadeUp .4s ease both;}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .how-grid{grid-template-columns:1fr 1fr;}
+  .how-step{border-right:none;border-bottom:1px solid var(--border);}
+  .how-step:nth-child(2n){border-right:none;}
+  .how-step:last-child{border-bottom:none;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+  .main-nav{display:none;}
+  .mob-menu-btn{display:flex;}
+}
+@media(max-width:640px){
+  main{padding:14px 12px 70px;}
+  .hdr{padding:0 12px;gap:8px;}
+  .hero{padding:28px 18px;}
+  .hero-h{font-size:26px;}
+  .hero-sub{font-size:13px;}
+  .hero-stats{padding-top:20px;}
+  .hs{padding:0 18px;}
+  .hs-val{font-size:22px;}
+  .how-section{padding:18px 16px;}
+  .how-grid{grid-template-columns:1fr;}
+  .how-step{padding:14px 16px;}
+  .airdrops-grid{grid-template-columns:1fr;}
+  .filter-bar{flex-direction:column;align-items:stretch;}
+  .filter-tabs{justify-content:flex-start;}
+  .search-filter{min-width:unset;width:100%;}
+  .footer-grid{grid-template-columns:1fr;gap:20px;}
+  footer{padding:24px 12px;}
+}
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-wrap" id="TICKER">
+    <div class="tick-item"><span class="tick-sym">🎁 AIRDROPS</span><span class="tick-up">Find Free Tokens</span></div>
+    <div class="tick-item"><span class="tick-sym">HOT</span><span class="tick-up">Jupiter • Starknet • Eigen</span></div>
+    <div class="tick-item"><span class="tick-sym">TIPS</span><span class="tick-up">Connect wallet early for best rewards</span></div>
+    <div class="tick-item"><span class="tick-sym">NEW</span><span class="tick-up">Monad • Movement • Berachain</span></div>
+    <div class="tick-item"><span class="tick-sym">🎁 AIRDROPS</span><span class="tick-up">Find Free Tokens</span></div>
+    <div class="tick-item"><span class="tick-sym">HOT</span><span class="tick-up">Jupiter • Starknet • Eigen</span></div>
+    <div class="tick-item"><span class="tick-sym">TIPS</span><span class="tick-up">Connect wallet early for best rewards</span></div>
+    <div class="tick-item"><span class="tick-sym">NEW</span><span class="tick-up">Monad • Movement • Berachain</span></div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="hdr">
+    <a class="logo" href="index.html">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 12l4-4 4 4 4-4 4 4" stroke="var(--bg)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="logo-text">Public<span>Drop</span></div>
+    </a>
+    <nav class="main-nav">
+      <a class="nav-link" href="index.html">Cryptocurrencies</a>
+      <a class="nav-link active" href="airdrop.html">Airdrops 🎁</a>
+    </nav>
+    <div class="hdr-right">
+      <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">☀️</button>
+      <button class="mob-menu-btn" onclick="openMobNav()"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="mob-nav-overlay" id="mobNavOverlay" onclick="closeMobNav()"></div>
+<div class="mob-nav-panel" id="mobNavPanel">
+  <div style="display:flex;justify-content:flex-end"><button class="mob-close-btn" onclick="closeMobNav()">✕</button></div>
+  <div class="mob-nav-links">
+    <a class="mob-nav-link" href="index.html">📊 Cryptocurrencies</a>
+    <a class="mob-nav-link active" href="airdrop.html">🎁 Airdrops</a>
+    <div style="height:1px;background:var(--border);margin:12px 0"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px">
+      <span style="font-size:14px;font-weight:600;color:var(--t2)">Theme</span>
+      <button class="theme-toggle" onclick="toggleTheme()" id="mobThemeToggle">☀️</button>
+    </div>
+  </div>
+</div>
+
+<main>
+
+<!-- HERO -->
+<div class="hero anim">
+  <div class="hero-grid-lines"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-c">
+    <div class="hero-pill">🎁 Airdrop Hunter — Free Crypto Rewards</div>
+    <h1 class="hero-h">Claim Free Tokens<br><span class="dim">Before Everyone Else</span></h1>
+    <p class="hero-sub">Discover the latest crypto airdrops, complete tasks, and earn free tokens. No investment required.</p>
+    <div class="hero-btns">
+      <button class="btn-white" onclick="document.getElementById('airdrops-grid').scrollIntoView({behavior:'smooth'})">Browse Airdrops →</button>
+      <a href="index.html" class="btn-ghost">📊 Live Markets</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hs"><div class="hs-val" id="stat-live">12</div><div class="hs-lbl">Live Airdrops</div></div>
+      <div class="hs"><div class="hs-val" id="stat-soon">8</div><div class="hs-lbl">Coming Soon</div></div>
+      <div class="hs"><div class="hs-val">$2.4M+</div><div class="hs-lbl">Total Distributed</div></div>
+      <div class="hs"><div class="hs-val">94K+</div><div class="hs-lbl">Participants</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section-row anim">
+  <div class="section-title">⚙️ How It Works</div>
+</div>
+<div class="how-section anim">
+  <div class="how-grid">
+    <div class="how-step">
+      <div class="how-num">01</div>
+      <div class="how-ico">👛</div>
+      <div class="how-title">Connect Wallet</div>
+      <div class="how-desc">Link your MetaMask, Phantom, or any compatible wallet to get started.</div>
+    </div>
+    <div class="how-step">
+      <div class="how-num">02</div>
+      <div class="how-ico">✅</div>
+      <div class="how-title">Complete Tasks</div>
+      <div class="how-desc">Follow socials, join Discord, or use the protocol to qualify for the drop.</div>
+    </div>
+    <div class="how-step">
+      <div class="how-num">03</div>
+      <div class="how-ico">🎁</div>
+      <div class="how-title">Claim Rewards</div>
+      <div class="how-desc">Submit your wallet address before the deadline to receive your tokens.</div>
+    </div>
+    <div class="how-step">
+      <div class="how-num">04</div>
+      <div class="how-ico">💰</div>
+      <div class="how-title">HODL or Sell</div>
+      <div class="how-desc">Once listed, decide to hold for long-term gains or take profits immediately.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar anim">
+  <div class="filter-tabs">
+    <button class="ft active" onclick="filterAirdrops('all',this)">All</button>
+    <button class="ft" onclick="filterAirdrops('live',this)">🟢 Live</button>
+    <button class="ft" onclick="filterAirdrops('upcoming',this)">🔵 Upcoming</button>
+    <button class="ft" onclick="filterAirdrops('hot',this)">🔥 Hot</button>
+    <button class="ft" onclick="filterAirdrops('defi',this)">DeFi</button>
+    <button class="ft" onclick="filterAirdrops('gaming',this)">Gaming</button>
+    <button class="ft" onclick="filterAirdrops('layer2',this)">Layer 2</button>
+  </div>
+  <div class="sort-wrap">
+    <input class="search-filter" type="text" placeholder="🔍 Search airdrops…" id="airdropSearch" oninput="filterAirdrops('',null)">
+    <select class="sort-sel" id="sortSel" onchange="filterAirdrops('',null)">
+      <option value="reward">Highest Reward</option>
+      <option value="deadline">Ending Soon</option>
+      <option value="participants">Most Popular</option>
+    </select>
+  </div>
+</div>
+
+<!-- AIRDROPS GRID -->
+<div class="section-row">
+  <div class="section-title">🎁 Active Airdrops <span class="section-tag" id="airdrop-count">20 drops</span></div>
+</div>
+<div class="airdrops-grid anim" id="airdrops-grid"></div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand-name">PublicDrop</div>
+        <p>India's premier crypto tracker. Live prices, airdrops, and market data — all in one place.</p>
+        <div class="footer-tags">
+          <div class="f-tag">🎁 Free Airdrops</div>
+          <div class="f-tag">✅ Verified Drops</div>
+          <div class="f-tag">🇮🇳 publicdrop.in</div>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Markets</h4><ul>
+        <li><a href="index.html">Live Prices</a></li>
+        <li><a href="index.html#market-table">Top Gainers</a></li>
+        <li><a href="index.html#market-table">Top Losers</a></li>
+        <li><a href="index.html">Portfolio Tracker</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Airdrops</h4><ul>
+        <li><a href="#">Live Drops</a></li>
+        <li><a href="#">Upcoming Drops</a></li>
+        <li><a href="#">DeFi Drops</a></li>
+        <li><a href="#">Gaming Drops</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Company</h4><ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Use</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom">
+      <div>
+        <p>© 2026 PublicDrop.in · Powered by Binance API</p>
+        <p class="footer-disclaimer">⚠️ Not financial advice. Always verify airdrops before connecting wallets. Watch out for scams.</p>
+      </div>
+      <div class="footer-socials">
+        <a href="#" class="f-social">𝕏</a>
+        <a href="#" class="f-social">TG</a>
+        <a href="#" class="f-social">DC</a>
+        <a href="#" class="f-social">YT</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+/* THEME */
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  localStorage.setItem('pd_theme',t);
+  const icon=t==='dark'?'🌙':'☀️';
+  document.getElementById('themeToggle').textContent=icon;
+  const mob=document.getElementById('mobThemeToggle');
+  if(mob) mob.textContent=icon;
+}
+function toggleTheme(){
+  const cur=document.documentElement.getAttribute('data-theme')||'light';
+  applyTheme(cur==='dark'?'light':'dark');
+}
+(()=>{ applyTheme(localStorage.getItem('pd_theme')||'light'); })();
+
+/* MOBILE NAV */
+function openMobNav(){ document.getElementById('mobNavOverlay').classList.add('open'); document.getElementById('mobNavPanel').classList.add('open'); }
+function closeMobNav(){ document.getElementById('mobNavOverlay').classList.remove('open'); document.getElementById('mobNavPanel').classList.remove('open'); }
+
+/* TOAST */
+let toastT;
+function toast(msg){ const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove('show'),2600); }
+
+/* CLAIMED SET */
+const claimed = new Set(JSON.parse(localStorage.getItem('pd_claimed')||'[]'));
+
+/* AIRDROP DATA */
+const AIRDROPS = [
+  {id:'jup',name:'Jupiter',sym:'JUP',logo:'🪐',status:'live',category:'defi',tags:['DeFi','DEX','Solana'],reward:'450–1,200 JUP',usd:'~$1,800',deadline:'May 30, 2026',participants:48200,maxP:80000,desc:'Jupiter is the leading DEX aggregator on Solana. Use the protocol and hold SOL to qualify for Season 3 airdrop.',tasks:['Connect Solana wallet','Perform 5+ swaps on Jupiter','Hold ≥1 SOL in wallet','Join Jupiter Discord'],hot:true},
+  {id:'strk',name:'Starknet',sym:'STRK',logo:'⚡',status:'live',category:'layer2',tags:['Layer 2','ZK','Ethereum'],reward:'250–800 STRK',usd:'~$450',deadline:'Jun 15, 2026',participants:62100,maxP:100000,desc:'Starknet is a ZK-Rollup scaling Ethereum. Bridge ETH to Starknet and use dApps to qualify.',tasks:['Bridge ETH to Starknet','Use at least 3 dApps','Hold STRK tokens','Complete KYC (optional)'],hot:true},
+  {id:'monad',name:'Monad',sym:'MON',logo:'🌀',status:'upcoming',category:'layer1',tags:['Layer 1','EVM','High Speed'],reward:'TBA',usd:'Est. $500–$2,000',deadline:'Q3 2026',participants:31500,maxP:50000,desc:'Monad is an EVM-compatible Layer 1 with 10,000 TPS. Testnet users will receive retroactive airdrop.',tasks:['Join Monad Discord','Use testnet faucet','Complete testnet transactions','Refer friends'],hot:false},
+  {id:'berachain',name:'Berachain',sym:'BERA',logo:'🐻',status:'upcoming',category:'defi',tags:['DeFi','Gaming','Meme'],reward:'Variable',usd:'Est. $200–$1,500',deadline:'Q4 2026',participants:28900,maxP:60000,desc:'Berachain is a DeFi-native L1 with Proof of Liquidity. Provide liquidity in the testnet to earn $BERA.',tasks:['Mint Bong Bears NFT or join Discord','Use Berachain testnet','Provide liquidity in BEX','Lock tokens in BGT Vault'],hot:true},
+  {id:'movement',name:'Movement',sym:'MOVE',logo:'🏃',status:'live',category:'layer2',tags:['Layer 2','Move VM'],reward:'300–900 MOVE',usd:'~$600',deadline:'Jun 1, 2026',participants:19400,maxP:40000,desc:'Movement Network brings Move VM to Ethereum. Early users and developers will receive $MOVE tokens.',tasks:['Bridge assets to Movement','Use Movement dApps','Hold MOVE tokens','Participate in governance'],hot:false},
+  {id:'eigenlayer',name:'EigenLayer',sym:'EIGEN',logo:'⟁',status:'live',category:'defi',tags:['DeFi','Restaking','Ethereum'],reward:'100–500 EIGEN',usd:'~$800',deadline:'May 25, 2026',participants:71000,maxP:120000,desc:'EigenLayer enables restaking on Ethereum. Restake ETH or LSTs to earn $EIGEN rewards.',tasks:['Restake ETH via EigenLayer','Hold restaked tokens','Stake with an operator','Claim previous EIGEN drops'],hot:true},
+  {id:'sonic',name:'Sonic',sym:'S',logo:'🌊',status:'live',category:'defi',tags:['DeFi','DEX','Fast'],reward:'150–600 S',usd:'~$300',deadline:'Jun 30, 2026',participants:14200,maxP:30000,desc:'Sonic is a next-gen DeFi chain with sub-second finality. Use Sonic testnet and mainnet to earn $S.',tasks:['Use Sonic testnet bridge','Swap on Sonic DEX','Provide liquidity','Hold ≥100 S tokens'],hot:false},
+  {id:'initia',name:'Initia',sym:'INIT',logo:'🧬',status:'upcoming',category:'layer1',tags:['Layer 1','Cosmos','Rollups'],reward:'TBA',usd:'Est. $1,000–$3,000',deadline:'Q3 2026',participants:9800,maxP:20000,desc:'Initia is a L1 for interwoven rollups built on Cosmos. Early community members and validators will benefit.',tasks:['Join Initia Discord','Participate in testnet','Run a validator node','Complete community tasks'],hot:true},
+  {id:'zksync',name:'ZKSync',sym:'ZK',logo:'🔐',status:'live',category:'layer2',tags:['Layer 2','ZK','Ethereum'],reward:'450–2,000 ZK',usd:'~$1,200',deadline:'Jun 20, 2026',participants:88000,maxP:150000,desc:'ZKSync Era is a ZK-rollup on Ethereum. Bridge ETH and use DeFi protocols on Era mainnet.',tasks:['Bridge >0.01 ETH to ZKSync Era','Use at least 5 dApps','Have 3+ months of activity','Make 10+ transactions'],hot:false},
+  {id:'scroll',name:'Scroll',sym:'SCR',logo:'📜',status:'live',category:'layer2',tags:['Layer 2','ZK','Ethereum'],reward:'200–800 SCR',usd:'~$600',deadline:'Jul 1, 2026',participants:42100,maxP:80000,desc:'Scroll is an EVM-compatible ZK-rollup. Bridge ETH and interact with Scroll ecosystem dApps.',tasks:['Bridge to Scroll mainnet','Use Scroll DeFi protocols','Provide liquidity','Complete 50+ txns'],hot:false},
+  {id:'ondo',name:'Ondo Finance',sym:'ONDO',logo:'🏛️',status:'live',category:'defi',tags:['DeFi','RWA','Institutional'],reward:'500–2,000 ONDO',usd:'~$2,500',deadline:'May 31, 2026',participants:7400,maxP:15000,desc:'Ondo Finance tokenizes real-world assets. Early users who hold USDY or OUSG qualify for rewards.',tasks:['Hold USDY or OUSG tokens','Connect verified wallet','Complete Ondo KYC','Use Ondo Flux Finance'],hot:true},
+  {id:'ethena',name:'Ethena',sym:'ENA',logo:'💎',status:'live',category:'defi',tags:['DeFi','Stablecoin','Yield'],reward:'300–1,500 ENA',usd:'~$900',deadline:'Jun 10, 2026',participants:53200,maxP:90000,desc:'Ethena is a synthetic dollar protocol. Mint USDe and stake it to earn Ethena Shards and $ENA.',tasks:['Mint USDe on Ethena','Stake USDe for sENA','Refer 3+ friends','Hold ≥1,000 USDe for 30 days'],hot:true},
+  {id:'immutablex',name:'Immutable X',sym:'IMX',logo:'🎮',status:'live',category:'gaming',tags:['Gaming','NFT','Layer 2'],reward:'100–500 IMX',usd:'~$400',deadline:'Jul 15, 2026',participants:34000,maxP:60000,desc:'Immutable X is the leading L2 for Web3 gaming. Play games on IMX ecosystem to earn rewards.',tasks:['Create Immutable Passport','Play 2+ IMX games','Trade on Immutable Marketplace','Complete daily quests'],hot:false},
+  {id:'notcoin',name:'Notcoin S2',sym:'NOT',logo:'🪙',status:'upcoming',category:'gaming',tags:['Gaming','Telegram','Meme'],reward:'TBA',usd:'Est. $100–$500',deadline:'Q4 2026',participants:1200000,maxP:2000000,desc:'Notcoin Season 2 is coming. Earn vouchers by playing and referring friends on Telegram.',tasks:['Play Notcoin on Telegram','Invite 5+ friends','Join Notcoin squad','Hold NOT tokens'],hot:false},
+  {id:'taiko',name:'Taiko',sym:'TAIKO',logo:'🥁',status:'live',category:'layer2',tags:['Layer 2','Based Rollup'],reward:'200–600 TAIKO',usd:'~$400',deadline:'Jun 25, 2026',participants:28100,maxP:50000,desc:'Taiko is a based ZK-EVM rollup. Bridge to Taiko and use ecosystem dApps to qualify.',tasks:['Bridge to Taiko mainnet','Use Taiko DeFi protocols','Hold TAIKO tokens','Join Taiko Discord'],hot:false},
+  {id:'pyth',name:'Pyth Network S2',sym:'PYTH',logo:'🐍',status:'live',category:'defi',tags:['DeFi','Oracle','Multi-chain'],reward:'300–900 PYTH',usd:'~$600',deadline:'May 28, 2026',participants:44100,maxP:70000,desc:'Pyth Network S2 rewards users who stake PYTH and use Pyth-powered DeFi protocols.',tasks:['Stake PYTH tokens','Use Pyth-powered protocols','Vote in governance','Reach Tier 3 staking'],hot:false},
+  {id:'dogs',name:'DOGS S2',sym:'DOGS',logo:'🐕',status:'upcoming',category:'gaming',tags:['Meme','Telegram','TON'],reward:'TBA',usd:'Est. $50–$300',deadline:'Q3 2026',participants:890000,maxP:1500000,desc:'DOGS Season 2 on Telegram. The more OG your account, the more $DOGS you can earn.',tasks:['Open @dogshouse_bot on Telegram','Connect TON wallet','Complete daily check-in','Refer friends'],hot:false},
+  {id:'hyperliquid',name:'Hyperliquid',sym:'HYPE',logo:'🌊',status:'live',category:'defi',tags:['DeFi','Perps','L1'],reward:'500–5,000 HYPE',usd:'~$15,000',deadline:'Jun 5, 2026',participants:21300,maxP:40000,desc:'Hyperliquid is the #1 on-chain perps exchange. Top traders and early users receive the highest allocations.',tasks:['Trade perps on Hyperliquid','Achieve top 1000 PnL rank','Provide vault liquidity','Use HyperEVM dApps'],hot:true},
+  {id:'abstract',name:'Abstract',sym:'ABS',logo:'🎨',status:'upcoming',category:'layer2',tags:['Layer 2','Consumer','Gaming'],reward:'TBA',usd:'Est. $200–$800',deadline:'Q3 2026',participants:16700,maxP:35000,desc:'Abstract is a consumer-focused L2 by Pudgy Penguins. Early NFT users and chain users will be rewarded.',tasks:['Use Abstract testnet','Hold Pudgy Penguins or Lil Pudgys','Complete Abstract Portal tasks','Connect Abstract wallet'],hot:true},
+  {id:'megaeth',name:'MegaETH',sym:'MEGA',logo:'⚡',status:'upcoming',category:'layer2',tags:['Layer 2','Real-time','EVM'],reward:'TBA',usd:'Est. $500–$2,500',deadline:'Q4 2026',participants:8200,maxP:20000,desc:'MegaETH claims 100,000 TPS with real-time execution. Testnet users will get priority allocations.',tasks:['Join MegaETH waitlist','Use MegaETH testnet','Complete testnet quests','Refer developers'],hot:true},
+];
+
+/* FILTER STATE */
+let activeFilter='all';
+
+function filterAirdrops(filter, btn){
+  if(filter && btn){
+    activeFilter=filter;
+    document.querySelectorAll('.ft').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  const search=document.getElementById('airdropSearch').value.toLowerCase();
+  const sort=document.getElementById('sortSel').value;
+  let data=[...AIRDROPS];
+  if(activeFilter!=='all' && activeFilter!=='hot'){
+    if(activeFilter==='live') data=data.filter(a=>a.status==='live');
+    else if(activeFilter==='upcoming') data=data.filter(a=>a.status==='upcoming');
+    else data=data.filter(a=>a.category===activeFilter||a.tags.some(t=>t.toLowerCase()===activeFilter));
+  }
+  if(activeFilter==='hot') data=data.filter(a=>a.hot);
+  if(search) data=data.filter(a=>a.name.toLowerCase().includes(search)||a.sym.toLowerCase().includes(search)||a.tags.some(t=>t.toLowerCase().includes(search)));
+  if(sort==='reward') data.sort((a,b)=>b.participants-a.participants);
+  else if(sort==='deadline') data.sort((a,b)=>a.status==='live'?-1:1);
+  else if(sort==='participants') data.sort((a,b)=>b.participants-a.participants);
+  document.getElementById('airdrop-count').textContent=data.length+' drops';
+  document.getElementById('airdrops-grid').innerHTML=data.map(renderCard).join('');
+}
+
+function renderCard(a){
+  const isClaimed=claimed.has(a.id);
+  const pct=Math.round((a.participants/a.maxP)*100);
+  const statusBadge = a.status==='live'?'<span class="badge b-live">🟢 Live</span>':'<span class="badge b-soon">🔵 Upcoming</span>';
+  const hotBadge = a.hot ? '<span class="badge b-hot">🔥 Hot</span>' : '';
+  const taskHtml = a.tasks.slice(0,3).map((t,i)=>`<div class="task${isClaimed&&i<2?' done':''}"><div class="task-dot"></div>${t}</div>`).join('');
+  const tagHtml = a.tags.map(t=>`<span class="meta-tag">${t}</span>`).join('');
+  return `<div class="ac">
+    <div class="ac-body">
+      <div class="ac-hdr">
+        <div class="ac-logo">${a.logo}</div>
+        <div class="ac-badges">${statusBadge}${hotBadge}</div>
+      </div>
+      <div class="ac-name">${a.name}</div>
+      <div class="ac-sym">$${a.sym}</div>
+      <div class="ac-reward">${a.reward}</div>
+      <div class="ac-usd">${a.usd}</div>
+      <div class="ac-desc">${a.desc}</div>
+      <div class="tasks">${taskHtml}</div>
+      <div class="participants-bar"><div class="participants-fill" style="width:${pct}%"></div></div>
+      <div class="participants-text">${a.participants.toLocaleString()} / ${a.maxP.toLocaleString()} participants (${pct}%)</div>
+      <div class="ac-meta" style="margin-top:8px">${tagHtml}</div>
+    </div>
+    <div class="ac-footer">
+      <div class="ac-deadline">⏰ ${a.deadline}</div>
+      <button class="claim-btn${isClaimed?' claimed':''}" onclick="claimAirdrop('${a.id}',this)">
+        ${isClaimed ? '✅ Claimed' : '🎁 Claim'}
+      </button>
+    </div>
+  </div>`;
+}
+
+function claimAirdrop(id, btn){
+  if(claimed.has(id)){
+    claimed.delete(id);
+    btn.classList.remove('claimed');
+    btn.innerHTML='🎁 Claim';
+    toast('Removed from claimed list');
+  } else {
+    claimed.add(id);
+    btn.classList.add('claimed');
+    btn.innerHTML='✅ Claimed';
+    toast('🎉 Marked as claimed!');
+  }
+  localStorage.setItem('pd_claimed',JSON.stringify([...claimed]));
+}
+
+// Init
+filterAirdrops('all',null);
+</script>
+</body>
+</html>
