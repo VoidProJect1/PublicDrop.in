@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Learn Crypto — Beginner Guide — PublicDrop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ff:'Bricolage Grotesque',sans-serif;--fm:'DM Mono',monospace;--bg:#F7F8FC;--surface:#FFFFFF;--surface2:#F2F3F8;--surface3:#E8EAF2;--border:rgba(0,0,0,.07);--border2:rgba(0,0,0,.12);--border3:rgba(0,0,0,.18);--t1:#0A0C14;--t2:#4A4F6A;--t3:#8B90AB;--t4:#C2C6DB;--up:#0EA66A;--upb:rgba(14,166,106,.1);--upbr:rgba(14,166,106,.22);--dn:#E8334A;--accent:#1A56DB;--accentb:rgba(26,86,219,.1);--sha-sm:0 1px 3px rgba(0,0,0,.05),0 2px 8px rgba(0,0,0,.04);--sha:0 2px 12px rgba(0,0,0,.07),0 8px 30px rgba(0,0,0,.05);--sha-lg:0 12px 40px rgba(0,0,0,.12);--r:14px;--rs:10px;--rx:7px;--pill:999px;--nav-h:62px;}
+[data-theme="dark"]{--bg:#0B0C11;--surface:#12141C;--surface2:#181A24;--surface3:#1F2130;--border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.10);--border3:rgba(255,255,255,.16);--t1:#F0F1F8;--t2:#8C91AD;--t3:#505570;--t4:#2E3148;--sha-sm:0 1px 3px rgba(0,0,0,.3);--sha:0 2px 12px rgba(0,0,0,.4);}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--ff);background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;transition:background .25s,color .25s;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;}
+nav{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:500;backdrop-filter:blur(16px);box-shadow:var(--sha-sm);}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 20px;height:var(--nav-h);display:flex;align-items:center;gap:14px;}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0;}
+.logo-mark{width:34px;height:34px;background:var(--t1);border-radius:9px;display:flex;align-items:center;justify-content:center;}
+.logo-mark svg{width:20px;height:20px;}
+.logo-name{font-size:19px;font-weight:800;letter-spacing:-.6px;color:var(--t1);}
+.logo-name span{color:var(--t3);font-weight:400;}
+.nav-right{display:flex;gap:8px;margin-left:auto;align-items:center;}
+.nav-link{padding:7px 12px;border-radius:var(--rx);font-size:13px;font-weight:600;color:var(--t2);background:none;border:none;transition:all .15s;}
+.nav-link:hover,.nav-link.active{color:var(--t1);background:var(--surface2);}
+.theme-toggle{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border2);background:var(--surface2);color:var(--t2);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:all .2s;}
+.page{max-width:1100px;margin:0 auto;padding:28px 20px 80px;}
+
+/* HERO */
+.learn-hero{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:40px 44px;margin-bottom:28px;text-align:center;position:relative;overflow:hidden;box-shadow:var(--sha-sm);}
+.learn-hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:400px;height:300px;background:radial-gradient(circle,rgba(26,86,219,.06),transparent 70%);border-radius:50%;pointer-events:none;}
+.learn-hero h1{font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-1.5px;margin-bottom:12px;position:relative;}
+.learn-hero p{color:var(--t2);font-size:15px;max-width:500px;margin:0 auto 24px;line-height:1.65;}
+.hero-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.btn-primary{padding:10px 22px;border-radius:var(--pill);background:var(--t1);color:var(--bg);font-size:13.5px;font-weight:700;border:none;transition:all .18s;cursor:pointer;}
+.btn-primary:hover{opacity:.85;transform:translateY(-1px);}
+.btn-outline{padding:10px 20px;border-radius:var(--pill);background:transparent;border:1.5px solid var(--border3);color:var(--t1);font-size:13.5px;font-weight:700;transition:all .18s;cursor:pointer;}
+.btn-outline:hover{background:var(--surface2);}
+
+/* PROGRESS BAR */
+.progress-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.progress-label{font-size:12.5px;font-weight:700;color:var(--t2);}
+.progress-val{font-size:12.5px;font-weight:700;font-family:var(--fm);color:var(--accent);}
+.progress-track{height:6px;background:var(--surface3);border-radius:var(--pill);overflow:hidden;margin-bottom:20px;}
+.progress-fill{height:100%;border-radius:var(--pill);background:linear-gradient(90deg,var(--accent),#2563EB);}
+
+/* LAYOUT */
+.learn-layout{display:grid;grid-template-columns:240px 1fr;gap:20px;align-items:start;}
+
+/* SIDEBAR NAV */
+.learn-nav{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sha-sm);position:sticky;top:80px;}
+.learn-nav-section{padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);border-top:1px solid var(--border);}
+.learn-nav-section:first-child{border-top:none;}
+.learn-nav-link{display:flex;align-items:center;gap:8px;padding:9px 14px;font-size:13.5px;font-weight:600;color:var(--t2);cursor:pointer;transition:all .15s;border:none;background:none;width:100%;text-align:left;}
+.learn-nav-link:hover,.learn-nav-link.active{color:var(--t1);background:var(--surface2);}
+.learn-nav-link .icon{font-size:16px;width:20px;text-align:center;}
+
+/* CONTENT */
+.learn-content{display:flex;flex-direction:column;gap:20px;}
+
+/* SECTION CARD */
+.content-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sha-sm);}
+.content-hdr{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.content-icon{font-size:24px;}
+.content-title{font-size:20px;font-weight:800;letter-spacing:-.5px;}
+.content-subtitle{font-size:13px;color:var(--t2);margin-top:2px;}
+.content-body{padding:24px;}
+
+/* STEP CARDS */
+.steps{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.step-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:16px;}
+.step-num{font-size:11px;font-weight:700;font-family:var(--fm);color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+.step-title{font-size:14.5px;font-weight:800;margin-bottom:6px;}
+.step-desc{font-size:13px;color:var(--t2);line-height:1.6;}
+
+/* FAQ */
+.faq-item{border-bottom:1px solid var(--border);overflow:hidden;}
+.faq-item:last-child{border-bottom:none;}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:15px 0;cursor:pointer;font-size:14.5px;font-weight:700;gap:10px;}
+.faq-toggle{font-size:18px;color:var(--t3);transition:transform .2s;flex-shrink:0;}
+.faq-item.open .faq-toggle{transform:rotate(45deg);}
+.faq-a{font-size:13.5px;color:var(--t2);line-height:1.7;padding-bottom:14px;display:none;}
+.faq-item.open .faq-a{display:block;}
+
+/* GLOSSARY */
+.gloss-search{width:100%;padding:10px 14px;background:var(--surface2);border:1.5px solid var(--border2);border-radius:var(--pill);font-size:13.5px;color:var(--t1);outline:none;margin-bottom:16px;transition:border-color .2s;}
+.gloss-search:focus{border-color:var(--accent);}
+.gloss-grid{display:grid;gap:0;}
+.gloss-item{padding:12px 0;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start;}
+.gloss-item:last-child{border-bottom:none;}
+.gloss-term{font-size:14px;font-weight:800;min-width:140px;flex-shrink:0;color:var(--t1);}
+.gloss-def{font-size:13px;color:var(--t2);line-height:1.6;}
+.gloss-tag{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:var(--pill);margin-top:4px;display:inline-block;}
+
+/* QUIZ */
+.quiz-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:18px;margin-bottom:12px;}
+.quiz-q{font-size:15px;font-weight:700;margin-bottom:12px;}
+.quiz-options{display:flex;flex-direction:column;gap:7px;}
+.quiz-opt{padding:10px 14px;border-radius:var(--rx);border:1.5px solid var(--border2);background:var(--surface);font-size:13.5px;font-weight:600;cursor:pointer;transition:all .15s;text-align:left;}
+.quiz-opt:hover{border-color:var(--border3);}
+.quiz-opt.correct{background:var(--upb);border-color:var(--upbr);color:var(--up);}
+.quiz-opt.wrong{background:rgba(232,51,74,.1);border-color:rgba(232,51,74,.22);color:var(--dn);}
+
+/* TIPS */
+.tip-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.tip-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:14px;display:flex;gap:10px;align-items:flex-start;}
+.tip-icon{font-size:22px;flex-shrink:0;}
+.tip-title{font-size:13.5px;font-weight:700;margin-bottom:4px;}
+.tip-desc{font-size:12.5px;color:var(--t2);line-height:1.55;}
+
+/* WARNING BOX */
+.warning-box{background:rgba(232,51,74,.06);border:1.5px solid rgba(232,51,74,.18);border-radius:var(--rs);padding:14px 16px;display:flex;gap:10px;align-items:flex-start;margin-bottom:16px;}
+.warning-icon{font-size:18px;flex-shrink:0;}
+.warning-text{font-size:13px;line-height:1.6;color:var(--t2);}
+.info-box{background:var(--accentb);border:1.5px solid rgba(26,86,219,.2);border-radius:var(--rs);padding:14px 16px;display:flex;gap:10px;align-items:flex-start;margin-bottom:16px;}
+
+footer{background:var(--surface);border-top:1px solid var(--border);padding:24px 20px;text-align:center;margin-top:0;}
+footer p{color:var(--t3);font-size:12.5px;}
+footer a{color:var(--t2);font-weight:600;transition:color .15s;}
+footer a:hover{color:var(--t1);}
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--t1);color:var(--bg);padding:11px 22px;border-radius:var(--pill);font-size:13px;font-weight:700;box-shadow:var(--sha-lg);z-index:9999;transition:transform .38s cubic-bezier(.34,1.56,.64,1);pointer-events:none;max-width:90vw;}
+#toast.show{transform:translateX(-50%) translateY(0);}
+
+@media(max-width:860px){.learn-layout{grid-template-columns:1fr;}.learn-nav{position:static;}}
+@media(max-width:640px){.steps{grid-template-columns:1fr;}.tip-grid{grid-template-columns:1fr;}.gloss-item{flex-direction:column;gap:4px;}.gloss-term{min-width:auto;}.learn-hero{padding:24px 20px;}.content-body{padding:18px;}.page{padding:16px 14px 60px;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.fade-up{animation:fadeUp .4s ease both;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="index.html">
+      <div class="logo-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l4-4 4 4 4-4 4 4" stroke="var(--bg)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="logo-name">PublicDrop<span>.in</span></div>
+    </a>
+    <div class="nav-right">
+      <button class="nav-link" onclick="location.href='index.html'">Markets</button>
+      <a class="nav-link" href="airdrop.html">Airdrops</a>
+      <a class="nav-link" href="news.html">News</a>
+      <button class="nav-link active">📚 Learn</button>
+      <button class="theme-toggle" id="THEME_BTN" onclick="toggleTheme()">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="learn-hero fade-up">
+    <h1>📚 Learn Crypto</h1>
+    <p>From complete beginner to confident investor — everything you need to understand cryptocurrency, DeFi, NFTs, and the digital economy.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="document.getElementById('guide').scrollIntoView({behavior:'smooth'})">Start Learning →</button>
+      <button class="btn-outline" onclick="document.getElementById('glossary').scrollIntoView({behavior:'smooth'})">Crypto Glossary</button>
+    </div>
+    <div style="margin-top:24px;max-width:400px;margin-left:auto;margin-right:auto">
+      <div class="progress-header"><span class="progress-label">Your Progress</span><span class="progress-val" id="PROGRESS_VAL">0 / 6 completed</span></div>
+      <div class="progress-track"><div class="progress-fill" id="PROGRESS_BAR" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <div class="learn-layout">
+    <!-- SIDEBAR -->
+    <div class="learn-nav fade-up">
+      <div class="learn-nav-section" style="border-top:none">📖 Beginner</div>
+      <button class="learn-nav-link active" onclick="scrollTo('guide')"><span class="icon">1️⃣</span>What is Crypto?</button>
+      <button class="learn-nav-link" onclick="scrollTo('how-to-buy')"><span class="icon">2️⃣</span>How to Buy</button>
+      <button class="learn-nav-link" onclick="scrollTo('wallets')"><span class="icon">3️⃣</span>Wallets & Safety</button>
+      <div class="learn-nav-section">📗 Intermediate</div>
+      <button class="learn-nav-link" onclick="scrollTo('defi')"><span class="icon">4️⃣</span>DeFi Explained</button>
+      <button class="learn-nav-link" onclick="scrollTo('nft')"><span class="icon">5️⃣</span>NFTs & Web3</button>
+      <button class="learn-nav-link" onclick="scrollTo('tax')"><span class="icon">6️⃣</span>Crypto & Taxes</button>
+      <div class="learn-nav-section">🔍 Reference</div>
+      <button class="learn-nav-link" onclick="scrollTo('glossary')"><span class="icon">📖</span>Glossary A–Z</button>
+      <button class="learn-nav-link" onclick="scrollTo('quiz')"><span class="icon">🧠</span>Quiz Yourself</button>
+      <button class="learn-nav-link" onclick="scrollTo('tips')"><span class="icon">💡</span>Safety Tips</button>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="learn-content">
+
+      <!-- WHAT IS CRYPTO -->
+      <div class="content-card fade-up" id="guide">
+        <div class="content-hdr"><div class="content-icon">1️⃣</div><div><div class="content-title">What is Cryptocurrency?</div><div class="content-subtitle">The complete beginner's introduction</div></div></div>
+        <div class="content-body">
+          <div class="info-box" style="margin-bottom:16px"><div>ℹ️</div><div class="warning-text">Cryptocurrency is digital money that uses cryptography (advanced math) to secure transactions. Unlike traditional money, it's decentralized — no bank or government controls it.</div></div>
+          <div class="steps">
+            <div class="step-card"><div class="step-num">Concept 01</div><div class="step-title">₿ Bitcoin</div><div class="step-desc">The first cryptocurrency, created in 2009 by the anonymous Satoshi Nakamoto. Bitcoin is "digital gold" — limited to 21 million coins ever.</div></div>
+            <div class="step-card"><div class="step-num">Concept 02</div><div class="step-title">⚙️ Blockchain</div><div class="step-desc">A public ledger that records every transaction permanently. Think of it as a shared spreadsheet that thousands of computers maintain simultaneously.</div></div>
+            <div class="step-card"><div class="step-num">Concept 03</div><div class="step-title">🔐 Decentralization</div><div class="step-desc">No single person, company, or government controls Bitcoin. Thousands of computers (nodes) worldwide verify transactions independently.</div></div>
+            <div class="step-card"><div class="step-num">Concept 04</div><div class="step-title">⛏️ Mining</div><div class="step-desc">Computers compete to solve complex math puzzles to validate transactions. Winners earn newly created coins as a reward.</div></div>
+            <div class="step-card"><div class="step-num">Concept 05</div><div class="step-title">💎 Ethereum</div><div class="step-desc">The second-largest crypto, which introduced "smart contracts" — self-executing code that powers DeFi, NFTs, and thousands of applications.</div></div>
+            <div class="step-card"><div class="step-num">Concept 06</div><div class="step-title">📊 Altcoins</div><div class="step-desc">Any crypto that isn't Bitcoin. Thousands exist — from Solana and Cardano to meme coins like Dogecoin and Shiba Inu.</div></div>
+          </div>
+          <div style="margin-top:16px;padding:16px;background:var(--upb);border:1px solid var(--upbr);border-radius:var(--rs)">
+            <div style="font-size:14px;font-weight:700;color:var(--up);margin-bottom:6px">✅ Lesson Complete!</div>
+            <div style="font-size:13px;color:var(--t2)">You now understand the basics of cryptocurrency. Ready to learn how to buy?</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HOW TO BUY -->
+      <div class="content-card fade-up" id="how-to-buy">
+        <div class="content-hdr"><div class="content-icon">2️⃣</div><div><div class="content-title">How to Buy Crypto in India</div><div class="content-subtitle">Step-by-step guide for beginners</div></div></div>
+        <div class="content-body">
+          <div class="warning-box"><div class="warning-icon">⚠️</div><div class="warning-text">Always use registered Indian exchanges (WazirX, CoinDCX, Zebpay, Binance) for compliance with Indian regulations. Never share your password or private keys with anyone.</div></div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            ${[
+              ['Step 1: Choose an Exchange','🏦','Select a reputable Indian exchange like WazirX, CoinDCX, or Zebpay. These are registered with Indian authorities and support UPI, NEFT, and IMPS payments.'],
+              ['Step 2: Complete KYC','🪪','Verify your identity using Aadhaar card or PAN card. This is mandatory for Indian exchanges per SEBI and RBI guidelines. Usually takes 24–48 hours.'],
+              ['Step 3: Add Funds','💰','Link your bank account via UPI, NEFT, or IMPS. Start with an amount you can afford to lose — experts recommend starting with ₹500–₹1,000 for beginners.'],
+              ['Step 4: Buy Your First Coin','🛒','Search for Bitcoin (BTC) or Ethereum (ETH). Enter the INR amount and confirm. You now own cryptocurrency! It appears in your exchange wallet.'],
+              ['Step 5: Secure Your Crypto','🔐','For long-term holding, move coins to your own hardware wallet (Ledger, Trezor). For small amounts, the exchange wallet is fine while you learn.'],
+              ['Step 6: Track Your Portfolio','📊','Use PublicDrop\'s free portfolio tracker to monitor your holdings, P&L, and overall performance in real time.'],
+            ].map(([t,i,d])=>`<div style="display:flex;gap:12px;align-items:flex-start;padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs)">
+              <div style="font-size:22px;flex-shrink:0">${i}</div>
+              <div><div style="font-size:14px;font-weight:800;margin-bottom:4px">${t}</div><div style="font-size:13px;color:var(--t2);line-height:1.6">${d}</div></div>
+            </div>`).join('')}
+          </div>
+        </div>
+      </div>
+
+      <!-- WALLETS -->
+      <div class="content-card fade-up" id="wallets">
+        <div class="content-hdr"><div class="content-icon">3️⃣</div><div><div class="content-title">Wallets & Security</div><div class="content-subtitle">"Not your keys, not your coins"</div></div></div>
+        <div class="content-body">
+          <div class="warning-box"><div class="warning-icon">🚨</div><div class="warning-text"><strong>NEVER share your seed phrase (12–24 words) with anyone — ever.</strong> Anyone who has it can steal all your funds. No legitimate exchange or support team will ever ask for it.</div></div>
+          <div class="tip-grid" style="margin-bottom:14px">
+            <div class="tip-card"><div class="tip-icon">🏦</div><div><div class="tip-title">Exchange Wallet (Hot)</div><div class="tip-desc">Easiest to use. Good for trading. Risk: exchange can be hacked or go bankrupt (FTX collapse, 2022).</div></div></div>
+            <div class="tip-card"><div class="tip-icon">📱</div><div><div class="tip-title">Software Wallet (Hot)</div><div class="tip-desc">Apps like MetaMask, Trust Wallet. You control your keys. Good for DeFi & small amounts.</div></div></div>
+            <div class="tip-card"><div class="tip-icon">🔒</div><div><div class="tip-title">Hardware Wallet (Cold)</div><div class="tip-desc">Physical devices (Ledger, Trezor). Most secure. Costs ₹5,000–₹15,000. Best for large holdings.</div></div></div>
+            <div class="tip-card"><div class="tip-icon">📝</div><div><div class="tip-title">Paper Wallet</div><div class="tip-desc">Print private key on paper. Completely offline. Fragile — can burn or get wet. Keep backups.</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DEFI -->
+      <div class="content-card fade-up" id="defi">
+        <div class="content-hdr"><div class="content-icon">4️⃣</div><div><div class="content-title">DeFi — Decentralized Finance</div><div class="content-subtitle">Banking without banks</div></div></div>
+        <div class="content-body">
+          <div class="steps">
+            <div class="step-card"><div class="step-num">What is DeFi</div><div class="step-title">💸 Open Finance</div><div class="step-desc">Financial services (lending, borrowing, trading) built on blockchain without banks. Anyone with a wallet can access them 24/7.</div></div>
+            <div class="step-card"><div class="step-num">Key Concept</div><div class="step-title">⚖️ Smart Contracts</div><div class="step-desc">Self-executing code on Ethereum/Solana that automatically handles transactions when conditions are met — no middleman needed.</div></div>
+            <div class="step-card"><div class="step-num">Earn Yield</div><div class="step-title">🌾 Liquidity Mining</div><div class="step-desc">Provide liquidity to DEXes (Uniswap, SushiSwap) and earn fees + token rewards. Yields range from 5% to 100%+ APY.</div></div>
+            <div class="step-card"><div class="step-num">Borrowing</div><div class="step-title">🏛️ Lending Protocols</div><div class="step-desc">Use Aave or Compound to borrow crypto against your holdings (overcollateralized). No credit check, instant approval.</div></div>
+          </div>
+          <div class="warning-box" style="margin-top:14px"><div class="warning-icon">⚠️</div><div class="warning-text">DeFi carries risks: smart contract bugs, impermanent loss, rug pulls. Start with small amounts and stick to audited protocols.</div></div>
+        </div>
+      </div>
+
+      <!-- NFTs -->
+      <div class="content-card fade-up" id="nft">
+        <div class="content-hdr"><div class="content-icon">5️⃣</div><div><div class="content-title">NFTs & Web3</div><div class="content-subtitle">Digital ownership explained</div></div></div>
+        <div class="content-body">
+          <p style="font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:14px">An <strong style="color:var(--t1)">NFT (Non-Fungible Token)</strong> is a unique digital token on a blockchain that proves ownership of a digital asset — art, music, video, or even real-world items. "Non-fungible" means each one is unique (unlike Bitcoin where each coin is identical).</p>
+          <div class="steps" style="margin-bottom:14px">
+            <div class="step-card"><div class="step-num">Use Case 01</div><div class="step-title">🎨 Digital Art</div><div class="step-desc">Artists sell unique digital artworks. Buyers get verifiable ownership recorded on blockchain (Bored Apes, CryptoPunks).</div></div>
+            <div class="step-card"><div class="step-num">Use Case 02</div><div class="step-title">🎮 Gaming</div><div class="step-desc">In-game items (weapons, skins, land) as NFTs that players truly own and can sell outside the game.</div></div>
+            <div class="step-card"><div class="step-num">Use Case 03</div><div class="step-title">🎵 Music & Content</div><div class="step-desc">Musicians sell albums as NFTs, giving fans revenue shares and exclusive access — cutting out record labels.</div></div>
+            <div class="step-card"><div class="step-num">Use Case 04</div><div class="step-title">🏠 Real World Assets</div><div class="step-desc">Tokenizing physical assets like real estate, allowing fractional ownership and 24/7 trading.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAX -->
+      <div class="content-card fade-up" id="tax">
+        <div class="content-hdr"><div class="content-icon">6️⃣</div><div><div class="content-title">Crypto Taxes in India</div><div class="content-subtitle">Know your obligations — simplified</div></div></div>
+        <div class="content-body">
+          <div class="warning-box"><div class="warning-icon">📋</div><div class="warning-text">This is general educational information only. Consult a Chartered Accountant for specific tax advice.</div></div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            ${[
+              ['30% Flat Tax','All crypto gains taxed at 30% flat rate (+ 4% cess) from FY 2022-23. No distinction between short-term and long-term.'],
+              ['1% TDS','1% TDS deducted by exchanges on every crypto sale over ₹50,000. Claimable when filing ITR.'],
+              ['No Loss Set-off','Losses from crypto CANNOT be offset against gains from other asset classes (stocks, mutual funds).'],
+              ['ITR Filing','Report crypto income under "Income from Other Sources" or "Business Income" depending on frequency of trading.'],
+              ['VDA Definition','Crypto falls under Virtual Digital Assets (VDA). Gifts of VDA also taxable if value exceeds ₹50,000.'],
+            ].map(([t,d])=>`<div style="padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs)"><div style="font-size:14px;font-weight:700;margin-bottom:4px">${t}</div><div style="font-size:13px;color:var(--t2);line-height:1.6">${d}</div></div>`).join('')}
+          </div>
+        </div>
+      </div>
+
+      <!-- GLOSSARY -->
+      <div class="content-card fade-up" id="glossary">
+        <div class="content-hdr"><div class="content-icon">📖</div><div><div class="content-title">Crypto Glossary A–Z</div><div class="content-subtitle">Every term you'll ever need</div></div></div>
+        <div class="content-body">
+          <input type="text" class="gloss-search" id="GLOSS_SEARCH" placeholder="Search terms…" oninput="filterGlossary(this.value)">
+          <div class="gloss-grid" id="GLOSS_GRID"></div>
+        </div>
+      </div>
+
+      <!-- QUIZ -->
+      <div class="content-card fade-up" id="quiz">
+        <div class="content-hdr"><div class="content-icon">🧠</div><div><div class="content-title">Test Your Knowledge</div><div class="content-subtitle">Quick quiz to check what you've learned</div></div></div>
+        <div class="content-body" id="QUIZ_BODY"></div>
+      </div>
+
+      <!-- SAFETY TIPS -->
+      <div class="content-card fade-up" id="tips">
+        <div class="content-hdr"><div class="content-icon">💡</div><div><div class="content-title">Safety Tips for Indian Investors</div><div class="content-subtitle">Protect your funds from scams</div></div></div>
+        <div class="content-body">
+          <div class="tip-grid">
+            <div class="tip-card"><div class="tip-icon">🔐</div><div><div class="tip-title">Enable 2FA Everywhere</div><div class="tip-desc">Use Google Authenticator (not SMS) for all crypto accounts. SMS can be SIM-swapped by attackers.</div></div></div>
+            <div class="tip-card"><div class="tip-icon">🎣</div><div><div class="tip-title">Beware Phishing</div><div class="tip-desc">Check URLs carefully. Fake sites like "bl1nance.com" steal passwords. Bookmark official sites.</div></div></div>
+            <div class="tip-card"><div class="tip-icon">👜</div><div><div class="tip-title">Hardware Wallet</div><div class="tip-desc">If you own more than ₹50,000 in crypto, get a Ledger or Trezor. It's the gold standard for security.</div></div></div>
+            <div class="tip-card"><div class="tip-icon">🚨</div><div><div class="tip-title">Spot Scams</div><div class="tip-desc">"Guaranteed returns" is ALWAYS a scam. No legitimate investment guarantees profit. DYOR always.</div></div></div>
+            <div class="tip-card"><div class="tip-icon">📦</div><div><div class="tip-title">DCA Strategy</div><div class="tip-desc">Don't invest everything at once. Dollar-cost averaging (small regular purchases) reduces timing risk.</div></div></div>
+            <div class="tip-card"><div class="tip-icon">📱</div><div><div class="tip-title">Secure Your Phone</div><div class="tip-desc">Use a strong PIN/biometric. Don't use public Wi-Fi for crypto transactions. Keep apps updated.</div></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 <a href="index.html">PublicDrop.in</a> · Educational purposes only · <a href="about.html#terms">Terms</a> · <a href="about.html#privacy">Privacy</a> · Not financial advice</p>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+(function(){const t=localStorage.getItem('pd_theme')||'light';document.documentElement.setAttribute('data-theme',t);document.getElementById('THEME_BTN').textContent=t==='dark'?'☀️':'🌙';})();
+function toggleTheme(){const c=document.documentElement.getAttribute('data-theme');const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);document.getElementById('THEME_BTN').textContent=n==='dark'?'☀️':'🌙';localStorage.setItem('pd_theme',n);}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3200);}
+function scrollTo(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});}
+
+// Nav active
+document.querySelectorAll('.learn-nav-link').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.learn-nav-link').forEach(b=>b.classList.remove('active'));btn.classList.add('active');});});
+
+// Progress
+let completed=parseInt(localStorage.getItem('pd_learn_progress')||'0');
+function updateProgress(){
+  const pct=Math.round((completed/6)*100);
+  document.getElementById('PROGRESS_BAR').style.width=pct+'%';
+  document.getElementById('PROGRESS_VAL').textContent=completed+' / 6 completed';
+  localStorage.setItem('pd_learn_progress',completed);
+}
+updateProgress();
+document.querySelectorAll('.content-card').forEach((card,i)=>{
+  if(i<6){
+    card.addEventListener('click',()=>{if(i+1>completed){completed=i+1;updateProgress();}});
+  }
+});
+
+// GLOSSARY
+const GLOSSARY=[
+  {term:'Address',def:'A unique identifier (like a bank account number) for sending/receiving crypto. Example: 0x742d35Cc...'},
+  {term:'Altcoin',def:'Any cryptocurrency other than Bitcoin. Ethereum, Solana, Cardano are all altcoins.'},
+  {term:'ATH (All-Time High)',def:'The highest price a cryptocurrency has ever reached.'},
+  {term:'Bear Market',def:'A prolonged period of declining prices (typically 20%+ drop). Opposite of bull market.'},
+  {term:'Block',def:'A container for transaction data on the blockchain. Blocks link together to form the blockchain.'},
+  {term:'Blockchain',def:'A public, immutable ledger of all transactions distributed across thousands of computers worldwide.'},
+  {term:'Bridge',def:'Technology that allows tokens to move between different blockchain networks (e.g., Ethereum to Solana).'},
+  {term:'Bull Market',def:'A period of rising prices and positive sentiment in the crypto market.'},
+  {term:'CEX',def:'Centralized Exchange — a traditional crypto exchange (Binance, Coinbase) that holds your funds.'},
+  {term:'Cold Wallet',def:'Offline storage for crypto (hardware wallet like Ledger). Not connected to internet = safer.'},
+  {term:'dApp',def:'Decentralized Application — an app built on blockchain that runs on smart contracts without a central server.'},
+  {term:'DeFi',def:'Decentralized Finance — financial services (lending, trading, yield) on blockchain without banks.'},
+  {term:'DEX',def:'Decentralized Exchange — a peer-to-peer marketplace (Uniswap, SushiSwap) where you trade directly from your wallet.'},
+  {term:'DYOR',def:'"Do Your Own Research" — always research before investing. Never follow blindly.'},
+  {term:'FUD',def:'"Fear, Uncertainty, Doubt" — negative news or sentiment (sometimes spread intentionally) that drops prices.'},
+  {term:'Gas Fees',def:'Transaction fees paid to miners/validators on Ethereum for processing transactions.'},
+  {term:'HODL',def:'Holding cryptocurrency long-term regardless of price drops. Originally a typo of "hold".'},
+  {term:'Hot Wallet',def:'A crypto wallet connected to the internet (MetaMask, Trust Wallet). Convenient but less secure.'},
+  {term:'KYC',def:'"Know Your Customer" — identity verification required by exchanges under anti-money-laundering laws.'},
+  {term:'Layer 1',def:'The base blockchain (Bitcoin, Ethereum, Solana). All transactions settle on this layer.'},
+  {term:'Layer 2',def:'A secondary protocol built on top of Layer 1 to improve speed and reduce fees (Polygon, Arbitrum).'},
+  {term:'Liquidity',def:'How easily an asset can be bought or sold without affecting its price. Bitcoin is highly liquid.'},
+  {term:'Market Cap',def:'Total value of a cryptocurrency = current price × circulating supply.'},
+  {term:'Mempool',def:'A waiting area where unconfirmed transactions sit before being included in a block.'},
+  {term:'Mining',def:'Using computing power to validate transactions and create new cryptocurrency. Energy-intensive.'},
+  {term:'NFT',def:'Non-Fungible Token — a unique digital asset on blockchain representing ownership of art, games, etc.'},
+  {term:'Node',def:'A computer that participates in a blockchain network by verifying and storing transaction data.'},
+  {term:'Private Key',def:'A secret code that proves you own your crypto. NEVER share it with anyone — ever.'},
+  {term:'Proof of Stake',def:'A consensus mechanism where validators lock up (stake) coins to validate transactions. Less energy than PoW.'},
+  {term:'Proof of Work',def:'Bitcoin\'s consensus mechanism where miners compete using computing power to validate blocks.'},
+  {term:'Public Key',def:'Your crypto address — safe to share for receiving funds. Generated from your private key.'},
+  {term:'Rekt',def:'Slang for suffering severe losses in crypto trading.'},
+  {term:'Rug Pull',def:'A scam where developers abandon a project and run away with investors\' funds.'},
+  {term:'Seed Phrase',def:'12–24 words that back up your wallet. Write on paper, store safely, NEVER online.'},
+  {term:'Smart Contract',def:'Self-executing code on blockchain that automatically enforces rules of an agreement.'},
+  {term:'Stablecoin',def:'Crypto pegged to a stable asset (USDT, USDC = $1). Used to avoid volatility.'},
+  {term:'Staking',def:'Locking up crypto to help validate transactions and earn rewards. Like earning interest.'},
+  {term:'TPS',def:'Transactions Per Second — speed measure. Bitcoin: 7 TPS. Visa: 24,000 TPS. Solana: 65,000 TPS.'},
+  {term:'VDA',def:'Virtual Digital Asset — Indian government\'s term for cryptocurrencies and NFTs.'},
+  {term:'Volatility',def:'How much a price fluctuates. Bitcoin can move 10%+ in a day — very volatile vs stocks.'},
+  {term:'Wallet',def:'Software or hardware that stores your private keys and lets you send/receive crypto.'},
+  {term:'Whale',def:'An entity holding a large amount of cryptocurrency. Their trades can move markets.'},
+  {term:'Whitepaper',def:'A technical document explaining a cryptocurrency project\'s goals, technology, and tokenomics.'},
+  {term:'Yield Farming',def:'Providing liquidity to DeFi protocols to earn rewards (tokens + fees). High risk, high reward.'},
+];
+
+function renderGlossary(items){
+  document.getElementById('GLOSS_GRID').innerHTML=items.map(g=>`
+    <div class="gloss-item">
+      <div class="gloss-term">${g.term}</div>
+      <div class="gloss-def">${g.def}</div>
+    </div>`).join('');
+}
+function filterGlossary(q){
+  const filtered=q?GLOSSARY.filter(g=>g.term.toLowerCase().includes(q.toLowerCase())||g.def.toLowerCase().includes(q.toLowerCase())):GLOSSARY;
+  renderGlossary(filtered);
+}
+renderGlossary(GLOSSARY);
+
+// QUIZ
+const QUESTIONS=[
+  {q:'What does "HODL" mean?',opts:['Hold On for Dear Life','A type of wallet','A crypto exchange','A technical indicator'],ans:0},
+  {q:'What is a seed phrase?',opts:['A type of stablecoin','12-24 words that back up your wallet','A trading strategy','An exchange fee'],ans:1},
+  {q:'Which blockchain introduced smart contracts?',opts:['Bitcoin','Solana','Ethereum','Cardano'],ans:2},
+  {q:'What is a rug pull?',opts:['A trading strategy','DeFi yield farming','A scam where devs abandon a project','A type of NFT'],ans:2},
+  {q:'In India, crypto gains are taxed at what flat rate?',opts:['10%','15%','20%','30%'],ans:3},
+];
+let quizScore=0;
+document.getElementById('QUIZ_BODY').innerHTML=QUESTIONS.map((q,qi)=>`
+  <div class="quiz-card" id="quiz-${qi}">
+    <div class="quiz-q">Q${qi+1}. ${q.q}</div>
+    <div class="quiz-options">${q.opts.map((opt,oi)=>`<button class="quiz-opt" onclick="checkAnswer(${qi},${oi},${q.ans})">${opt}</button>`).join('')}</div>
+  </div>`).join('')+
+  `<div id="QUIZ_RESULT" style="display:none;padding:20px;background:var(--upb);border:1px solid var(--upbr);border-radius:var(--rs);text-align:center">
+    <div style="font-size:22px;margin-bottom:6px">🎉</div>
+    <div style="font-size:16px;font-weight:800;color:var(--up)" id="QUIZ_SCORE"></div>
+    <div style="font-size:13px;color:var(--t2);margin-top:4px">Great job learning about crypto!</div>
+    <button onclick="resetQuiz()" style="margin-top:12px;padding:8px 20px;border-radius:var(--pill);background:var(--up);color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer">Try Again</button>
+  </div>`;
+
+let quizAnswered=new Set();
+function checkAnswer(qi,oi,correct){
+  if(quizAnswered.has(qi))return;
+  quizAnswered.add(qi);
+  const card=document.getElementById('quiz-'+qi);
+  const opts=card.querySelectorAll('.quiz-opt');
+  opts.forEach((btn,i)=>{btn.disabled=true;if(i===correct)btn.classList.add('correct');else if(i===oi&&oi!==correct)btn.classList.add('wrong');});
+  if(oi===correct)quizScore++;
+  if(quizAnswered.size===QUESTIONS.length){
+    document.getElementById('QUIZ_RESULT').style.display='block';
+    document.getElementById('QUIZ_SCORE').textContent=`You scored ${quizScore}/${QUESTIONS.length}!`;
+  }
+}
+function resetQuiz(){quizScore=0;quizAnswered=new Set();document.getElementById('QUIZ_BODY').innerHTML='';document.getElementById('QUIZ_BODY').innerHTML='Loading quiz…';setTimeout(()=>location.reload(),100);}
+</script>
+</body>
+</html>
