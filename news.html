@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Crypto News — PublicDrop.in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── DESIGN TOKENS ── */
+:root{
+  --ff:'Bricolage Grotesque',sans-serif;--fm:'DM Mono',monospace;
+  --bg:#F7F8FC;--surface:#FFFFFF;--surface2:#F2F3F8;--surface3:#E8EAF2;
+  --border:rgba(0,0,0,.07);--border2:rgba(0,0,0,.12);--border3:rgba(0,0,0,.18);
+  --t1:#0A0C14;--t2:#4A4F6A;--t3:#8B90AB;--t4:#C2C6DB;
+  --dn:#E8334A;--accent:#1A56DB;
+  --sha-sm:0 1px 4px rgba(0,0,0,.06),0 2px 10px rgba(0,0,0,.04);
+  --sha:0 2px 14px rgba(0,0,0,.08),0 8px 32px rgba(0,0,0,.05);
+  --sha-lg:0 12px 44px rgba(0,0,0,.13);
+  --r:14px;--rs:10px;--rx:8px;--pill:999px;--nav-h:58px;
+}
+[data-theme="dark"]{
+  --bg:#0B0C11;--surface:#12141C;--surface2:#181A24;--surface3:#1F2130;
+  --border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.10);--border3:rgba(255,255,255,.17);
+  --t1:#F0F1F8;--t2:#8C91AD;--t3:#505570;--t4:#2E3148;
+  --sha-sm:0 1px 3px rgba(0,0,0,.35),0 2px 8px rgba(0,0,0,.22);
+  --sha:0 2px 12px rgba(0,0,0,.45),0 8px 30px rgba(0,0,0,.32);
+  --sha-lg:0 12px 40px rgba(0,0,0,.55);
+}
+
+/* ── NUCLEAR RESET — nothing can overflow ── */
+*,*::before,*::after{
+  margin:0;padding:0;
+  box-sizing:border-box;
+  /* Every element respects its container width */
+  min-width:0;
+  max-width:100%;
+}
+html{
+  overflow-x:hidden;
+  scroll-behavior:smooth;
+  width:100%;
+}
+body{
+  font-family:var(--ff);
+  background:var(--bg);color:var(--t1);
+  -webkit-font-smoothing:antialiased;
+  transition:background .25s,color .25s;
+  overflow-x:hidden;
+  width:100%;
+  /* Prevent any child from escaping */
+  position:relative;
+}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+img{display:block;width:100%;height:auto;}
+
+/* All text wraps and clips — no horizontal bleed */
+p,h1,h2,h3,h4,div,span{
+  word-break:break-word;
+  overflow-wrap:break-word;
+}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@keyframes heartPop{0%{transform:scale(1)}45%{transform:scale(1.55)}100%{transform:scale(1)}}
+.fade-up{animation:fadeUp .35s ease both;}
+.sk{
+  border-radius:6px;
+  background:linear-gradient(90deg,var(--surface2),var(--surface3),var(--surface2));
+  background-size:200% 100%;
+  animation:shimmer 1.5s infinite;
+  display:block;
+}
+
+/* ══════════ NAV ══════════ */
+nav{
+  position:sticky;top:0;z-index:500;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  box-shadow:var(--sha-sm);
+  width:100%;
+}
+.nav-inner{
+  max-width:1100px;margin:0 auto;
+  padding:0 16px;height:var(--nav-h);
+  display:flex;align-items:center;gap:8px;
+}
+.logo{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.logo-mark{
+  width:30px;height:30px;flex-shrink:0;
+  border-radius:8px;background:var(--t1);
+  display:flex;align-items:center;justify-content:center;
+}
+.logo-mark svg{width:17px;height:17px;flex-shrink:0;}
+.logo-name{font-size:16px;font-weight:800;letter-spacing:-.5px;color:var(--t1);white-space:nowrap;}
+.logo-name span{color:var(--t3);font-weight:500;}
+
+/* Desktop centre links */
+.nav-links{display:flex;align-items:center;gap:2px;margin:0 auto;}
+.nav-link{
+  padding:7px 12px;border-radius:var(--rx);
+  font-size:13px;font-weight:600;color:var(--t2);
+  transition:all .14s;white-space:nowrap;
+}
+.nav-link:hover,.nav-link.active{color:var(--t1);background:var(--surface2);}
+
+.nav-ctrl{display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:auto;}
+
+/* Moon toggle */
+.moon-btn{
+  width:36px;height:36px;flex-shrink:0;
+  border-radius:50%;border:1.5px solid var(--border2);
+  background:var(--surface2);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.moon-btn:hover{border-color:var(--border3);}
+.moon-icon{
+  width:15px;height:15px;flex-shrink:0;
+  border-radius:50%;background:transparent;
+  box-shadow:4px -2px 0 2px var(--t2);
+  transition:all .25s;
+}
+[data-theme="dark"] .moon-icon{box-shadow:none;background:var(--t2);transform:rotate(-20deg);}
+
+/* Hamburger */
+.ham{
+  width:36px;height:36px;flex-shrink:0;
+  border-radius:var(--rx);border:1.5px solid var(--border2);
+  background:var(--surface2);
+  display:none;flex-direction:column;
+  align-items:center;justify-content:center;gap:4px;
+  transition:all .2s;
+}
+.ham:hover{border-color:var(--border3);}
+.hl{width:17px;height:2px;flex-shrink:0;border-radius:2px;background:var(--t2);transition:all .24s;}
+.ham.open .hl:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.ham.open .hl:nth-child(2){opacity:0;transform:scaleX(0);}
+.ham.open .hl:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+
+/* Mobile drawer */
+.drawer{
+  display:none;
+  position:fixed;top:var(--nav-h);left:0;right:0;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  box-shadow:var(--sha);z-index:490;
+  padding:10px 14px 14px;
+  flex-direction:column;gap:3px;
+  animation:fadeUp .18s ease both;
+}
+.drawer.open{display:flex;}
+.mob-link{
+  display:block;padding:11px 14px;border-radius:var(--rx);
+  font-size:14px;font-weight:600;color:var(--t2);text-align:left;
+  transition:all .14s;
+}
+.mob-link:hover,.mob-link.active{color:var(--t1);background:var(--surface2);}
+
+@media(max-width:680px){
+  .nav-links{display:none;}
+  .ham{display:flex;}
+}
+
+/* ══════════ PAGE WRAPPER ══════════ */
+.page{
+  width:100%;max-width:1100px;
+  margin:0 auto;
+  padding:20px 14px 80px;
+  /* Clip anything inside */
+  overflow:hidden;
+}
+
+.page-hdr{margin-bottom:18px;}
+.page-title{font-size:24px;font-weight:800;letter-spacing:-.8px;margin-bottom:5px;}
+.page-sub{color:var(--t2);font-size:13px;line-height:1.55;}
+
+/* Two-col grid — mobile collapses to 1 col */
+.news-layout{
+  display:grid;
+  grid-template-columns:1fr 300px;
+  gap:16px;
+  align-items:start;
+  /* Both columns must stay inside the grid */
+  width:100%;
+  overflow:hidden;
+}
+
+/* ── FILTER BAR ── */
+.filters{
+  display:flex;gap:6px;
+  margin-bottom:14px;
+  /* Horizontal scroll only, no overflow to right */
+  overflow-x:auto;overflow-y:visible;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  padding-bottom:4px;
+  /* Must not bleed right */
+  width:100%;
+}
+.filters::-webkit-scrollbar{display:none;}
+.nf{
+  padding:6px 14px;border-radius:var(--pill);
+  font-size:12px;font-weight:700;
+  border:1.5px solid var(--border2);
+  background:transparent;color:var(--t2);
+  transition:all .14s;white-space:nowrap;
+  flex-shrink:0;cursor:pointer;
+}
+.nf:hover{border-color:var(--border3);color:var(--t1);}
+.nf.active{background:var(--t1);color:var(--bg);border-color:var(--t1);}
+.nf-count{
+  font-size:11px;font-weight:700;font-family:var(--fm);
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--pill);padding:2px 9px;
+  color:var(--t3);white-space:nowrap;flex-shrink:0;align-self:center;
+  margin-left:auto;
+}
+
+/* ══════════ CARDS ══════════ */
+.feed{display:flex;flex-direction:column;width:100%;overflow:hidden;}
+
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);border-bottom:none;
+  /* Hard clip — nothing escapes */
+  overflow:hidden;
+  width:100%;
+}
+.card:first-child{border-radius:var(--r) var(--r) 0 0;}
+.card:last-child{border-bottom:1px solid var(--border);border-radius:0 0 var(--r) var(--r);}
+.card:only-child{border-radius:var(--r);border-bottom:1px solid var(--border);}
+
+/* Hero card */
+.card.hero{
+  border-radius:var(--r)!important;
+  border-bottom:1px solid var(--border)!important;
+  margin-bottom:4px;
+}
+.hero-img-wrap{
+  position:relative;overflow:hidden;
+  border-radius:var(--r) var(--r) 0 0;
+  background:var(--surface3);
+  width:100%;
+}
+.hero-img{
+  width:100%;height:190px;
+  object-fit:cover;display:block;
+  flex-shrink:0;
+}
+.hero-badge{
+  position:absolute;top:10px;left:10px;
+  display:inline-flex;align-items:center;gap:4px;
+  background:var(--accent);color:#fff;
+  font-size:10px;font-weight:700;
+  padding:3px 9px;border-radius:var(--pill);
+  white-space:nowrap;
+}
+.hero-body{padding:13px 14px 0;width:100%;}
+
+/* Category pill */
+.cat{
+  font-size:10px;font-weight:700;
+  padding:2px 8px;border-radius:var(--pill);
+  text-transform:uppercase;letter-spacing:.3px;
+  flex-shrink:0;white-space:nowrap;
+}
+.c-btc{background:rgba(245,158,11,.14);color:#D97706;}
+.c-eth{background:rgba(99,102,241,.14);color:#4F46E5;}
+.c-defi{background:rgba(14,166,106,.14);color:#0EA66A;}
+.c-nft{background:rgba(236,72,153,.14);color:#DB2777;}
+.c-reg{background:rgba(232,51,74,.14);color:#E8334A;}
+.c-mkt{background:rgba(26,86,219,.14);color:#1A56DB;}
+.c-meme{background:rgba(245,158,11,.14);color:#D97706;}
+.c-ai{background:rgba(139,92,246,.14);color:#7C3AED;}
+
+/* Author row */
+.author{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:7px;
+  width:100%;overflow:hidden;
+}
+.av{
+  width:26px;height:26px;flex-shrink:0;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:10px;font-weight:800;
+}
+.av-info{flex:1;overflow:hidden;}
+.av-name{
+  font-size:12px;font-weight:700;color:var(--t1);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.av-time{font-size:10.5px;color:var(--t3);font-family:var(--fm);}
+
+/* Text content */
+.card-body{padding:13px 14px 0;width:100%;overflow:hidden;}
+
+/* KEY FIX: card row — flex children must not overflow */
+.card-row{
+  display:flex;gap:10px;
+  padding:12px 13px 0;
+  width:100%;overflow:hidden;
+  align-items:flex-start;
+}
+.card-text{
+  flex:1;
+  /* CRITICAL — flex child must have min-width:0 to shrink */
+  min-width:0;
+  overflow:hidden;
+}
+.card-thumb{
+  width:76px;height:60px;
+  flex-shrink:0;/* thumb never grows */
+  border-radius:var(--rs);overflow:hidden;
+  background:var(--surface3);
+}
+.card-thumb img{width:100%;height:100%;object-fit:cover;}
+
+.card-title{
+  font-size:14px;font-weight:700;line-height:1.4;
+  color:var(--t1);margin-bottom:5px;
+  /* Clamp to 2 lines, no overflow */
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.card-title.lg{
+  font-size:17px;font-weight:800;letter-spacing:-.3px;
+  line-height:1.35;-webkit-line-clamp:3;
+}
+.card-excerpt{
+  font-size:12.5px;color:var(--t2);line-height:1.5;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  margin-bottom:8px;
+}
+.card-excerpt.lg{-webkit-line-clamp:3;}
+
+/* Coin tags */
+.coin-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;}
+.ctag{
+  font-size:10px;font-weight:700;
+  padding:2px 7px;border-radius:var(--pill);
+  background:var(--surface3);color:var(--t2);
+  font-family:var(--fm);white-space:nowrap;
+}
+
+/* ── SOCIAL ACTION BAR ── */
+.sbar{
+  display:flex;width:100%;
+  border-top:1px solid var(--border);
+  margin-top:4px;
+  overflow:hidden;
+}
+.sbtn{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:4px;
+  padding:9px 4px;
+  font-size:12.5px;font-weight:600;color:var(--t3);
+  transition:color .15s,background .15s;
+  white-space:nowrap;overflow:hidden;
+}
+.sbtn:hover{color:var(--t1);background:var(--surface2);}
+.card.hero .sbtn:first-child,.card:only-child .sbtn:first-child{border-radius:0 0 0 var(--r);}
+.card.hero .sbtn:last-child,.card:only-child .sbtn:last-child{border-radius:0 0 var(--r) 0;}
+.card:last-child .sbtn:first-child{border-radius:0 0 0 var(--r);}
+.card:last-child .sbtn:last-child{border-radius:0 0 var(--r) 0;}
+.ssep{width:1px;background:var(--border);align-self:stretch;margin:6px 0;flex-shrink:0;}
+
+.heart-ico{font-size:16px;line-height:1;flex-shrink:0;}
+.sbtn.liked{color:var(--dn)!important;}
+.sbtn.liked .heart-ico{animation:heartPop .3s ease;}
+
+/* Expand panel */
+.exp-panel{
+  display:none;
+  padding:13px 14px;
+  border-top:1px solid var(--border);
+  background:var(--surface2);
+  font-size:13px;color:var(--t2);line-height:1.65;
+  width:100%;overflow:hidden;
+}
+.exp-panel.open{display:block;}
+.exp-panel p{margin-bottom:10px;word-break:break-word;}
+.read-link{
+  display:inline-flex;align-items:center;gap:5px;
+  margin-top:8px;padding:8px 16px;
+  border-radius:var(--pill);background:var(--accent);color:#fff;
+  font-size:12.5px;font-weight:700;
+  white-space:nowrap;
+}
+.read-link:hover{opacity:.88;}
+
+/* Load more */
+.load-wrap{text-align:center;margin-top:12px;}
+.load-btn{
+  padding:10px 28px;border-radius:var(--pill);
+  border:1.5px solid var(--border3);
+  background:var(--surface);color:var(--t1);
+  font-size:13px;font-weight:700;cursor:pointer;
+  transition:all .18s;white-space:nowrap;
+}
+.load-btn:hover{background:var(--t1);color:var(--bg);}
+.load-btn:disabled{opacity:.4;cursor:not-allowed;}
+
+/* ══════════ SIDEBAR ══════════ */
+.sidebar{
+  display:flex;flex-direction:column;gap:14px;
+  width:100%;overflow:hidden;
+}
+.side-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  overflow:hidden;/* Hard clip */
+  width:100%;
+  box-shadow:var(--sha-sm);
+}
+.side-hdr{
+  padding:11px 14px;
+  border-bottom:1px solid var(--border);
+  font-size:13.5px;font-weight:800;
+  display:flex;align-items:center;gap:7px;
+  overflow:hidden;
+}
+.side-src{
+  font-size:10px;color:var(--t3);font-weight:500;
+  margin-left:auto;font-family:var(--fm);flex-shrink:0;
+}
+.side-body{padding:10px 14px;width:100%;overflow:hidden;}
+
+/* Price rows */
+.pr{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 0;border-bottom:1px solid var(--border);
+  width:100%;overflow:hidden;
+}
+.pr:last-child{border-bottom:none;}
+.pr-l{
+  display:flex;align-items:center;gap:7px;
+  flex:1;overflow:hidden;
+}
+.pr-img{
+  width:22px;height:22px;flex-shrink:0;
+  border-radius:50%;background:var(--surface3);object-fit:cover;
+}
+.pr-name{font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pr-sym{font-size:10px;color:var(--t3);font-family:var(--fm);}
+.pr-r{text-align:right;flex-shrink:0;}
+.pr-val{font-family:var(--fm);font-size:12.5px;font-weight:600;}
+.pr-chg{font-family:var(--fm);font-size:11px;font-weight:700;}
+.up{color:#0EA66A;}.dn{color:#E8334A;}
+
+/* Trending */
+.ti{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 0;border-bottom:1px solid var(--border);
+  width:100%;overflow:hidden;
+}
+.ti:last-child{border-bottom:none;}
+.ti-rank{font-family:var(--fm);font-size:11px;color:var(--t4);width:16px;flex-shrink:0;text-align:center;}
+.ti-info{flex:1;overflow:hidden;}
+.ti-name{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ti-cnt{font-size:10.5px;color:var(--t3);font-family:var(--fm);margin-top:1px;}
+.ti-hot{font-size:12px;flex-shrink:0;margin-left:auto;}
+
+/* Newsletter */
+.nl-card{
+  background:linear-gradient(135deg,#1A56DB,#2563EB 55%,#7C3AED)!important;
+  border:none!important;
+  width:100%;overflow:hidden;
+}
+.nl-body{padding:18px 14px;width:100%;}
+.nl-title{font-size:15px;font-weight:800;color:#fff;margin-bottom:5px;}
+.nl-sub{font-size:12.5px;color:rgba(255,255,255,.75);margin-bottom:13px;line-height:1.5;}
+.nl-input{
+  display:block;width:100%;padding:9px 12px;
+  border-radius:var(--rx);
+  border:1.5px solid rgba(255,255,255,.25);
+  font-size:13px;background:rgba(255,255,255,.15);
+  color:#fff;outline:none;margin-bottom:8px;
+  font-family:var(--ff);
+}
+.nl-input::placeholder{color:rgba(255,255,255,.55);}
+.nl-input:focus{border-color:rgba(255,255,255,.6);}
+.nl-btn{
+  display:block;width:100%;padding:9px;
+  border-radius:var(--rx);
+  background:#fff;color:#1A56DB;
+  font-size:13px;font-weight:800;
+  cursor:pointer;font-family:var(--ff);
+  transition:opacity .18s;
+}
+.nl-btn:hover{opacity:.9;}
+.nl-ok{
+  display:none;
+  width:100%;padding:14px 10px;
+  border-radius:var(--rx);
+  background:rgba(14,166,106,.25);
+  border:1.5px solid rgba(14,166,106,.5);
+  color:#fff;font-size:13px;font-weight:700;
+  text-align:center;line-height:1.65;
+}
+
+/* ── TOAST ── */
+#toast{
+  position:fixed;bottom:26px;left:50%;
+  transform:translateX(-50%) translateY(120px);
+  background:var(--t1);color:var(--bg);
+  padding:10px 22px;border-radius:var(--pill);
+  font-size:13px;font-weight:700;
+  box-shadow:var(--sha-lg);z-index:9999;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+  pointer-events:none;
+  /* Never wider than screen */
+  max-width:calc(100vw - 32px);
+  text-align:center;white-space:nowrap;
+}
+#toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ── FOOTER ── */
+footer{
+  width:100%;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  padding:18px 16px;text-align:center;
+}
+footer p{color:var(--t3);font-size:12px;line-height:1.7;word-break:break-word;}
+footer a{color:var(--t2);font-weight:600;}
+footer a:hover{color:var(--t1);}
+
+/* ══════════ RESPONSIVE ══════════ */
+
+/* Tablet: sidebar below feed */
+@media(max-width:860px){
+  .news-layout{
+    grid-template-columns:1fr;/* Single column */
+  }
+  .sidebar{order:2;}/* Sidebar goes below */
+}
+
+/* Mobile: tighter paddings */
+@media(max-width:480px){
+  .page{padding:14px 12px 60px;}
+  .hero-img{height:160px;}
+  .page-title{font-size:22px;}
+  .card-title.lg{font-size:15px;}
+  .card-row{padding:10px 12px 0;gap:8px;}
+  .card-body{padding:11px 12px 0;}
+  .hero-body{padding:11px 12px 0;}
+  .sbtn{padding:9px 2px;font-size:11.5px;}
+  .exp-panel{padding:12px 12px;}
+  .side-hdr{padding:10px 12px;}
+  .side-body{padding:8px 12px;}
+  .nl-body{padding:16px 12px;}
+  .card-thumb{width:68px;height:54px;}
+}
+
+/* Extra small */
+@media(max-width:360px){
+  .page{padding:12px 10px 60px;}
+  .logo-name{font-size:14px;}
+  .card-title{font-size:13px;}
+  .sbtn{font-size:11px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════ NAV ═══════ -->
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="index.html">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" style="width:17px;height:17px;flex-shrink:0">
+          <path d="M4 12l4-4 4 4 4-4 4 4" stroke="var(--bg)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="logo-name">PublicDrop<span>.in</span></div>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Markets</a>
+      <a class="nav-link" href="airdrop.html">Airdrops</a>
+      <button class="nav-link active">📰 News</button>
+      <a class="nav-link" href="learn.html">Learn</a>
+    </div>
+    <div class="nav-ctrl">
+      <button class="moon-btn" onclick="toggleTheme()" title="Toggle theme">
+        <div class="moon-icon"></div>
+      </button>
+      <button class="ham" id="HAM" onclick="toggleMenu()">
+        <div class="hl"></div><div class="hl"></div><div class="hl"></div>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile drawer -->
+<div class="drawer" id="DRAWER">
+  <a class="mob-link" href="index.html">📊 Markets</a>
+  <a class="mob-link" href="airdrop.html">🎁 Airdrops</a>
+  <button class="mob-link active">📰 News</button>
+  <a class="mob-link" href="learn.html">📚 Learn</a>
+</div>
+
+<!-- ═══════ PAGE ═══════ -->
+<div class="page">
+  <div class="page-hdr fade-up">
+    <h1 class="page-title">📰 Crypto News</h1>
+    <p class="page-sub">Latest stories from Bitcoin, Ethereum, DeFi, NFTs &amp; the broader crypto market.</p>
+  </div>
+
+  <div class="news-layout">
+    <!-- LEFT: Feed -->
+    <div style="width:100%;overflow:hidden;">
+      <!-- Filter bar -->
+      <div class="filters fade-up">
+        <button class="nf active"  onclick="setFilter('all',this)">All News</button>
+        <button class="nf"         onclick="setFilter('BTC',this)">₿ Bitcoin</button>
+        <button class="nf"         onclick="setFilter('ETH',this)">Ethereum</button>
+        <button class="nf"         onclick="setFilter('defi',this)">DeFi</button>
+        <button class="nf"         onclick="setFilter('regulation',this)">Regulation</button>
+        <button class="nf"         onclick="setFilter('market',this)">Markets</button>
+        <div class="nf-count" id="NEWS_COUNT">Loading…</div>
+      </div>
+
+      <!-- Feed -->
+      <div class="feed fade-up" id="FEED"></div>
+
+      <div class="load-wrap">
+        <button class="load-btn" id="LOAD_BTN" onclick="loadMore()">Load More Stories</button>
+      </div>
+    </div>
+
+    <!-- RIGHT: Sidebar -->
+    <div class="sidebar">
+      <!-- Live Prices -->
+      <div class="side-card">
+        <div class="side-hdr">💹 Live Prices<span class="side-src">Gate.io</span></div>
+        <div class="side-body" id="PRICES">
+          <div class="sk" style="height:32px;margin-bottom:7px"></div>
+          <div class="sk" style="height:32px;margin-bottom:7px"></div>
+          <div class="sk" style="height:32px;margin-bottom:7px"></div>
+          <div class="sk" style="height:32px;margin-bottom:7px"></div>
+          <div class="sk" style="height:32px"></div>
+        </div>
+      </div>
+
+      <!-- Trending Topics -->
+      <div class="side-card">
+        <div class="side-hdr">🔥 Trending Topics</div>
+        <div class="side-body">
+          <div class="ti"><div class="ti-rank">1</div><div class="ti-info"><div class="ti-name">Bitcoin ETF</div><div class="ti-cnt">2,840 mentions</div></div><div class="ti-hot">🔥</div></div>
+          <div class="ti"><div class="ti-rank">2</div><div class="ti-info"><div class="ti-name">Ethereum 2.0</div><div class="ti-cnt">1,920 mentions</div></div></div>
+          <div class="ti"><div class="ti-rank">3</div><div class="ti-info"><div class="ti-name">Memecoin Season</div><div class="ti-cnt">1,560 mentions</div></div><div class="ti-hot">🔥</div></div>
+          <div class="ti"><div class="ti-rank">4</div><div class="ti-info"><div class="ti-name">Crypto Regulation</div><div class="ti-cnt">1,200 mentions</div></div></div>
+          <div class="ti"><div class="ti-rank">5</div><div class="ti-info"><div class="ti-name">DeFi Yields</div><div class="ti-cnt">980 mentions</div></div></div>
+          <div class="ti"><div class="ti-rank">6</div><div class="ti-info"><div class="ti-name">AI Tokens</div><div class="ti-cnt">840 mentions</div></div><div class="ti-hot">📈</div></div>
+          <div class="ti"><div class="ti-rank">7</div><div class="ti-info"><div class="ti-name">Solana Ecosystem</div><div class="ti-cnt">720 mentions</div></div></div>
+        </div>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="side-card nl-card">
+        <div class="nl-body">
+          <div class="nl-title">📬 Daily Newsletter</div>
+          <div class="nl-sub">Get top crypto stories &amp; market updates delivered to your inbox every morning.</div>
+          <input type="email" id="NL_EMAIL" class="nl-input" placeholder="your@email.com">
+          <button class="nl-btn" onclick="subscribe()">Subscribe Free</button>
+          <div class="nl-ok" id="NL_OK">
+            ✅ Your Email is Registered for<br>Regular Crypto Advice and Update!
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <p>© 2026 <a href="index.html">PublicDrop.in</a> · News via CryptoCompare · Prices via Gate.io · <a href="#">Privacy</a> · Not financial advice</p>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+/* ══ THEME ══ */
+(function(){
+  const t = localStorage.getItem('pd_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', t);
+})();
+function toggleTheme(){
+  const c = document.documentElement.getAttribute('data-theme');
+  const n = c === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', n);
+  localStorage.setItem('pd_theme', n);
+}
+
+/* ══ HAMBURGER ══ */
+function toggleMenu(){
+  document.getElementById('HAM').classList.toggle('open');
+  document.getElementById('DRAWER').classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  const h = document.getElementById('HAM');
+  const d = document.getElementById('DRAWER');
+  if (!h.contains(e.target) && !d.contains(e.target)){
+    h.classList.remove('open');
+    d.classList.remove('open');
+  }
+});
+
+/* ══ TOAST ══ */
+function toast(m){
+  const t = document.getElementById('toast');
+  t.textContent = m;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+/* ══ NEWSLETTER ══ */
+function subscribe(){
+  const v = document.getElementById('NL_EMAIL').value.trim();
+  if (!v || !v.includes('@')){ toast('⚠️ Enter a valid email'); return; }
+  document.getElementById('NL_EMAIL').style.display = 'none';
+  document.querySelector('.nl-btn').style.display = 'none';
+  document.getElementById('NL_OK').style.display = 'block';
+}
+
+/* ══════════════════════════════
+   NEWS ENGINE
+══════════════════════════════ */
+let articles = [], activeFilter = 'all', shown = 12;
+const liked = new Set();
+const SITE_URL  = 'https://publicdrop.in/news.html';
+const SITE_NAME = 'PublicDrop.in — Crypto News';
+
+/* Category detection */
+const CATMAP = {
+  Bitcoin:'c-btc', Ethereum:'c-eth', DeFi:'c-defi', NFT:'c-nft',
+  Regulation:'c-reg', Market:'c-mkt', Meme:'c-meme', AI:'c-ai'
+};
+
+function getcat(a){
+  const t = ((a.title||'') + ' ' + (a.body||'')).toLowerCase();
+  if(/bitcoin|\bbtc\b/.test(t))   return 'Bitcoin';
+  if(/ethereum|\beth\b/.test(t))  return 'Ethereum';
+  if(/\bdefi\b|yield|liquidity|protocol/.test(t)) return 'DeFi';
+  if(/\bnft\b/.test(t))           return 'NFT';
+  if(/regulat|\bsec\b|ban |government/.test(t))   return 'Regulation';
+  if(/\bmeme\b|doge|shib|pepe/.test(t))           return 'Meme';
+  if(/\bai\b|artificial intelligence/.test(t))    return 'AI';
+  return 'Market';
+}
+
+/* Category filter — applied after fetching */
+function filterArticles(raw, f){
+  if (f === 'all')        return raw;
+  if (f === 'BTC')        return raw.filter(a => getcat(a) === 'Bitcoin');
+  if (f === 'ETH')        return raw.filter(a => getcat(a) === 'Ethereum');
+  if (f === 'defi')       return raw.filter(a => getcat(a) === 'DeFi');
+  if (f === 'regulation') return raw.filter(a => getcat(a) === 'Regulation');
+  if (f === 'market')     return raw.filter(a => getcat(a) === 'Market');
+  return raw;
+}
+
+function reltime(ts){
+  const s = Math.floor(Date.now()/1000 - ts);
+  if (s < 60)    return 'just now';
+  if (s < 3600)  return Math.floor(s/60)+'m ago';
+  if (s < 86400) return Math.floor(s/3600)+'h ago';
+  return Math.floor(s/86400)+'d ago';
+}
+
+const GRADS = [
+  'linear-gradient(135deg,#1A56DB,#7C3AED)',
+  'linear-gradient(135deg,#0EA66A,#1A56DB)',
+  'linear-gradient(135deg,#E8334A,#D97706)',
+  'linear-gradient(135deg,#7C3AED,#DB2777)',
+  'linear-gradient(135deg,#D97706,#E8334A)',
+  'linear-gradient(135deg,#0EA66A,#7C3AED)',
+];
+function grad(s){ let h=0; for(let c of s) h=(h*31+c.charCodeAt(0))%GRADS.length; return GRADS[h]; }
+function initials(s){ return (s||'??').slice(0,2).toUpperCase(); }
+function esc(s){
+  return String(s||'')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+/* ── Fetch: CryptoCompare (all news, filter locally) ── */
+async function fetchCC(){
+  const url = 'https://min-api.cryptocompare.com/data/v2/news/?lang=EN&sortOrder=latest&extraParams=publicdrop';
+  const r = await fetch(url);
+  if (!r.ok) throw new Error('CC '+r.status);
+  const d = await r.json();
+  if (d.Response === 'Error') throw new Error(d.Message);
+  return (d.Data||[]).map(a => ({
+    id:  String(a.id),
+    title: a.title || '',
+    body:  a.body  || '',
+    url:   a.url   || '#',
+    img:   a.imageurl || '',
+    src:   a.source_info?.name || a.source || 'CryptoCompare',
+    ts:    a.published_on || 0,
+    tags: (a.tags||'').split('|').filter(t=>t&&t.length<=5&&t.length>=2).slice(0,3)
+  }));
+}
+
+/* ── Fallback: RSS via rss2json ── */
+async function fetchRSS(feed){
+  const r = await fetch('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(feed));
+  const d = await r.json();
+  if (d.status !== 'ok') throw 0;
+  return (d.items||[]).map(i => ({
+    id: i.guid || i.link,
+    title: i.title || '',
+    body: (i.description||'').replace(/<[^>]+>/g,'').slice(0,500),
+    url: i.link || '#',
+    img: i.thumbnail || i.enclosure?.link || '',
+    src: d.feed?.title || 'Crypto News',
+    ts:  Math.floor(new Date(i.pubDate).getTime()/1000),
+    tags: []
+  }));
+}
+
+async function fetchAllNews(){
+  /* Try CryptoCompare first */
+  try {
+    const d = await fetchCC();
+    if (d.length) return d;
+    throw 0;
+  } catch {
+    /* RSS fallback: run in parallel, merge, deduplicate */
+    const feeds = [
+      'https://cointelegraph.com/rss',
+      'https://coindesk.com/arc/outboundfeeds/rss/',
+      'https://decrypt.co/feed'
+    ];
+    const results = await Promise.allSettled(feeds.map(f => fetchRSS(f)));
+    const all = results
+      .filter(r => r.status === 'fulfilled')
+      .flatMap(r => r.value);
+    const seen = new Set();
+    return all
+      .filter(a => { if(seen.has(a.title)) return false; seen.add(a.title); return true; })
+      .sort((a,b) => b.ts - a.ts);
+  }
+}
+
+function showSkeleton(){
+  document.getElementById('FEED').innerHTML = [1,2,3,4].map(() => `
+    <div style="background:var(--surface);border:1px solid var(--border);
+                padding:13px 13px;margin-bottom:1px;
+                display:flex;gap:10px;overflow:hidden;width:100%">
+      <div style="flex:1;display:flex;flex-direction:column;gap:7px;overflow:hidden">
+        <div class="sk" style="height:10px;width:80px;border-radius:4px"></div>
+        <div class="sk" style="height:13px;border-radius:4px"></div>
+        <div class="sk" style="height:13px;width:65%;border-radius:4px"></div>
+        <div class="sk" style="height:10px;width:50%;border-radius:4px"></div>
+      </div>
+      <div class="sk" style="width:68px;height:54px;border-radius:var(--rs);flex-shrink:0"></div>
+    </div>`).join('');
+}
+
+async function loadFeed(){
+  showSkeleton();
+  document.getElementById('NEWS_COUNT').textContent = 'Loading…';
+
+  let raw;
+  try { raw = await fetchAllNews(); }
+  catch { raw = []; }
+
+  if (!raw.length){
+    document.getElementById('FEED').innerHTML = `
+      <div style="padding:48px 16px;text-align:center;background:var(--surface);
+                  border:1px solid var(--border);border-radius:var(--r);width:100%">
+        <div style="font-size:36px;margin-bottom:10px">📰</div>
+        <div style="font-size:14px;font-weight:700">No articles found</div>
+        <div style="font-size:12.5px;margin-top:6px;color:var(--t3)">
+          Try a different category or check back soon
+        </div>
+        <button onclick="loadFeed()"
+          style="margin-top:14px;padding:8px 20px;border-radius:var(--pill);
+                 border:1.5px solid var(--border3);background:none;
+                 color:var(--t1);font-size:13px;font-weight:700;cursor:pointer;">
+          ↻ Retry
+        </button>
+      </div>`;
+    document.getElementById('NEWS_COUNT').textContent = '0 articles';
+    return;
+  }
+
+  /* Apply category filter locally — works for ALL categories including BTC & ETH */
+  let filtered = filterArticles(raw, activeFilter);
+  /* If filter returns fewer than 3, fall back to all news (prevent empty state) */
+  articles = filtered.length >= 3 ? filtered : raw;
+
+  document.getElementById('NEWS_COUNT').textContent = articles.length + ' articles';
+  shown = 12;
+  render();
+}
+
+function render(){
+  const vis = articles.slice(0, shown);
+  document.getElementById('FEED').innerHTML = vis.map((a, i) => {
+    const cat     = getcat(a);
+    const cls     = CATMAP[cat] || 'c-mkt';
+    const time    = reltime(a.ts);
+    const src     = a.src;
+    const g       = grad(src);
+    const isLiked = liked.has(a.id);
+
+    /* Escape values used in onclick attributes */
+    const safeId  = esc(a.id);
+    const safeUrl = esc(a.url);
+
+    const authorBlock = `
+      <div class="author">
+        <div class="av" style="background:${g}">${initials(src)}</div>
+        <div class="av-info">
+          <div class="av-name">${esc(src)}</div>
+          <div class="av-time">${time}</div>
+        </div>
+        <span class="cat ${cls}">${cat}</span>
+      </div>`;
+
+    const coinBlock = a.tags.length
+      ? `<div class="coin-tags">${a.tags.map(c=>`<span class="ctag">$${esc(c)}</span>`).join('')}</div>`
+      : '';
+
+    /* Action bar */
+    const sbar = `
+      <div class="sbar">
+        <button class="sbtn${isLiked?' liked':''}" id="hb${i}"
+                onclick="doLike(${i},'${safeId}')">
+          <span class="heart-ico">${isLiked?'❤️':'🤍'}</span>
+        </button>
+        <div class="ssep"></div>
+        <button class="sbtn" onclick="doShare()">↗ Share</button>
+        <div class="ssep"></div>
+        <button class="sbtn" id="exlbl${i}" onclick="doExpand(${i})">Read ↓</button>
+      </div>
+      <div class="exp-panel" id="exp${i}">
+        ${a.body ? `<p>${esc(a.body)}</p>` : '<p style="color:var(--t3)">No preview available.</p>'}
+        ${coinBlock}
+        <a class="read-link" href="${safeUrl}" target="_blank" rel="noopener noreferrer">
+          Open Full Article ↗
+        </a>
+      </div>`;
+
+    /* Hero (first article + has image) */
+    if (i === 0 && a.img){
+      return `<div class="card hero">
+        <div class="hero-img-wrap">
+          <img class="hero-img" src="${esc(a.img)}" alt=""
+               onerror="this.parentElement.style.background='var(--surface3)';this.style.display='none'">
+          <div class="hero-badge">⭐ FEATURED</div>
+        </div>
+        <div class="hero-body">
+          ${authorBlock}
+          <div class="card-title lg">${esc(a.title)}</div>
+          ${a.body ? `<div class="card-excerpt lg">${esc(a.body.slice(0,240))}…</div>` : ''}
+        </div>
+        ${sbar}
+      </div>`;
+    }
+
+    /* Standard row card */
+    return `<div class="card">
+      <div class="card-row">
+        <div class="card-text">
+          ${authorBlock}
+          <div class="card-title">${esc(a.title)}</div>
+          ${a.body ? `<div class="card-excerpt">${esc(a.body.slice(0,150))}</div>` : ''}
+        </div>
+        ${a.img
+          ? `<div class="card-thumb">
+               <img src="${esc(a.img)}" alt=""
+                    onerror="this.parentElement.style.display='none'" loading="lazy">
+             </div>`
+          : ''}
+      </div>
+      ${sbar}
+    </div>`;
+  }).join('');
+
+  const btn = document.getElementById('LOAD_BTN');
+  btn.disabled   = shown >= articles.length;
+  btn.textContent = shown >= articles.length ? 'All caught up ✓' : 'Load More Stories';
+}
+
+/* LIKE — heart icon toggle only, zero count */
+function doLike(i, id){
+  const btn = document.getElementById('hb'+i);
+  if (!btn) return;
+  const ico = btn.querySelector('.heart-ico');
+  if (liked.has(id)){
+    liked.delete(id);
+    btn.classList.remove('liked');
+    ico.textContent = '🤍';
+  } else {
+    liked.add(id);
+    btn.classList.add('liked');
+    ico.textContent = '❤️';
+    ico.style.animation = 'none';
+    requestAnimationFrame(() => { ico.style.animation = ''; });
+  }
+}
+
+/* SHARE — always publicdrop.in */
+function doShare(){
+  const data = { title: SITE_NAME, text: '📰 Read the latest crypto news on PublicDrop.in', url: SITE_URL };
+  if (navigator.share){
+    navigator.share(data).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(SITE_URL)
+      .then(() => toast('🔗 publicdrop.in link copied!'))
+      .catch(() => toast('🔗 Share: '+SITE_URL));
+  }
+}
+
+/* EXPAND — inline, no redirect */
+function doExpand(i){
+  const panel = document.getElementById('exp'+i);
+  const lbl   = document.getElementById('exlbl'+i);
+  if (!panel) return;
+  const open = panel.classList.toggle('open');
+  lbl.textContent = open ? 'Close ↑' : 'Read ↓';
+}
+
+function loadMore(){
+  shown += 10;
+  render();
+  toast('📰 More stories loaded!');
+}
+
+function setFilter(f, btn){
+  activeFilter = f;
+  shown = 12;
+  document.querySelectorAll('.nf').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  loadFeed();
+}
+
+/* ══ GATE.IO PRICES (with CoinGecko fallback) ══ */
+const PAIRS = [
+  {pair:'BTC_USDT', name:'Bitcoin',  sym:'BTC'},
+  {pair:'ETH_USDT', name:'Ethereum', sym:'ETH'},
+  {pair:'SOL_USDT', name:'Solana',   sym:'SOL'},
+  {pair:'XRP_USDT', name:'XRP',      sym:'XRP'},
+  {pair:'BNB_USDT', name:'BNB',      sym:'BNB'},
+];
+const LOGOS = {
+  BTC:'https://assets.coincap.io/assets/icons/btc@2x.png',
+  ETH:'https://assets.coincap.io/assets/icons/eth@2x.png',
+  SOL:'https://assets.coincap.io/assets/icons/sol@2x.png',
+  XRP:'https://assets.coincap.io/assets/icons/xrp@2x.png',
+  BNB:'https://assets.coincap.io/assets/icons/bnb@2x.png',
+};
+
+function priceRow(name, sym, logo, price, chg){
+  const up = chg >= 0;
+  return `<div class="pr">
+    <div class="pr-l">
+      <img class="pr-img" src="${logo}" alt="${sym}" onerror="this.style.display='none'">
+      <div>
+        <div class="pr-name">${name}</div>
+        <div class="pr-sym">${sym}/USDT</div>
+      </div>
+    </div>
+    <div class="pr-r">
+      <div class="pr-val">$${price>=1
+        ? price.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})
+        : price.toFixed(5)}</div>
+      <div class="pr-chg ${up?'up':'dn'}">${up?'▲':'▼'}${Math.abs(chg).toFixed(2)}%</div>
+    </div>
+  </div>`;
+}
+
+async function loadPrices(){
+  const el = document.getElementById('PRICES');
+  try {
+    const r = await fetch('https://api.gateio.ws/api/v4/spot/tickers');
+    if (!r.ok) throw 0;
+    const data = await r.json();
+    const map = {};
+    data.forEach(t => { map[t.currency_pair] = t; });
+    const html = PAIRS.map(p => {
+      const t = map[p.pair]; if (!t) return '';
+      return priceRow(p.name, p.sym, LOGOS[p.sym],
+        parseFloat(t.last), parseFloat(t.change_percentage));
+    }).join('');
+    if (html) el.innerHTML = html;
+    else throw 0;
+  } catch {
+    try {
+      const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,ripple,binancecoin&vs_currencies=usd&include_24hr_change=true');
+      const d = await r.json();
+      const cgKey = {BTC:'bitcoin',ETH:'ethereum',SOL:'solana',XRP:'ripple',BNB:'binancecoin'};
+      el.innerHTML = PAIRS.map(p => {
+        const info = d[cgKey[p.sym]]; if (!info) return '';
+        return priceRow(p.name, p.sym, LOGOS[p.sym],
+          info.usd, info.usd_24h_change||0);
+      }).join('');
+    } catch { el.innerHTML = '<div style="color:var(--t3);font-size:13px;padding:10px 0">Price data unavailable</div>'; }
+  }
+}
+
+/* ══ INIT ══ */
+loadFeed();
+loadPrices();
+setInterval(loadPrices, 30000);
+</script>
+</body>
+</html>
