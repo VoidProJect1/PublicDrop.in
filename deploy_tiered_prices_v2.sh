@@ -16,9 +16,9 @@ TEMP_FILE = f"{DATA_DIR}/live_prices.tmp"
 os.makedirs(DATA_DIR, exist_ok=True)
 
 API_KEYS = [
-    "CG-yy6Zixe3wVxseFr87DLHHo4Z",  # Key 1 — add CoinGecko Demo key e.g. "CG-xxxxxxxxxxxx"
-    "CG-EWLTyE43kxtjY2rvmURz4WyV",  # Key 2
-    "CG-vRToJB9ep8WebQWAorB64j32",  # Key 3
+    "CG-LbjZu7PazoBCLibGb8gppS9Q",  # Key 1 — add CoinGecko Demo key e.g. "CG-xxxxxxxxxxxx"
+    "CG-GtoSuTR9QDb4gLMptVyRxgJX",  # Key 2
+    "CG-v55tzoZ8fazyDv3h6pcx16bm",  # Key 3
     "CG-Azhz14KRRxGmQAANQzms8gFH",  # Key 4
 ]
 API_KEYS = [k.strip() for k in API_KEYS if k.strip()] or [""]
