@@ -57,10 +57,10 @@ CG_BASE  = "https://api.coingecko.com/api/v3"
 
 # ── 4 API Keys — REPLACE WITH YOUR NEW KEYS ─────────────
 API_KEYS = [
-    "YOUR_NEW_KEY_1",
-    "YOUR_NEW_KEY_2",
-    "YOUR_NEW_KEY_3",
-    "YOUR_NEW_KEY_4",
+    "CG-yy6Zixe3wVxseFr87DLHHo4Z",
+    "CG-EWLTyE43kxtjY2rvmURz4WyV",
+    "CG-vRToJB9ep8WebQWAorB64j32",
+    "CG-Azhz14KRRxGmQAANQzms8gFH",
 ]
 key_cycle = cycle(API_KEYS)
 key_lock  = threading.Lock()
