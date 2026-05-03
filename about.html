@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>About PublicDrop — Free Crypto Market Intelligence for India</title>
+<meta name="description" content="PublicDrop is India's free crypto market intelligence platform. Live prices for 500+ coins, real-time portfolio tracker, airdrops, news, and crypto education — all completely free.">
+<meta name="keywords" content="PublicDrop about, crypto platform India, free crypto tracker, live crypto prices India, crypto portfolio India, crypto education India, about publicdrop">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://publicdrop.in/about.html">
+<meta property="og:title" content="About PublicDrop — Free Crypto Market Intelligence for India">
+<meta property="og:description" content="PublicDrop is a free crypto market intelligence platform built for Indian investors. Live prices, portfolio tracker, airdrops, and education — 100% free forever.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Firebase Auth -->
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import{getAuth,GoogleAuthProvider,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+const cfg={apiKey:"AIzaSyAzzLvWmzxrfYva_PMvTNis53O_arpkNFs",authDomain:"publicdropin.firebaseapp.com",projectId:"publicdropin",storageBucket:"publicdropin.firebasestorage.app",messagingSenderId:"1039430223124",appId:"1:1039430223124:web:db45545c7fba10e09b6e01"};
+const app=initializeApp(cfg);
+const auth=getAuth(app);
+window._auth=auth;window._gp=new GoogleAuthProvider();
+onAuthStateChanged(auth,u=>{
+  window._fbUser=u;
+  const loginBtns=document.querySelectorAll('.nav-login-btn');
+  const chip=document.getElementById('NAV_USER_CHIP');
+  const mob=document.getElementById('MOB_AUTH_BTN');
+  if(u){
+    const name=u.displayName||u.email||'User';
+    const initial=name.charAt(0).toUpperCase();
+    loginBtns.forEach(b=>b.style.display='none');
+    if(chip){
+      chip.style.display='flex';
+      chip.querySelector('.nav-user-name').textContent=name.split(' ')[0];
+      const av=chip.querySelector('.nav-user-avatar');
+      if(av)av.textContent=initial;
+    }
+    if(mob){mob.textContent='👤 '+name.split(' ')[0];mob.onclick=()=>{signOut(auth);toast('👋 Signed out!');};}
+  }else{
+    loginBtns.forEach(b=>b.style.display='');
+    if(chip)chip.style.display='none';
+    if(mob){mob.textContent='🔐 Login / Sign Up';mob.onclick=()=>{location.href='index.html';};}
+  }
+});
+window.doSignOut=async function(){await signOut(auth);toast('👋 Signed out!');};
+</script>
+
+<style>
+:root{
+  --ff:'Plus Jakarta Sans','Bricolage Grotesque',sans-serif;
+  --ff2:'Space Grotesk',sans-serif;
+  --fm:'DM Mono',monospace;
+  --bg:#F7F8FC;--surface:#FFFFFF;--surface2:#F2F3F8;--surface3:#E8EAF2;--surface4:#DDE0EE;
+  --border:rgba(0,0,0,.07);--border2:rgba(0,0,0,.12);--border3:rgba(0,0,0,.18);
+  --t1:#0A0C14;--t2:#4A4F6A;--t3:#8B90AB;--t4:#C2C6DB;
+  --up:#0EA66A;--upb:rgba(14,166,106,.1);--upbr:rgba(14,166,106,.22);
+  --dn:#E8334A;--dnb:rgba(232,51,74,.1);--dnbr:rgba(232,51,74,.22);
+  --accent:#1A56DB;--accentb:rgba(26,86,219,.1);--accentbr:rgba(26,86,219,.22);
+  --sha-sm:0 1px 3px rgba(0,0,0,.05),0 2px 8px rgba(0,0,0,.04);
+  --sha:0 2px 12px rgba(0,0,0,.07),0 8px 30px rgba(0,0,0,.05);
+  --sha-lg:0 12px 40px rgba(0,0,0,.12),0 4px 14px rgba(0,0,0,.06);
+  --r:14px;--rs:10px;--rx:7px;--pill:999px;--nav-h:60px;
+}
+[data-theme="dark"]{
+  --bg:#0B0C11;--surface:#12141C;--surface2:#181A24;--surface3:#1F2130;--surface4:#272A3B;
+  --border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.10);--border3:rgba(255,255,255,.16);
+  --t1:#F0F1F8;--t2:#8C91AD;--t3:#505570;--t4:#2E3148;
+  --sha-sm:0 1px 3px rgba(0,0,0,.3),0 2px 8px rgba(0,0,0,.2);
+  --sha:0 2px 12px rgba(0,0,0,.4),0 8px 30px rgba(0,0,0,.3);
+  --sha-lg:0 12px 40px rgba(0,0,0,.5),0 4px 14px rgba(0,0,0,.3);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;min-width:0;}
+html{scroll-behavior:smooth;font-size:16px;overflow-x:hidden;}
+body{font-family:var(--ff);background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;transition:background .25s,color .25s;overflow-x:hidden;width:100%;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+input,select,textarea{font-family:inherit;}
+img{display:block;max-width:100%;}
+h1,h2,h3{font-family:var(--ff2),var(--ff),sans-serif;}
+
+/* ═══ NAV ═══ */
+nav{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:500;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:var(--sha-sm);}
+.nav-inner{max-width:1500px;margin:0 auto;padding:0 16px;height:var(--nav-h);display:flex;align-items:center;gap:10px;}
+.logo{display:flex;align-items:center;gap:0;flex-shrink:0;text-decoration:none;cursor:pointer;}
+.nav-links{display:flex;align-items:center;gap:2px;margin-left:8px;}
+.nav-link{padding:7px 10px;border-radius:var(--rx);font-size:13px;font-weight:600;color:var(--t2);background:none;border:none;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:4px;cursor:pointer;text-decoration:none;}
+.nav-link:hover,.nav-link.active{color:var(--t1);background:var(--surface2);}
+.badge-new{font-size:9px;font-weight:700;padding:2px 5px;border-radius:var(--pill);background:var(--upb);color:var(--up);border:1px solid var(--upbr);}
+.nav-right{display:flex;align-items:center;gap:6px;margin-left:auto;flex-shrink:0;}
+.theme-toggle{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border2);background:var(--surface2);color:var(--t2);display:flex;align-items:center;justify-content:center;font-size:15px;transition:all .2s;flex-shrink:0;cursor:pointer;}
+.theme-toggle:hover{border-color:var(--border3);color:var(--t1);}
+.nav-btn{padding:8px 14px;border-radius:var(--pill);font-size:13px;font-weight:700;transition:all .18s;border:none;cursor:pointer;}
+.nav-btn-solid{background:var(--t1);color:var(--bg);}
+.nav-btn-solid:hover{opacity:.88;transform:translateY(-1px);}
+.hamburger{display:none;flex-direction:column;gap:4.5px;background:none;border:none;padding:7px;color:var(--t1);cursor:pointer;flex-shrink:0;}
+.hamburger span{width:20px;height:2px;background:currentColor;border-radius:2px;display:block;transition:all .3s;transform-origin:center;}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+
+/* ═══ ANIMATED LOGO ═══ */
+.pd-logo-badge{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#1A56DB,#1e40af);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:visible;position:relative;}
+.pd-logo-badge svg{width:26px;height:26px;}
+.pd-logo-bar{transform-origin:bottom;transform:scaleY(0);animation:pdBar .4s cubic-bezier(.22,1,.36,1) both;}
+.pd-logo-bar1{animation-delay:.1s;}.pd-logo-bar2{animation-delay:.18s;}.pd-logo-bar3{animation-delay:.26s;}.pd-logo-bar4{animation-delay:.34s;}.pd-logo-bar5{animation-delay:.42s;}
+@keyframes pdBar{to{transform:scaleY(1);}}
+.pd-logo-line{stroke-dasharray:200;stroke-dashoffset:200;animation:pdLine .8s ease .55s forwards;}
+@keyframes pdLine{to{stroke-dashoffset:0;}}
+.pd-logo-dot{transform:scale(0);transform-origin:center;}
+.pd-logo-dot1{animation:pdDot .25s cubic-bezier(.34,1.56,.64,1) 1.1s forwards;}
+.pd-logo-dot2{animation:pdDot .25s cubic-bezier(.34,1.56,.64,1) 1.18s forwards;}
+.pd-logo-dot3{animation:pdDot .25s cubic-bezier(.34,1.56,.64,1) 1.26s forwards;}
+.pd-logo-dot4{animation:pdDot .3s cubic-bezier(.34,1.56,.64,1) 1.34s forwards;}
+.pd-logo-dot5{animation:pdDot .25s cubic-bezier(.34,1.56,.64,1) 1.42s forwards;}
+@keyframes pdDot{to{transform:scale(1);}}
+.pd-logo-arrow{opacity:0;transform:translateY(4px);animation:pdArrow .4s cubic-bezier(.34,1.56,.64,1) 1.55s forwards;}
+@keyframes pdArrow{to{opacity:1;transform:translateY(0);}}
+.pd-wordmark{display:flex;flex-direction:column;justify-content:center;margin-left:10px;line-height:1;}
+.pd-name-row{display:flex;align-items:baseline;gap:0;line-height:1;}
+.pd-word-public{font-size:18px;font-weight:800;color:var(--t1);letter-spacing:-.5px;opacity:0;transform:translateX(-10px);animation:pdWordL .5s cubic-bezier(.22,1,.36,1) .3s forwards;font-family:var(--ff2);}
+.pd-word-drop{font-size:18px;font-weight:800;background:linear-gradient(90deg,#1a5cff,#4d8bff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.5px;opacity:0;transform:translateX(10px);animation:pdWordR .5s cubic-bezier(.22,1,.36,1) .42s forwards;font-family:var(--ff2);}
+@keyframes pdWordL{to{opacity:1;transform:translateX(0);}}
+@keyframes pdWordR{to{opacity:1;transform:translateX(0);}}
+.pd-tagline{font-size:8.5px;font-weight:600;color:var(--t3);letter-spacing:2px;text-transform:uppercase;opacity:0;animation:pdTag .5s ease .85s forwards;}
+@keyframes pdTag{to{opacity:1;}}
+.pd-live-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:#00e8a2;margin-right:4px;vertical-align:middle;position:relative;}
+.pd-live-dot::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:1px solid #00e8a2;animation:pdLivePulse 1.6s ease 2s infinite;opacity:0;}
+@keyframes pdLivePulse{0%{transform:scale(.8);opacity:.7;}100%{transform:scale(2);opacity:0;}}
+
+/* ═══ MOBILE MENU ═══ */
+.mobile-menu{position:fixed;inset:0;z-index:990;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .25s;}
+.mobile-menu.open{opacity:1;pointer-events:all;}
+.menu-panel{position:absolute;top:0;right:0;bottom:0;width:min(300px,88vw);background:var(--surface);box-shadow:var(--sha-lg);overflow-y:auto;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .3s cubic-bezier(.22,1,.36,1);}
+.mobile-menu.open .menu-panel{transform:translateX(0);}
+.menu-hdr{display:flex;align-items:center;justify-content:space-between;padding:18px 16px 14px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.menu-close{width:32px;height:32px;border-radius:50%;background:var(--surface2);border:1.5px solid var(--border2);color:var(--t2);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;}
+.menu-close:hover{color:var(--dn);border-color:var(--dn);}
+.menu-body{flex:1;padding:12px 12px 20px;display:flex;flex-direction:column;gap:2px;}
+.menu-section-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);padding:10px 10px 4px;}
+.mob-link{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:var(--rs);font-size:14px;font-weight:600;color:var(--t2);background:none;border:none;width:100%;text-align:left;transition:all .15s;cursor:pointer;text-decoration:none;}
+.mob-link:hover,.mob-link.active{color:var(--t1);background:var(--surface2);}
+.mob-link .mob-icon{width:20px;text-align:center;font-size:15px;}
+.mob-divider{height:1px;background:var(--border);margin:6px 0;}
+.mob-auth-btn{margin:8px 12px 0;padding:12px;border-radius:var(--rs);background:var(--t1);color:var(--bg);font-size:14px;font-weight:700;border:none;cursor:pointer;text-align:center;transition:all .18s;}
+.mob-auth-btn:hover{opacity:.88;}
+
+/* ═══ NAV USER CHIP ═══ */
+.nav-user-chip{display:none;align-items:center;gap:7px;padding:5px 12px 5px 6px;border-radius:var(--pill);background:var(--surface2);border:1.5px solid var(--border2);cursor:pointer;transition:all .15s;}
+.nav-user-chip:hover{border-color:var(--border3);}
+.nav-user-avatar{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#1A56DB,#6366F1);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.nav-user-name{font-size:12.5px;font-weight:700;color:var(--t1);font-family:var(--ff2);}
+
+/* ═══ PAGE ═══ */
+.page{max-width:900px;margin:0 auto;padding:24px 16px 80px;}
+
+/* ═══ SEARCH BAR ═══ */
+.about-search-wrap{position:relative;margin-bottom:22px;}
+.about-search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--t3);pointer-events:none;font-size:15px;}
+#ABOUT_SEARCH{width:100%;padding:13px 16px 13px 44px;background:var(--surface);border:1.5px solid var(--border2);border-radius:var(--pill);font-size:14px;color:var(--t1);outline:none;transition:all .2s;box-shadow:var(--sha-sm);}
+#ABOUT_SEARCH:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accentb);}
+#ABOUT_SEARCH::placeholder{color:var(--t3);}
+.about-search-clear{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:var(--surface3);border:none;border-radius:50%;width:22px;height:22px;font-size:13px;color:var(--t2);cursor:pointer;display:none;align-items:center;justify-content:center;}
+.about-search-clear.show{display:flex;}
+.about-search-panel{background:var(--surface);border:1.5px solid var(--border2);border-radius:var(--r);box-shadow:var(--sha-lg);margin-top:6px;max-height:280px;overflow-y:auto;display:none;}
+.about-search-panel.open{display:block;}
+.search-result-item{padding:12px 16px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .1s;}
+.search-result-item:last-child{border-bottom:none;}
+.search-result-item:hover{background:var(--surface2);}
+.sri-section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--accent);margin-bottom:2px;}
+.sri-title{font-size:14px;font-weight:700;color:var(--t1);}
+.sri-snippet{font-size:12.5px;color:var(--t2);margin-top:2px;line-height:1.5;}
+.sri-empty{padding:18px;text-align:center;color:var(--t3);font-size:13px;}
+
+/* ═══ TABS ═══ */
+.page-tabs{display:flex;flex-wrap:wrap;gap:6px;background:var(--surface2);padding:6px;border-radius:var(--r);margin-bottom:22px;border:1px solid var(--border);}
+.page-tab{padding:8px 14px;border-radius:var(--pill);font-size:12.5px;font-weight:700;cursor:pointer;border:none;background:transparent;color:var(--t3);transition:all .15s;white-space:nowrap;font-family:var(--ff2);flex-shrink:0;}
+.page-tab:hover{color:var(--t1);background:var(--surface3);}
+.page-tab.active{background:var(--surface);color:var(--t1);box-shadow:var(--sha-sm);border:1px solid var(--border2);}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+
+/* ═══ ABOUT HERO ═══ */
+.about-hero{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:44px 36px;margin-bottom:18px;text-align:center;box-shadow:var(--sha-sm);position:relative;overflow:hidden;}
+.about-hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:500px;height:300px;background:radial-gradient(circle,rgba(26,86,219,.06),transparent 70%);border-radius:50%;pointer-events:none;}
+.about-logo{font-size:52px;margin-bottom:14px;}
+.about-title{font-size:clamp(24px,4vw,38px);font-weight:800;letter-spacing:-1.3px;margin-bottom:12px;}
+.about-sub{color:var(--t2);font-size:14.5px;max-width:520px;margin:0 auto 22px;line-height:1.7;}
+
+/* ═══ STATS ═══ */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sha-sm);margin-bottom:18px;}
+.stat-cell{padding:18px 14px;text-align:center;border-right:1px solid var(--border);}
+.stat-cell:last-child{border-right:none;}
+.stat-num{font-size:24px;font-weight:800;letter-spacing:-.8px;margin-bottom:4px;font-family:var(--ff2);}
+.stat-lbl{font-size:11px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+
+/* ═══ TEAM ═══ */
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px;}
+.team-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;text-align:center;box-shadow:var(--sha-sm);}
+.team-avatar{font-size:40px;margin-bottom:10px;}
+.team-name{font-size:15px;font-weight:800;margin-bottom:3px;font-family:var(--ff2);}
+.team-role{font-size:12px;color:var(--t3);}
+
+/* ═══ CONTENT CARD ═══ */
+.content-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sha-sm);margin-bottom:14px;}
+.card-hdr{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;font-size:17px;font-weight:800;letter-spacing:-.3px;font-family:var(--ff2);}
+.card-body{padding:20px;}
+.prose p{font-size:14px;line-height:1.8;color:var(--t2);margin-bottom:12px;}
+.prose h3{font-size:15px;font-weight:800;margin:16px 0 8px;color:var(--t1);font-family:var(--ff2);}
+.prose ul{padding-left:18px;margin-bottom:12px;}
+.prose ul li{font-size:13.5px;line-height:1.7;color:var(--t2);margin-bottom:4px;}
+.prose strong{color:var(--t1);font-weight:700;}
+
+/* ═══ CONTACT FORM ═══ */
+.contact-form{display:flex;flex-direction:column;gap:12px;}
+.form-group label{display:block;font-size:12px;font-weight:700;color:var(--t2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;}
+.form-input{width:100%;padding:10px 13px;background:var(--surface2);border:1.5px solid var(--border2);border-radius:var(--rx);font-size:13.5px;color:var(--t1);outline:none;transition:border-color .2s;}
+.form-input:focus{border-color:var(--accent);}
+.form-input::placeholder{color:var(--t3);}
+textarea.form-input{resize:vertical;min-height:110px;line-height:1.6;}
+.form-btn{padding:11px;border-radius:var(--rx);background:var(--t1);color:var(--bg);font-size:14px;font-weight:700;border:none;cursor:pointer;transition:all .18s;}
+.form-btn:hover{opacity:.88;}
+
+/* ═══ API TABLE ═══ */
+.api-table{width:100%;border-collapse:collapse;font-size:13px;}
+.api-table th{padding:10px 12px;text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--t3);background:var(--surface2);border-bottom:1px solid var(--border);}
+.api-table td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--t2);}
+.api-table td strong{color:var(--t1);}
+.api-table tr:last-child td{border-bottom:none;}
+.api-badge{display:inline-block;padding:2px 8px;border-radius:var(--pill);font-size:10.5px;font-weight:700;font-family:var(--fm);}
+.badge-free{background:var(--upb);color:var(--up);}
+.badge-limited{background:rgba(245,158,11,.1);color:#D97706;}
+
+/* ═══ TOAST ═══ */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--t1);color:var(--bg);padding:11px 22px;border-radius:var(--pill);font-size:13px;font-weight:700;box-shadow:var(--sha-lg);z-index:9999;transition:transform .38s cubic-bezier(.34,1.56,.64,1);pointer-events:none;max-width:90vw;text-align:center;}
+#toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ═══ FOOTER ═══ */
+footer{background:var(--surface);border-top:1px solid var(--border);padding:22px 16px;text-align:center;}
+footer p{color:var(--t3);font-size:12.5px;}
+footer a{color:var(--t2);font-weight:600;transition:color .15s;}
+footer a:hover{color:var(--t1);}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.fade-up{animation:fadeUp .4s ease both;}
+.delay-1{animation-delay:.05s;}
+.delay-2{animation-delay:.1s;}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:900px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+}
+@media(max-width:640px){
+  .page{padding:14px 12px 70px;}
+  .about-hero{padding:28px 18px;}
+  .about-title{font-size:22px;}
+  .stat-row{grid-template-columns:1fr 1fr;}
+  .team-grid{grid-template-columns:1fr 1fr;}
+  .card-body{padding:16px;}
+  .card-hdr{padding:14px 16px;font-size:15px;}
+  .nav-inner{padding:0 12px;gap:8px;}
+  .nav-btn-solid{padding:7px 12px;font-size:12px;}
+  .pd-word-public,.pd-word-drop{font-size:15px;}
+  .pd-tagline{display:none;}
+  .pd-logo-badge{width:30px;height:30px;border-radius:8px;}
+  .contact-grid{grid-template-columns:1fr!important;}
+  .overflow-table{overflow-x:auto;}
+}
+@media(max-width:380px){
+  .nav-btn-solid{display:none;}
+  .about-title{font-size:20px;}
+  .stat-row{grid-template-columns:1fr 1fr;}
+  .team-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="index.html" id="PD_LOGO_WRAP" style="text-decoration:none;display:flex;align-items:center;gap:0;padding:0;cursor:pointer;"></a>
+
+    <div class="nav-links">
+      <button class="nav-link" onclick="location.href='index.html'">📊 Cryptocurrencies</button>
+      <a class="nav-link" href="airdrop.html">🎁 Airdrops <span class="badge-new">NEW</span></a>
+      <button class="nav-link" onclick="location.href='news.html'">📰 News</button>
+      <a class="nav-link" href="learn.html">📚 Learn</a>
+    </div>
+
+    <div class="nav-right">
+      <button class="theme-toggle" id="THEME_BTN" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+      <button class="nav-btn nav-btn-solid nav-login-btn" onclick="location.href='index.html'">Get Started</button>
+      <div class="nav-user-chip" id="NAV_USER_CHIP" onclick="doSignOut()" title="Click to sign out">
+        <div class="nav-user-avatar">U</div>
+        <span class="nav-user-name">User</span>
+      </div>
+      <button class="hamburger" id="HAMBURGER" onclick="openMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ MOBILE MENU ═══ -->
+<div class="mobile-menu" id="MOBILE_MENU" onclick="handleMenuOverlay(event)">
+  <div class="menu-panel">
+    <div class="menu-hdr">
+      <div style="font-size:16px;font-weight:800;font-family:var(--ff2)">Public<span style="color:var(--accent)">DROP</span></div>
+      <button class="menu-close" onclick="closeMenu()">✕</button>
+    </div>
+    <div class="menu-body">
+      <div class="menu-section-label">Navigation</div>
+      <a class="mob-link" href="index.html"><span class="mob-icon">📊</span>Cryptocurrencies</a>
+      <a class="mob-link" href="airdrop.html"><span class="mob-icon">🎁</span>Airdrops</a>
+      <a class="mob-link" href="news.html"><span class="mob-icon">📰</span>News</a>
+      <a class="mob-link" href="learn.html"><span class="mob-icon">📚</span>Learn</a>
+      <div class="mob-divider"></div>
+      <div class="menu-section-label">Account</div>
+      <button class="mob-auth-btn" id="MOB_AUTH_BTN" onclick="location.href='index.html'">🔐 Login / Sign Up</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE ═══ -->
+<main class="page fade-up">
+
+  <!-- SEARCH BAR -->
+  <div class="about-search-wrap delay-1">
+    <span class="about-search-icon">🔍</span>
+    <input type="text" id="ABOUT_SEARCH" placeholder="Search about us, privacy, contact, terms, cookies…" oninput="handleAboutSearch(this.value)" autocomplete="off">
+    <button class="about-search-clear" id="ABOUT_SEARCH_CLEAR" onclick="clearAboutSearch()">✕</button>
+    <div class="about-search-panel" id="ABOUT_SEARCH_PANEL"></div>
+  </div>
+
+  <!-- TABS -->
+  <div class="page-tabs">
+    <button class="page-tab active" onclick="showTab('about',this)">ℹ️ About Us</button>
+    <button class="page-tab" onclick="showTab('contact',this)">📧 Contact</button>
+    <button class="page-tab" onclick="showTab('api',this)">🔌 API Info</button>
+    <button class="page-tab" onclick="showTab('privacy',this)" id="privacy-tab">🔒 Privacy Policy</button>
+    <button class="page-tab" onclick="showTab('terms',this)" id="terms-tab">📄 Terms of Use</button>
+    <button class="page-tab" onclick="showTab('legal',this)" id="legal-tab">⚖️ Legal</button>
+    <button class="page-tab" onclick="showTab('cookies',this)">🍪 Cookie Policy</button>
+  </div>
+
+  <!-- ─── ABOUT ─── -->
+  <div class="tab-content active" id="tab-about">
+    <div class="about-hero">
+      <div class="about-logo">📈</div>
+      <h1 class="about-title">Built for India's Crypto Future</h1>
+      <p class="about-sub">PublicDrop is a free crypto market intelligence platform delivering real-time prices, airdrops, portfolio tracking, and educational resources — designed specifically for Indian investors. Track Bitcoin, Ethereum, and 500+ coins with live Binance data, all without paying a single rupee.</p>
+    </div>
+    <div class="stat-row">
+      <div class="stat-cell"><div class="stat-num">500+</div><div class="stat-lbl">Coins Tracked</div></div>
+      <div class="stat-cell"><div class="stat-num">30s</div><div class="stat-lbl">Price Refresh</div></div>
+      <div class="stat-cell"><div class="stat-num">100%</div><div class="stat-lbl">Free Forever</div></div>
+      <div class="stat-cell"><div class="stat-num">🇮🇳</div><div class="stat-lbl">Made in India</div></div>
+    </div>
+    <div class="content-card">
+      <div class="card-hdr">🎯 Our Mission</div>
+      <div class="card-body prose">
+        <p>At <strong>PublicDrop.in</strong>, we believe every Indian should have access to the same quality of crypto market data that institutional traders use — completely free, forever.</p>
+        <p>We built PublicDrop because most crypto tools are either too technical, too expensive, or designed for Western markets. Indian investors deserve a platform that speaks their language, supports INR display, and is built with their regulatory environment in mind.</p>
+        <h3>What We Offer</h3>
+        <ul>
+          <li>Live prices for 500+ cryptocurrencies powered by global exchange APIs</li>
+          <li>DexScreener integration for meme and emerging tokens across all chains</li>
+          <li>Portfolio tracker with real-time P&amp;L and allocation charts</li>
+          <li>Verified airdrop campaigns with wallet-based claims</li>
+          <li>Crypto news aggregation from 50+ global sources</li>
+          <li>Complete beginner education in simple, clear language</li>
+          <li>Buy USDT directly via PublicDrop using UPI — fast and simple</li>
+        </ul>
+        <h3>Our Technology</h3>
+        <p>We use global exchange APIs for live market data with 30-second refresh, <strong>DexScreener</strong> for DeFi and meme token discovery, and trusted CDN services for coin images. All data is fetched directly in your browser — we don't store or sell your data.</p>
+        <h3>Our Promise</h3>
+        <p>PublicDrop will always be free for individual users. We don't show intrusive pop-up ads, we don't sell user data, and we don't require registration to access live market data.</p>
+      </div>
+    </div>
+    <div class="content-card">
+      <div class="card-hdr">👥 The Team</div>
+      <div class="card-body">
+        <div class="team-grid">
+          <div class="team-card"><div class="team-avatar">👨‍💻</div><div class="team-name">Arjun Singh</div><div class="team-role">Founder &amp; CEO</div></div>
+          <div class="team-card"><div class="team-avatar">👩‍🎨</div><div class="team-name">Priya Sharma</div><div class="team-role">Head of Design</div></div>
+          <div class="team-card"><div class="team-avatar">👨‍🔬</div><div class="team-name">Rohit Kumar</div><div class="team-role">Lead Engineer</div></div>
+        </div>
+        <p style="font-size:13px;color:var(--t2);margin-top:16px;text-align:center">Based in India 🇮🇳 · Built with ❤️ for the Indian crypto community</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── CONTACT ─── -->
+  <div class="tab-content" id="tab-contact">
+    <div class="content-card">
+      <div class="card-hdr">📧 Contact Us</div>
+      <div class="card-body">
+        <p style="font-size:14px;color:var(--t2);margin-bottom:20px;line-height:1.7">Have a question, feature request, or want to submit an airdrop? We'd love to hear from you. We typically respond within 24 hours.</p>
+        <div class="contact-form">
+          <div class="form-group"><label>Your Name</label><input class="form-input" id="CF_NAME" placeholder="Rahul Sharma"></div>
+          <div class="form-group"><label>Email Address</label><input class="form-input" id="CF_EMAIL" type="email" placeholder="you@example.com"></div>
+          <div class="form-group"><label>Subject</label>
+            <select class="form-input" id="CF_SUBJECT">
+              <option>General Inquiry</option>
+              <option>Bug Report</option>
+              <option>Feature Request</option>
+              <option>Airdrop Submission</option>
+              <option>Partnership</option>
+              <option>Press / Media</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Message</label><textarea class="form-input" id="CF_MSG" placeholder="Tell us what's on your mind…"></textarea></div>
+          <button class="form-btn" onclick="sendContact()">Send Message →</button>
+        </div>
+        <div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px" class="contact-grid">
+          <div style="text-align:center;padding:14px;background:var(--surface2);border-radius:var(--rs)"><div style="font-size:22px;margin-bottom:6px">📧</div><div style="font-size:12px;font-weight:700;margin-bottom:2px">Email</div><div style="font-size:12px;color:var(--t3)">hello@publicdrop.in</div></div>
+          <div style="text-align:center;padding:14px;background:var(--surface2);border-radius:var(--rs)"><div style="font-size:22px;margin-bottom:6px">💬</div><div style="font-size:12px;font-weight:700;margin-bottom:2px">Telegram</div><div style="font-size:12px;color:var(--t3)">@PublicDropIN</div></div>
+          <div style="text-align:center;padding:14px;background:var(--surface2);border-radius:var(--rs)"><div style="font-size:22px;margin-bottom:6px">🐦</div><div style="font-size:12px;font-weight:700;margin-bottom:2px">Twitter / X</div><div style="font-size:12px;color:var(--t3)">@PublicDropIN</div></div>
+        </div>
+        <p style="font-size:12.5px;color:var(--t3);margin-top:14px">For legal inquiries: legal@publicdrop.in</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── API INFO ─── -->
+  <div class="tab-content" id="tab-api">
+    <div class="content-card">
+      <div class="card-hdr">🔌 Data Sources &amp; APIs</div>
+      <div class="card-body">
+        <p style="font-size:14px;color:var(--t2);margin-bottom:18px;line-height:1.7">PublicDrop aggregates data from multiple public APIs to provide comprehensive market coverage. All API calls happen client-side in your browser — your data never touches our servers.</p>
+        <div class="overflow-table">
+        <table class="api-table">
+          <thead><tr><th>API / Source</th><th>Data Provided</th><th>Refresh Rate</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Global Exchange API</strong></td><td>500+ USDT trading pairs — price, volume, 24h change, high/low</td><td>30 seconds</td><td><span class="api-badge badge-free">✅ Active</span></td></tr>
+            <tr><td><strong>DexScreener</strong></td><td>DeFi tokens, meme coins, new listings on all chains</td><td>60 seconds</td><td><span class="api-badge badge-free">✅ Active</span></td></tr>
+            <tr><td><strong>CoinGecko</strong></td><td>Global market cap, BTC dominance, Fear &amp; Greed index</td><td>60 seconds</td><td><span class="api-badge badge-limited">⚡ Free Tier</span></td></tr>
+            <tr><td><strong>CoinCap CDN</strong></td><td>Coin logos and images</td><td>Static CDN</td><td><span class="api-badge badge-free">✅ Active</span></td></tr>
+            <tr><td><strong>CryptoCompare</strong></td><td>Crypto news articles from 50+ global sources</td><td>15 minutes</td><td><span class="api-badge badge-free">✅ Active</span></td></tr>
+            <tr><td><strong>Alternative.me</strong></td><td>Fear &amp; Greed index</td><td>Daily</td><td><span class="api-badge badge-free">✅ Active</span></td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div style="margin-top:16px;padding:13px 15px;background:var(--accentb);border:1px solid rgba(26,86,219,.2);border-radius:var(--rs);font-size:13px;color:var(--t2);line-height:1.6">
+          ℹ️ <strong style="color:var(--t1)">Data Accuracy:</strong> Prices shown are based on global exchange trading pairs. They may differ slightly across platforms. Market cap estimates for non-listed tokens are approximations.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── PRIVACY ─── -->
+  <div class="tab-content" id="tab-privacy">
+    <div class="content-card">
+      <div class="card-hdr">🔒 Privacy Policy</div>
+      <div class="card-body prose">
+        <p style="font-size:12px;color:var(--t3);margin-bottom:16px">Last updated: January 1, 2026</p>
+        <h3>1. Information We Collect</h3>
+        <p>PublicDrop.in is designed with privacy first. We collect minimal data:</p>
+        <ul>
+          <li><strong>Local Storage:</strong> Your portfolio, watchlist, theme, and currency setting are stored only in your browser. We cannot access this data.</li>
+          <li><strong>Analytics:</strong> We may collect anonymous page view counts (no personal identifiers).</li>
+          <li><strong>Contact Form:</strong> If you contact us, we collect your name, email, and message solely to respond.</li>
+        </ul>
+        <h3>2. What We Do NOT Collect</h3>
+        <ul>
+          <li>We do NOT collect wallet addresses, private keys, or seed phrases</li>
+          <li>We do NOT track your individual browsing behavior across other sites</li>
+          <li>We do NOT sell, rent, or share personal data with third parties for advertising</li>
+          <li>We do NOT require account registration for basic features</li>
+        </ul>
+        <h3>3. Third-Party APIs</h3>
+        <p>Our website makes direct requests to third-party APIs from your browser. Please review their respective privacy policies for information on their data practices.</p>
+        <h3>4. Cookies</h3>
+        <p>We use only essential cookies (theme preference, currency setting). We do not use advertising or tracking cookies.</p>
+        <h3>5. Security</h3>
+        <p>PublicDrop.in uses HTTPS to encrypt all communications. We never transmit sensitive financial data through our servers.</p>
+        <h3>6. Your Rights (Indian Users)</h3>
+        <p>Under India's Digital Personal Data Protection Act (DPDPA) 2023, you have the right to access, correct, or delete any personal data we hold. Contact us at privacy@publicdrop.in for requests.</p>
+        <h3>7. Changes to This Policy</h3>
+        <p>We may update this policy from time to time. Significant changes will be announced on our website.</p>
+        <h3>8. Contact</h3>
+        <p>For privacy concerns: privacy@publicdrop.in</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── TERMS ─── -->
+  <div class="tab-content" id="tab-terms">
+    <div class="content-card">
+      <div class="card-hdr">📄 Terms of Use</div>
+      <div class="card-body prose">
+        <p style="font-size:12px;color:var(--t3);margin-bottom:16px">Last updated: January 1, 2026</p>
+        <div style="padding:13px 15px;background:rgba(232,51,74,.06);border:1.5px solid rgba(232,51,74,.18);border-radius:var(--rs);margin-bottom:16px;font-size:13px;line-height:1.6"><strong>⚠️ IMPORTANT:</strong> PublicDrop.in provides market data for informational purposes only. Nothing on this website constitutes financial, investment, legal, or tax advice. Always consult qualified professionals before making investment decisions.</div>
+        <h3>1. Acceptance of Terms</h3>
+        <p>By accessing PublicDrop.in, you agree to these Terms of Use. If you do not agree, please do not use our services.</p>
+        <h3>2. Not Financial Advice</h3>
+        <p>All content on PublicDrop.in — including prices, charts, news, and educational content — is provided for informational and educational purposes only. We are not licensed financial advisors or brokers.</p>
+        <h3>3. Accuracy of Information</h3>
+        <p>We strive to provide accurate and up-to-date information but make no warranties regarding completeness, accuracy, or timeliness. Cryptocurrency prices fluctuate rapidly and our data may lag by up to 30 seconds.</p>
+        <h3>4. Risk Disclosure</h3>
+        <ul>
+          <li>Cryptocurrency investments are highly speculative and volatile</li>
+          <li>You may lose your entire investment</li>
+          <li>Past performance does not indicate future results</li>
+          <li>Regulatory changes in India may affect your ability to trade</li>
+        </ul>
+        <h3>5. Prohibited Uses</h3>
+        <p>You may not use PublicDrop.in to scrape data for commercial use without permission, engage in market manipulation, violate applicable laws, or attempt to gain unauthorized access to our systems.</p>
+        <h3>6. Intellectual Property</h3>
+        <p>The PublicDrop brand, logo, and original content are owned by PublicDrop.in. Cryptocurrency price data is sourced from public APIs and is not our intellectual property.</p>
+        <h3>7. Limitation of Liability</h3>
+        <p>PublicDrop.in is not liable for any financial losses arising from use of our platform, reliance on our data, or technical errors or downtime.</p>
+        <h3>8. Governing Law</h3>
+        <p>These terms are governed by the laws of India. Disputes shall be subject to the exclusive jurisdiction of courts in India.</p>
+        <h3>9. Contact</h3>
+        <p>For legal inquiries: legal@publicdrop.in</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── LEGAL ─── -->
+  <div class="tab-content" id="tab-legal">
+    <div class="content-card">
+      <div class="card-hdr">⚖️ Legal Notice &amp; Disclaimers</div>
+      <div class="card-body prose">
+        <h3>Regulatory Disclaimer</h3>
+        <p>PublicDrop.in is an independent market data aggregator and is not regulated by SEBI, RBI, or any financial regulatory authority. We are not a cryptocurrency exchange, broker, or wallet provider.</p>
+        <h3>India Regulatory Environment</h3>
+        <p>Cryptocurrency trading in India is legal but regulated. Key regulations include:</p>
+        <ul>
+          <li><strong>TDS:</strong> 1% TDS on crypto transactions above ₹50,000 (or ₹10,000 for specified persons)</li>
+          <li><strong>Income Tax:</strong> 30% flat tax on crypto gains + 4% cess from FY 2022-23</li>
+          <li><strong>PMLA:</strong> Crypto exchanges must comply with Prevention of Money Laundering Act</li>
+          <li><strong>VDA:</strong> Crypto classified as Virtual Digital Assets under Finance Act 2022</li>
+        </ul>
+        <p>Always consult a Chartered Accountant for personalized tax advice.</p>
+        <h3>Third-Party Content</h3>
+        <p>News articles are sourced from third-party publishers. We do not endorse or verify the accuracy of third-party content. PublicDrop.in is not responsible for external website content.</p>
+        <h3>Airdrop Disclaimer</h3>
+        <p>Airdrops listed on PublicDrop.in are submitted by third parties. We do our best to verify legitimacy but cannot guarantee all projects are legitimate. Always research projects independently before participating.</p>
+        <h3>Data Sources</h3>
+        <p>Price data is sourced from global exchange public APIs and DexScreener. This data represents exchange prices and may not reflect OTC or other market prices.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── COOKIES ─── -->
+  <div class="tab-content" id="tab-cookies">
+    <div class="content-card">
+      <div class="card-hdr">🍪 Cookie Policy</div>
+      <div class="card-body prose">
+        <p>PublicDrop.in uses minimal cookies and browser storage. Here's exactly what we store:</p>
+        <div class="overflow-table"><table style="width:100%;border-collapse:collapse;font-size:13px">
+          <thead><tr style="background:var(--surface2)">
+            <th style="padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:10.5px;font-weight:700;color:var(--t3);text-transform:uppercase">Key</th>
+            <th style="padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:10.5px;font-weight:700;color:var(--t3);text-transform:uppercase">Type</th>
+            <th style="padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:10.5px;font-weight:700;color:var(--t3);text-transform:uppercase">Purpose</th>
+            <th style="padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:10.5px;font-weight:700;color:var(--t3);text-transform:uppercase">Expires</th>
+          </tr></thead>
+          <tbody>
+            <tr><td style="padding:10px 12px;border-bottom:1px solid var(--border)">pd_theme</td><td style="padding:10px 12px;border-bottom:1px solid var(--border)">localStorage</td><td style="padding:10px 12px;border-bottom:1px solid var(--border)">Dark/light theme preference</td><td style="padding:10px 12px;border-bottom:1px solid var(--border)">Until cleared</td></tr>
+            <tr><td style="padding:10px 12px;border-bottom:1px solid var(--border)">pd_currency</td><td style="padding:10px 12px;border-bottom:1px solid var(--border)">localStorage</td><td style="padding:10px 12px;border-bottom:1px solid var(--border)">Selected currency (USD, INR, etc.)</td><td style="padding:10px 12px;border-bottom:1px solid var(--border)">Until cleared</td></tr>
+            <tr><td style="padding:10px 12px;border-bottom:1px solid var(--border)">pd_portfolio</td><td style="padding:10px 12px;border-bottom:1px solid var(--border)">localStorage</td><td style="padding:10px 12px;border-bottom:1px solid var(--border)">Portfolio holdings (stays in your browser)</td><td style="padding:10px 12px;border-bottom:1px solid var(--border)">Until cleared</td></tr>
+            <tr><td style="padding:10px 12px;border-bottom:1px solid var(--border)">pd_wl</td><td style="padding:10px 12px;border-bottom:1px solid var(--border)">localStorage</td><td style="padding:10px 12px;border-bottom:1px solid var(--border)">Watchlist coins</td><td style="padding:10px 12px;border-bottom:1px solid var(--border)">Until cleared</td></tr>
+            <tr><td style="padding:10px 12px">pd_learn_progress</td><td style="padding:10px 12px">localStorage</td><td style="padding:10px 12px">Learn section reading progress</td><td style="padding:10px 12px">Until cleared</td></tr>
+          </tbody>
+        </table></div>
+        <p style="margin-top:16px">We use <strong>no advertising cookies</strong>, <strong>no tracking pixels</strong>, and <strong>no third-party analytics cookies</strong>. Clear all stored data at any time:</p>
+        <button onclick="clearAllData()" style="margin-top:10px;padding:10px 20px;border-radius:var(--pill);background:var(--dn);color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer">🗑️ Clear All Stored Data</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p>© 2026 <a href="index.html">PublicDrop.in</a> · <a href="about.html">Privacy</a> · <a href="about.html">Terms</a> · <a href="about.html">Legal</a> · Not financial advice</p>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+/* ── Theme ── */
+(function(){const t=localStorage.getItem('pd_theme')||'light';document.documentElement.setAttribute('data-theme',t);document.getElementById('THEME_BTN').textContent=t==='dark'?'☀️':'🌙';})();
+function toggleTheme(){const c=document.documentElement.getAttribute('data-theme');const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);document.getElementById('THEME_BTN').textContent=n==='dark'?'☀️':'🌙';localStorage.setItem('pd_theme',n);}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3200);}
+
+/* ── Menu ── */
+function openMenu(){document.getElementById('MOBILE_MENU').classList.add('open');document.getElementById('HAMBURGER').classList.add('open');}
+function closeMenu(){document.getElementById('MOBILE_MENU').classList.remove('open');document.getElementById('HAMBURGER').classList.remove('open');}
+function handleMenuOverlay(e){if(e.target===document.getElementById('MOBILE_MENU'))closeMenu();}
+
+/* ── Tabs ── */
+function showTab(name,btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.page-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name)?.classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+const hash=location.hash.replace('#','');
+if(hash){const btn=document.querySelector(`[onclick="showTab('${hash}',this)"]`);if(btn)showTab(hash,btn);}
+
+/* ── Contact ── */
+function sendContact(){
+  const n=document.getElementById('CF_NAME').value.trim();
+  const e=document.getElementById('CF_EMAIL').value.trim();
+  const m=document.getElementById('CF_MSG').value.trim();
+  if(!n||!e||!m){toast('⚠️ Please fill all fields');return;}
+  if(!e.includes('@')){toast('⚠️ Enter a valid email');return;}
+  toast('✅ Message sent! We\'ll reply within 24 hours.');
+  document.getElementById('CF_NAME').value='';
+  document.getElementById('CF_EMAIL').value='';
+  document.getElementById('CF_MSG').value='';
+}
+
+/* ── Clear Data ── */
+function clearAllData(){
+  if(!confirm('This will clear your portfolio, watchlist, and preferences. Continue?'))return;
+  ['pd_theme','pd_currency','pd_portfolio','pd_wl','pd_learn_progress'].forEach(k=>localStorage.removeItem(k));
+  toast('🗑️ All data cleared!');
+}
+
+/* ── Search Index ── */
+const ABOUT_SEARCH_INDEX=[
+  {section:'about',tab:'about',title:'About PublicDrop',snippet:'Free crypto market intelligence platform for India. Live prices, portfolio tracker, airdrops, news.'},
+  {section:'about',tab:'about',title:'Our Mission',snippet:'Every Indian deserves access to institutional-quality crypto market data — free forever.'},
+  {section:'about',tab:'about',title:'What We Offer',snippet:'500+ live crypto prices, DexScreener meme tokens, portfolio tracker, airdrops, news, education.'},
+  {section:'about',tab:'about',title:'Buy USDT via PublicDrop',snippet:'Buy USDT directly using UPI through PublicDrop — fast and simple for Indian users.'},
+  {section:'about',tab:'about',title:'The Team',snippet:'Arjun Singh (Founder), Priya Sharma (Design), Rohit Kumar (Engineering). Based in India.'},
+  {section:'contact',tab:'contact',title:'Contact Us',snippet:'hello@publicdrop.in · Telegram @PublicDropIN · Twitter @PublicDropIN'},
+  {section:'contact',tab:'contact',title:'Feature Request',snippet:'Submit bug reports, feature requests, airdrop submissions, or partnerships.'},
+  {section:'api',tab:'api',title:'Data Sources & APIs',snippet:'Global exchange API, DexScreener, CoinGecko, CryptoCompare, Alternative.me Fear & Greed.'},
+  {section:'privacy',tab:'privacy',title:'Privacy Policy',snippet:'We collect minimal data. No tracking cookies, no ad pixels, no selling of user data.'},
+  {section:'privacy',tab:'privacy',title:'What We Do Not Collect',snippet:'We do not collect wallet addresses, private keys, seed phrases, or track cross-site behavior.'},
+  {section:'terms',tab:'terms',title:'Terms of Use',snippet:'Not financial advice. Market data for informational purposes only. 30-second data lag.'},
+  {section:'terms',tab:'terms',title:'Risk Disclosure',snippet:'Crypto is highly volatile. You may lose your entire investment. Always do your own research.'},
+  {section:'legal',tab:'legal',title:'Legal & Disclaimers',snippet:'Not regulated by SEBI or RBI. 30% tax on gains, 1% TDS, VDA classification under Finance Act 2022.'},
+  {section:'legal',tab:'legal',title:'India Crypto Regulations',snippet:'30% flat tax, 1% TDS, PMLA compliance, VDA definition under Finance Act 2022.'},
+  {section:'cookies',tab:'cookies',title:'Cookie Policy',snippet:'We use only essential localStorage: pd_theme, pd_currency, pd_portfolio, pd_wl. No ad cookies.'},
+  {section:'cookies',tab:'cookies',title:'Clear All Data',snippet:'You can clear all stored portfolio, watchlist, and preference data at any time.'},
+];
+
+function handleAboutSearch(q){
+  const panel=document.getElementById('ABOUT_SEARCH_PANEL');
+  const clear=document.getElementById('ABOUT_SEARCH_CLEAR');
+  clear.classList.toggle('show',q.length>0);
+  if(!q.trim()){panel.classList.remove('open');panel.innerHTML='';return;}
+  const results=ABOUT_SEARCH_INDEX.filter(item=>item.title.toLowerCase().includes(q.toLowerCase())||item.snippet.toLowerCase().includes(q.toLowerCase())).slice(0,7);
+  if(!results.length){panel.innerHTML='<div class="sri-empty">No results found. Try a different term.</div>';panel.classList.add('open');return;}
+  panel.innerHTML=results.map((r,i)=>`
+    <div class="search-result-item" onclick="as${i}()">
+      <div class="sri-section">${r.section.toUpperCase()}</div>
+      <div class="sri-title">${r.title}</div>
+      <div class="sri-snippet">${r.snippet.substring(0,80)}…</div>
+    </div>`).join('');
+  results.forEach((r,i)=>{
+    window['as'+i]=()=>{
+      const btn=document.querySelector(`[onclick="showTab('${r.tab}',this)"]`);
+      if(btn)showTab(r.tab,btn);
+      clearAboutSearch();
+    };
+  });
+  panel.classList.add('open');
+}
+function clearAboutSearch(){document.getElementById('ABOUT_SEARCH').value='';document.getElementById('ABOUT_SEARCH_PANEL').classList.remove('open');document.getElementById('ABOUT_SEARCH_PANEL').innerHTML='';document.getElementById('ABOUT_SEARCH_CLEAR').classList.remove('show');}
+document.addEventListener('click',e=>{if(!e.target.closest('.about-search-wrap'))document.getElementById('ABOUT_SEARCH_PANEL').classList.remove('open');});
+</script>
+
+<!-- ── Animated Logo ── -->
+<script>
+(function(){
+  var logoHTML=`
+  <div class="pd-logo-badge">
+    <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect class="pd-logo-bar pd-logo-bar1" x="4" y="16" width="4" height="14" rx="1" fill="rgba(255,255,255,.12)"/>
+      <rect class="pd-logo-bar pd-logo-bar2" x="10" y="11" width="4" height="19" rx="1" fill="rgba(255,255,255,.16)"/>
+      <rect class="pd-logo-bar pd-logo-bar3" x="16" y="13" width="4" height="17" rx="1" fill="rgba(255,255,255,.13)"/>
+      <rect class="pd-logo-bar pd-logo-bar4" x="22" y="7" width="4" height="23" rx="1" fill="rgba(255,255,255,.2)"/>
+      <rect class="pd-logo-bar pd-logo-bar5" x="28" y="9" width="4" height="21" rx="1" fill="rgba(255,255,255,.16)"/>
+      <polyline class="pd-logo-line" points="5,22 12,16 18,20 24,9 31,12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle class="pd-logo-dot pd-logo-dot1" cx="5" cy="22" r="1.5" fill="rgba(255,255,255,.5)"/>
+      <circle class="pd-logo-dot pd-logo-dot2" cx="12" cy="16" r="1.5" fill="rgba(255,255,255,.6)"/>
+      <circle class="pd-logo-dot pd-logo-dot3" cx="18" cy="20" r="1.5" fill="rgba(255,255,255,.5)"/>
+      <circle class="pd-logo-dot pd-logo-dot4" cx="24" cy="9" r="2.5" fill="white"/>
+      <circle class="pd-logo-dot pd-logo-dot5" cx="31" cy="12" r="1.5" fill="rgba(255,255,255,.6)"/>
+      <g class="pd-logo-arrow">
+        <line x1="24" y1="5" x2="24" y2="2" stroke="#00e8a2" stroke-width="1.5" stroke-linecap="round"/>
+        <polyline points="22,4 24,1 26,4" fill="none" stroke="#00e8a2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    </svg>
+  </div>
+  <div class="pd-wordmark">
+    <div class="pd-name-row">
+      <span class="pd-word-public">Public</span><span class="pd-word-drop">DROP</span>
+    </div>
+    <div class="pd-tagline"><span class="pd-live-dot"></span>Crypto Analytics</div>
+  </div>`;
+  var navLogo=document.getElementById('PD_LOGO_WRAP');
+  if(navLogo)navLogo.innerHTML=logoHTML;
+})();
+</script>
+</body>
+</html>

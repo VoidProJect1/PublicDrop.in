@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Learn Crypto Free — Beginner to Advanced Guide | PublicDrop</title>
+<meta name="description" content="Learn cryptocurrency from scratch with PublicDrop's free crypto education hub. Covers Bitcoin, Ethereum, DeFi, NFTs, wallets, taxes in India, and more. Perfect for Indian beginners.">
+<meta name="keywords" content="learn crypto India, crypto beginner guide, how to buy cryptocurrency India, bitcoin explained, DeFi explained, crypto glossary, crypto taxes India, PublicDrop learn">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://publicdrop.in/learn.html">
+<meta property="og:title" content="Learn Crypto Free — Beginner Guide | PublicDrop">
+<meta property="og:description" content="From complete beginner to confident investor — understand crypto, DeFi, NFTs, wallets, and Indian tax rules with PublicDrop's free education hub.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Firebase Auth -->
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import{getAuth,GoogleAuthProvider,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+const cfg={apiKey:"AIzaSyAzzLvWmzxrfYva_PMvTNis53O_arpkNFs",authDomain:"publicdropin.firebaseapp.com",projectId:"publicdropin",storageBucket:"publicdropin.firebasestorage.app",messagingSenderId:"1039430223124",appId:"1:1039430223124:web:db45545c7fba10e09b6e01"};
+const app=initializeApp(cfg);
+const auth=getAuth(app);
+window._auth=auth;window._gp=new GoogleAuthProvider();
+onAuthStateChanged(auth,u=>{
+  window._fbUser=u;
+  const loginBtns=document.querySelectorAll('.nav-login-btn');
+  const chip=document.getElementById('NAV_USER_CHIP');
+  const mob=document.getElementById('MOB_AUTH_BTN');
+  if(u){
+    const name=u.displayName||u.email||'User';
+    const initial=name.charAt(0).toUpperCase();
+    loginBtns.forEach(b=>b.style.display='none');
+    if(chip){
+      chip.style.display='flex';
+      chip.querySelector('.nav-user-name').textContent=name.split(' ')[0];
+      const av=chip.querySelector('.nav-user-avatar');
+      if(av)av.textContent=initial;
+    }
+    if(mob){mob.textContent='👤 '+name.split(' ')[0];mob.onclick=()=>{signOut(auth);toast('👋 Signed out!');};}
+  }else{
+    loginBtns.forEach(b=>b.style.display='');
+    if(chip)chip.style.display='none';
+    if(mob){mob.textContent='🔐 Login / Sign Up';mob.onclick=()=>{location.href='index.html';};}
+  }
+});
+window.doSignOut=async function(){await signOut(auth);toast('👋 Signed out!');};
+</script>
+
+<style>
+:root{
+  --ff:'Plus Jakarta Sans','Bricolage Grotesque',sans-serif;
+  --ff2:'Space Grotesk',sans-serif;
+  --fm:'DM Mono',monospace;
+  --bg:#F7F8FC;--surface:#FFFFFF;--surface2:#F2F3F8;--surface3:#E8EAF2;--surface4:#DDE0EE;
+  --border:rgba(0,0,0,.07);--border2:rgba(0,0,0,.12);--border3:rgba(0,0,0,.18);
+  --t1:#0A0C14;--t2:#4A4F6A;--t3:#8B90AB;--t4:#C2C6DB;
+  --up:#0EA66A;--upb:rgba(14,166,106,.1);--upbr:rgba(14,166,106,.22);
+  --dn:#E8334A;--dnb:rgba(232,51,74,.1);--dnbr:rgba(232,51,74,.22);
+  --accent:#1A56DB;--accentb:rgba(26,86,219,.1);--accentbr:rgba(26,86,219,.22);
+  --sha-sm:0 1px 3px rgba(0,0,0,.05),0 2px 8px rgba(0,0,0,.04);
+  --sha:0 2px 12px rgba(0,0,0,.07),0 8px 30px rgba(0,0,0,.05);
+  --sha-lg:0 12px 40px rgba(0,0,0,.12),0 4px 14px rgba(0,0,0,.06);
+  --r:14px;--rs:10px;--rx:7px;--pill:999px;--nav-h:60px;
+}
+[data-theme="dark"]{
+  --bg:#0B0C11;--surface:#12141C;--surface2:#181A24;--surface3:#1F2130;--surface4:#272A3B;
+  --border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.10);--border3:rgba(255,255,255,.16);
+  --t1:#F0F1F8;--t2:#8C91AD;--t3:#505570;--t4:#2E3148;
+  --sha-sm:0 1px 3px rgba(0,0,0,.3),0 2px 8px rgba(0,0,0,.2);
+  --sha:0 2px 12px rgba(0,0,0,.4),0 8px 30px rgba(0,0,0,.3);
+  --sha-lg:0 12px 40px rgba(0,0,0,.5),0 4px 14px rgba(0,0,0,.3);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;min-width:0;}
+html{scroll-behavior:smooth;font-size:16px;overflow-x:hidden;}
+body{font-family:var(--ff);background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;transition:background .25s,color .25s;overflow-x:hidden;width:100%;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+input,select,textarea{font-family:inherit;}
+img{display:block;max-width:100%;}
+h1,h2,h3{font-family:var(--ff2),var(--ff),sans-serif;}
+
+/* ═══ NAV ═══ */
+nav{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:500;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:var(--sha-sm);}
+.nav-inner{max-width:1500px;margin:0 auto;padding:0 16px;height:var(--nav-h);display:flex;align-items:center;gap:10px;}
+.logo{display:flex;align-items:center;gap:0;flex-shrink:0;text-decoration:none;cursor:pointer;}
+.nav-links{display:flex;align-items:center;gap:2px;margin-left:8px;}
+.nav-link{padding:7px 10px;border-radius:var(--rx);font-size:13px;font-weight:600;color:var(--t2);background:none;border:none;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:4px;cursor:pointer;text-decoration:none;}
+.nav-link:hover,.nav-link.active{color:var(--t1);background:var(--surface2);}
+.badge-new{font-size:9px;font-weight:700;padding:2px 5px;border-radius:var(--pill);background:var(--upb);color:var(--up);border:1px solid var(--upbr);}
+.nav-right{display:flex;align-items:center;gap:6px;margin-left:auto;flex-shrink:0;}
+.theme-toggle{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border2);background:var(--surface2);color:var(--t2);display:flex;align-items:center;justify-content:center;font-size:15px;transition:all .2s;flex-shrink:0;cursor:pointer;}
+.theme-toggle:hover{border-color:var(--border3);color:var(--t1);}
+.nav-btn{padding:8px 14px;border-radius:var(--pill);font-size:13px;font-weight:700;transition:all .18s;border:none;cursor:pointer;}
+.nav-btn-solid{background:var(--t1);color:var(--bg);}
+.nav-btn-solid:hover{opacity:.88;transform:translateY(-1px);}
+.hamburger{display:none;flex-direction:column;gap:4.5px;background:none;border:none;padding:7px;color:var(--t1);cursor:pointer;flex-shrink:0;}
+.hamburger span{width:20px;height:2px;background:currentColor;border-radius:2px;display:block;transition:all .3s;transform-origin:center;}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+
+/* ═══ ANIMATED LOGO ═══ */
+.pd-logo-badge{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#1A56DB,#1e40af);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:visible;position:relative;}
+.pd-logo-badge svg{width:26px;height:26px;}
+.pd-logo-bar{transform-origin:bottom;transform:scaleY(0);animation:pdBar .4s cubic-bezier(.22,1,.36,1) both;}
+.pd-logo-bar1{animation-delay:.1s;}
+.pd-logo-bar2{animation-delay:.18s;}
+.pd-logo-bar3{animation-delay:.26s;}
+.pd-logo-bar4{animation-delay:.34s;}
+.pd-logo-bar5{animation-delay:.42s;}
+@keyframes pdBar{to{transform:scaleY(1);}}
+.pd-logo-line{stroke-dasharray:200;stroke-dashoffset:200;animation:pdLine .8s ease .55s forwards;}
+@keyframes pdLine{to{stroke-dashoffset:0;}}
+.pd-logo-dot{transform:scale(0);transform-origin:center;}
+.pd-logo-dot1{animation:pdDot .25s cubic-bezier(.34,1.56,.64,1) 1.1s forwards;}
+.pd-logo-dot2{animation:pdDot .25s cubic-bezier(.34,1.56,.64,1) 1.18s forwards;}
+.pd-logo-dot3{animation:pdDot .25s cubic-bezier(.34,1.56,.64,1) 1.26s forwards;}
+.pd-logo-dot4{animation:pdDot .3s cubic-bezier(.34,1.56,.64,1) 1.34s forwards;}
+.pd-logo-dot5{animation:pdDot .25s cubic-bezier(.34,1.56,.64,1) 1.42s forwards;}
+@keyframes pdDot{to{transform:scale(1);}}
+.pd-logo-arrow{opacity:0;transform:translateY(4px);}
+.pd-logo-arrow{animation:pdArrow .4s cubic-bezier(.34,1.56,.64,1) 1.55s forwards;}
+@keyframes pdArrow{to{opacity:1;transform:translateY(0);}}
+.pd-wordmark{display:flex;flex-direction:column;justify-content:center;margin-left:10px;line-height:1;}
+.pd-name-row{display:flex;align-items:baseline;gap:0;line-height:1;}
+.pd-word-public{font-size:18px;font-weight:800;color:var(--t1);letter-spacing:-.5px;opacity:0;transform:translateX(-10px);animation:pdWordL .5s cubic-bezier(.22,1,.36,1) .3s forwards;font-family:var(--ff2);}
+.pd-word-drop{font-size:18px;font-weight:800;background:linear-gradient(90deg,#1a5cff,#4d8bff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.5px;opacity:0;transform:translateX(10px);animation:pdWordR .5s cubic-bezier(.22,1,.36,1) .42s forwards;font-family:var(--ff2);}
+@keyframes pdWordL{to{opacity:1;transform:translateX(0);}}
+@keyframes pdWordR{to{opacity:1;transform:translateX(0);}}
+.pd-tagline{font-size:8.5px;font-weight:600;color:var(--t3);letter-spacing:2px;text-transform:uppercase;opacity:0;animation:pdTag .5s ease .85s forwards;}
+@keyframes pdTag{to{opacity:1;}}
+.pd-live-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:#00e8a2;margin-right:4px;vertical-align:middle;position:relative;}
+.pd-live-dot::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:1px solid #00e8a2;animation:pdLivePulse 1.6s ease 2s infinite;opacity:0;}
+@keyframes pdLivePulse{0%{transform:scale(.8);opacity:.7;}100%{transform:scale(2);opacity:0;}}
+
+/* ═══ MOBILE MENU ═══ */
+.mobile-menu{position:fixed;inset:0;z-index:990;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .25s;}
+.mobile-menu.open{opacity:1;pointer-events:all;}
+.menu-panel{position:absolute;top:0;right:0;bottom:0;width:min(300px,88vw);background:var(--surface);box-shadow:var(--sha-lg);overflow-y:auto;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .3s cubic-bezier(.22,1,.36,1);}
+.mobile-menu.open .menu-panel{transform:translateX(0);}
+.menu-hdr{display:flex;align-items:center;justify-content:space-between;padding:18px 16px 14px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.menu-close{width:32px;height:32px;border-radius:50%;background:var(--surface2);border:1.5px solid var(--border2);color:var(--t2);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;}
+.menu-close:hover{color:var(--dn);border-color:var(--dn);}
+.menu-body{flex:1;padding:12px 12px 20px;display:flex;flex-direction:column;gap:2px;}
+.menu-section-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);padding:10px 10px 4px;}
+.mob-link{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:var(--rs);font-size:14px;font-weight:600;color:var(--t2);background:none;border:none;width:100%;text-align:left;transition:all .15s;cursor:pointer;text-decoration:none;}
+.mob-link:hover,.mob-link.active{color:var(--t1);background:var(--surface2);}
+.mob-link .mob-icon{width:20px;text-align:center;font-size:15px;}
+.mob-divider{height:1px;background:var(--border);margin:6px 0;}
+.mob-auth-btn{margin:8px 12px 0;padding:12px;border-radius:var(--rs);background:var(--t1);color:var(--bg);font-size:14px;font-weight:700;border:none;cursor:pointer;text-align:center;transition:all .18s;}
+.mob-auth-btn:hover{opacity:.88;}
+
+/* ═══ NAV USER CHIP ═══ */
+.nav-user-chip{display:none;align-items:center;gap:7px;padding:5px 12px 5px 6px;border-radius:var(--pill);background:var(--surface2);border:1.5px solid var(--border2);cursor:pointer;transition:all .15s;}
+.nav-user-chip:hover{border-color:var(--border3);}
+.nav-user-avatar{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#1A56DB,#6366F1);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.nav-user-name{font-size:12.5px;font-weight:700;color:var(--t1);font-family:var(--ff2);}
+
+/* ═══ PAGE ═══ */
+.page{max-width:1100px;margin:0 auto;padding:24px 16px 80px;}
+
+/* ═══ GLOBAL SEARCH BAR ═══ */
+.learn-search-wrap{position:relative;margin-bottom:22px;}
+.learn-search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--t3);pointer-events:none;font-size:15px;}
+#LEARN_SEARCH{width:100%;padding:13px 16px 13px 44px;background:var(--surface);border:1.5px solid var(--border2);border-radius:var(--pill);font-size:14px;color:var(--t1);outline:none;transition:all .2s;box-shadow:var(--sha-sm);}
+#LEARN_SEARCH:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accentb);}
+#LEARN_SEARCH::placeholder{color:var(--t3);}
+.learn-search-clear{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:var(--surface3);border:none;border-radius:50%;width:22px;height:22px;font-size:13px;color:var(--t2);cursor:pointer;display:none;align-items:center;justify-content:center;}
+.learn-search-clear.show{display:flex;}
+.search-results-panel{background:var(--surface);border:1.5px solid var(--border2);border-radius:var(--r);box-shadow:var(--sha-lg);margin-top:6px;max-height:320px;overflow-y:auto;display:none;}
+.search-results-panel.open{display:block;}
+.search-result-item{padding:12px 16px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .1s;}
+.search-result-item:last-child{border-bottom:none;}
+.search-result-item:hover{background:var(--surface2);}
+.sri-section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--accent);margin-bottom:2px;}
+.sri-title{font-size:14px;font-weight:700;color:var(--t1);}
+.sri-snippet{font-size:12.5px;color:var(--t2);margin-top:2px;line-height:1.5;}
+.sri-empty{padding:20px;text-align:center;color:var(--t3);font-size:13.5px;}
+
+/* ═══ HERO ═══ */
+.learn-hero{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:36px 32px;margin-bottom:22px;text-align:center;position:relative;overflow:hidden;box-shadow:var(--sha-sm);}
+.learn-hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:400px;height:300px;background:radial-gradient(circle,rgba(26,86,219,.06),transparent 70%);border-radius:50%;pointer-events:none;}
+.learn-hero h1{font-size:clamp(24px,4vw,40px);font-weight:800;letter-spacing:-1.2px;margin-bottom:10px;position:relative;font-family:var(--ff2);}
+.learn-hero p{color:var(--t2);font-size:14.5px;max-width:500px;margin:0 auto 22px;line-height:1.65;}
+.hero-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.btn-primary{padding:10px 20px;border-radius:var(--pill);background:var(--t1);color:var(--bg);font-size:13px;font-weight:700;border:none;transition:all .18s;cursor:pointer;}
+.btn-primary:hover{opacity:.85;transform:translateY(-1px);}
+.btn-outline{padding:10px 18px;border-radius:var(--pill);background:transparent;border:1.5px solid var(--border3);color:var(--t1);font-size:13px;font-weight:700;transition:all .18s;cursor:pointer;}
+.btn-outline:hover{background:var(--surface2);}
+
+/* ═══ PROGRESS ═══ */
+.progress-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.progress-label{font-size:12px;font-weight:700;color:var(--t2);}
+.progress-val{font-size:12px;font-weight:700;font-family:var(--fm);color:var(--accent);}
+.progress-track{height:6px;background:var(--surface3);border-radius:var(--pill);overflow:hidden;margin-bottom:0;}
+.progress-fill{height:100%;border-radius:var(--pill);background:linear-gradient(90deg,var(--accent),#2563EB);transition:width .4s ease;}
+
+/* ═══ LAYOUT ═══ */
+.learn-layout{display:grid;grid-template-columns:220px 1fr;gap:18px;align-items:start;}
+
+/* ═══ SIDEBAR ═══ */
+.learn-nav{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sha-sm);position:sticky;top:76px;}
+.learn-nav-section{padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);border-top:1px solid var(--border);}
+.learn-nav-section:first-child{border-top:none;}
+.learn-nav-link{display:flex;align-items:center;gap:8px;padding:9px 14px;font-size:13px;font-weight:600;color:var(--t2);cursor:pointer;transition:all .15s;border:none;background:none;width:100%;text-align:left;}
+.learn-nav-link:hover,.learn-nav-link.active{color:var(--t1);background:var(--surface2);}
+.learn-nav-link .icon{font-size:15px;width:18px;text-align:center;flex-shrink:0;}
+
+/* ═══ CONTENT ═══ */
+.learn-content{display:flex;flex-direction:column;gap:18px;}
+
+/* ═══ CONTENT CARD ═══ */
+.content-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sha-sm);}
+.content-hdr{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.content-icon{font-size:22px;flex-shrink:0;}
+.content-title{font-size:19px;font-weight:800;letter-spacing:-.4px;font-family:var(--ff2);}
+.content-subtitle{font-size:12.5px;color:var(--t2);margin-top:2px;}
+.content-body{padding:22px;}
+
+/* ═══ STEP CARDS ═══ */
+.steps{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.step-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:14px;}
+.step-num{font-size:10.5px;font-weight:700;font-family:var(--fm);color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.step-title{font-size:14px;font-weight:800;margin-bottom:5px;}
+.step-desc{font-size:12.5px;color:var(--t2);line-height:1.6;}
+
+/* ═══ FAQ ═══ */
+.faq-item{border-bottom:1px solid var(--border);overflow:hidden;}
+.faq-item:last-child{border-bottom:none;}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:14px 0;cursor:pointer;font-size:14px;font-weight:700;gap:10px;}
+.faq-toggle{font-size:18px;color:var(--t3);transition:transform .2s;flex-shrink:0;}
+.faq-item.open .faq-toggle{transform:rotate(45deg);}
+.faq-a{font-size:13px;color:var(--t2);line-height:1.7;padding-bottom:14px;display:none;}
+.faq-item.open .faq-a{display:block;}
+
+/* ═══ GLOSSARY ═══ */
+.gloss-search-wrap{position:relative;margin-bottom:16px;}
+.gloss-search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--t3);font-size:14px;pointer-events:none;}
+.gloss-search{width:100%;padding:10px 14px 10px 36px;background:var(--surface2);border:1.5px solid var(--border2);border-radius:var(--pill);font-size:13px;color:var(--t1);outline:none;transition:border-color .2s;}
+.gloss-search:focus{border-color:var(--accent);}
+.gloss-search::placeholder{color:var(--t3);}
+.gloss-grid{display:grid;gap:0;}
+.gloss-item{padding:11px 0;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start;}
+.gloss-item:last-child{border-bottom:none;}
+.gloss-term{font-size:13.5px;font-weight:800;min-width:130px;flex-shrink:0;color:var(--t1);}
+.gloss-def{font-size:12.5px;color:var(--t2);line-height:1.6;}
+.gloss-empty{padding:16px 0;text-align:center;color:var(--t3);font-size:13px;}
+
+/* ═══ QUIZ ═══ */
+.quiz-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:16px;margin-bottom:10px;}
+.quiz-q{font-size:14.5px;font-weight:700;margin-bottom:10px;}
+.quiz-options{display:flex;flex-direction:column;gap:6px;}
+.quiz-opt{padding:10px 13px;border-radius:var(--rx);border:1.5px solid var(--border2);background:var(--surface);font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;text-align:left;}
+.quiz-opt:hover:not(:disabled){border-color:var(--border3);background:var(--surface2);}
+.quiz-opt.correct{background:var(--upb);border-color:var(--upbr);color:var(--up);}
+.quiz-opt.wrong{background:rgba(232,51,74,.1);border-color:rgba(232,51,74,.22);color:var(--dn);}
+
+/* ═══ TIPS ═══ */
+.tip-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.tip-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:14px;display:flex;gap:10px;align-items:flex-start;}
+.tip-icon{font-size:20px;flex-shrink:0;}
+.tip-title{font-size:13px;font-weight:700;margin-bottom:4px;}
+.tip-desc{font-size:12px;color:var(--t2);line-height:1.55;}
+
+/* ═══ INFO / WARNING BOXES ═══ */
+.warning-box{background:rgba(232,51,74,.06);border:1.5px solid rgba(232,51,74,.18);border-radius:var(--rs);padding:13px 15px;display:flex;gap:10px;align-items:flex-start;margin-bottom:16px;}
+.warning-icon{font-size:17px;flex-shrink:0;}
+.warning-text{font-size:13px;line-height:1.6;color:var(--t2);}
+.info-box{background:var(--accentb);border:1.5px solid rgba(26,86,219,.2);border-radius:var(--rs);padding:13px 15px;display:flex;gap:10px;align-items:flex-start;margin-bottom:16px;}
+
+/* ═══ TOAST ═══ */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--t1);color:var(--bg);padding:11px 22px;border-radius:var(--pill);font-size:13px;font-weight:700;box-shadow:var(--sha-lg);z-index:9999;transition:transform .38s cubic-bezier(.34,1.56,.64,1);pointer-events:none;max-width:90vw;text-align:center;}
+#toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ═══ FOOTER ═══ */
+footer{background:var(--surface);border-top:1px solid var(--border);padding:22px 20px;text-align:center;}
+footer p{color:var(--t3);font-size:12.5px;}
+footer a{color:var(--t2);font-weight:600;transition:color .15s;}
+footer a:hover{color:var(--t1);}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.fade-up{animation:fadeUp .4s ease both;}
+.delay-1{animation-delay:.05s;}
+.delay-2{animation-delay:.1s;}
+.delay-3{animation-delay:.15s;}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:900px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .hide-md{display:none;}
+  .learn-layout{grid-template-columns:1fr;}
+  .learn-nav{position:static;}
+}
+@media(max-width:640px){
+  .page{padding:14px 12px 70px;}
+  .learn-hero{padding:24px 18px;}
+  .learn-hero h1{font-size:22px;}
+  .learn-hero p{font-size:13.5px;}
+  .steps{grid-template-columns:1fr;}
+  .tip-grid{grid-template-columns:1fr;}
+  .gloss-item{flex-direction:column;gap:3px;}
+  .gloss-term{min-width:auto;}
+  .content-body{padding:16px;}
+  .content-hdr{padding:15px 16px;}
+  .content-title{font-size:16px;}
+  .nav-inner{padding:0 12px;gap:8px;}
+  .nav-btn-solid{padding:7px 12px;font-size:12px;}
+  .pd-word-public,.pd-word-drop{font-size:15px;}
+  .pd-tagline{display:none;}
+  .pd-logo-badge{width:30px;height:30px;border-radius:8px;}
+}
+@media(max-width:380px){
+  .nav-btn-solid{display:none;}
+  .learn-hero h1{font-size:20px;}
+}
+
+/* ═══ MOBILE SIDEBAR HORIZONTAL SCROLL ═══ */
+@media(max-width:900px){
+  .learn-nav{overflow-x:auto;scrollbar-width:none;}
+  .learn-nav::-webkit-scrollbar{display:none;}
+  .learn-nav-inner{display:flex;min-width:max-content;padding:8px;}
+  .learn-nav-section{display:none;}
+  .learn-nav-link{white-space:nowrap;border:1.5px solid var(--border2);border-radius:var(--pill);margin:0 3px;padding:7px 12px;font-size:12px;}
+  .learn-nav-link:hover,.learn-nav-link.active{background:var(--t1);color:var(--bg);border-color:var(--t1);}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="index.html" id="PD_LOGO_WRAP" style="text-decoration:none;display:flex;align-items:center;gap:0;padding:0;cursor:pointer;"></a>
+
+    <div class="nav-links">
+      <button class="nav-link" onclick="location.href='index.html'">📊 Cryptocurrencies</button>
+      <a class="nav-link" href="airdrop.html">🎁 Airdrops <span class="badge-new">NEW</span></a>
+      <button class="nav-link" onclick="location.href='news.html'">📰 News</button>
+      <a class="nav-link active" href="learn.html">📚 Learn</a>
+    </div>
+
+    <div class="nav-right">
+      <button class="theme-toggle" id="THEME_BTN" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+      <button class="nav-btn nav-btn-solid nav-login-btn" onclick="location.href='index.html'">Get Started</button>
+      <div class="nav-user-chip" id="NAV_USER_CHIP" onclick="doSignOut()" title="Click to sign out">
+        <div class="nav-user-avatar">U</div>
+        <span class="nav-user-name">User</span>
+      </div>
+      <button class="hamburger" id="HAMBURGER" onclick="openMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ MOBILE MENU ═══ -->
+<div class="mobile-menu" id="MOBILE_MENU" onclick="handleMenuOverlay(event)">
+  <div class="menu-panel">
+    <div class="menu-hdr">
+      <div style="font-size:16px;font-weight:800;font-family:var(--ff2)">Public<span style="color:var(--accent)">DROP</span></div>
+      <button class="menu-close" onclick="closeMenu()">✕</button>
+    </div>
+    <div class="menu-body">
+      <div class="menu-section-label">Navigation</div>
+      <a class="mob-link" href="index.html"><span class="mob-icon">📊</span>Cryptocurrencies</a>
+      <a class="mob-link" href="airdrop.html"><span class="mob-icon">🎁</span>Airdrops</a>
+      <a class="mob-link" href="news.html"><span class="mob-icon">📰</span>News</a>
+      <a class="mob-link active" href="learn.html"><span class="mob-icon">📚</span>Learn</a>
+      <div class="mob-divider"></div>
+      <div class="menu-section-label">Account</div>
+      <button class="mob-auth-btn" id="MOB_AUTH_BTN" onclick="location.href='index.html'">🔐 Login / Sign Up</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE ═══ -->
+<main class="page">
+
+  <!-- HERO -->
+  <div class="learn-hero fade-up">
+    <h1>📚 Learn Crypto — Free</h1>
+    <p>From complete beginner to confident investor — everything you need to understand cryptocurrency, DeFi, NFTs, wallets, and the digital economy.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="scrollToSection('guide')">Start Learning →</button>
+      <button class="btn-outline" onclick="scrollToSection('glossary')">Crypto Glossary</button>
+    </div>
+    <div style="margin-top:20px;max-width:380px;margin-left:auto;margin-right:auto">
+      <div class="progress-header"><span class="progress-label">Your Progress</span><span class="progress-val" id="PROGRESS_VAL">0 / 6 completed</span></div>
+      <div class="progress-track"><div class="progress-fill" id="PROGRESS_BAR" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <!-- SEARCH BAR -->
+  <div class="learn-search-wrap fade-up delay-1">
+    <span class="learn-search-icon">🔍</span>
+    <input type="text" id="LEARN_SEARCH" placeholder="Search topics, glossary terms, quiz questions…" oninput="handleLearnSearch(this.value)" autocomplete="off">
+    <button class="learn-search-clear" id="SEARCH_CLEAR" onclick="clearSearch()">✕</button>
+    <div class="search-results-panel" id="SEARCH_PANEL"></div>
+  </div>
+
+  <div class="learn-layout">
+    <!-- SIDEBAR -->
+    <div class="learn-nav fade-up delay-2">
+      <div class="learn-nav-inner">
+        <div class="learn-nav-section" style="border-top:none">📖 Beginner</div>
+        <button class="learn-nav-link active" onclick="scrollToSection('guide')"><span class="icon">1️⃣</span>What is Crypto?</button>
+        <button class="learn-nav-link" onclick="scrollToSection('how-to-buy')"><span class="icon">2️⃣</span>How to Buy</button>
+        <button class="learn-nav-link" onclick="scrollToSection('wallets')"><span class="icon">3️⃣</span>Wallets & Safety</button>
+        <div class="learn-nav-section">📗 Intermediate</div>
+        <button class="learn-nav-link" onclick="scrollToSection('defi')"><span class="icon">4️⃣</span>DeFi Explained</button>
+        <button class="learn-nav-link" onclick="scrollToSection('nft')"><span class="icon">5️⃣</span>NFTs & Web3</button>
+        <button class="learn-nav-link" onclick="scrollToSection('tax')"><span class="icon">6️⃣</span>Crypto & Taxes</button>
+        <div class="learn-nav-section">🔍 Reference</div>
+        <button class="learn-nav-link" onclick="scrollToSection('glossary')"><span class="icon">📖</span>Glossary A–Z</button>
+        <button class="learn-nav-link" onclick="scrollToSection('quiz')"><span class="icon">🧠</span>Quiz Yourself</button>
+        <button class="learn-nav-link" onclick="scrollToSection('tips')"><span class="icon">💡</span>Safety Tips</button>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="learn-content">
+
+      <!-- WHAT IS CRYPTO -->
+      <div class="content-card fade-up" id="guide">
+        <div class="content-hdr"><div class="content-icon">1️⃣</div><div><div class="content-title">What is Cryptocurrency?</div><div class="content-subtitle">The complete beginner's introduction</div></div></div>
+        <div class="content-body">
+          <div class="info-box"><div style="font-size:17px;flex-shrink:0">ℹ️</div><div class="warning-text">Cryptocurrency is digital money that uses cryptography (advanced math) to secure transactions. Unlike traditional money, it's decentralized — no bank or government controls it.</div></div>
+          <div class="steps">
+            <div class="step-card"><div class="step-num">Concept 01</div><div class="step-title">₿ Bitcoin</div><div class="step-desc">The first cryptocurrency, created in 2009 by the anonymous Satoshi Nakamoto. Bitcoin is "digital gold" — limited to 21 million coins ever.</div></div>
+            <div class="step-card"><div class="step-num">Concept 02</div><div class="step-title">⚙️ Blockchain</div><div class="step-desc">A public ledger that records every transaction permanently. Think of it as a shared spreadsheet that thousands of computers maintain simultaneously.</div></div>
+            <div class="step-card"><div class="step-num">Concept 03</div><div class="step-title">🔐 Decentralization</div><div class="step-desc">No single person, company, or government controls Bitcoin. Thousands of computers (nodes) worldwide verify transactions independently.</div></div>
+            <div class="step-card"><div class="step-num">Concept 04</div><div class="step-title">⛏️ Mining</div><div class="step-desc">Computers compete to solve complex math puzzles to validate transactions. Winners earn newly created coins as a reward.</div></div>
+            <div class="step-card"><div class="step-num">Concept 05</div><div class="step-title">💎 Ethereum</div><div class="step-desc">The second-largest crypto, which introduced "smart contracts" — self-executing code that powers DeFi, NFTs, and thousands of applications.</div></div>
+            <div class="step-card"><div class="step-num">Concept 06</div><div class="step-title">📊 Altcoins</div><div class="step-desc">Any crypto that isn't Bitcoin. Thousands exist — from Solana and Cardano to meme coins like Dogecoin and Shiba Inu.</div></div>
+          </div>
+          <div style="margin-top:16px;padding:14px;background:var(--upb);border:1px solid var(--upbr);border-radius:var(--rs)">
+            <div style="font-size:14px;font-weight:700;color:var(--up);margin-bottom:5px">✅ Lesson Complete!</div>
+            <div style="font-size:13px;color:var(--t2)">You now understand the basics of cryptocurrency. Ready to learn how to buy?</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HOW TO BUY -->
+      <div class="content-card fade-up" id="how-to-buy">
+        <div class="content-hdr"><div class="content-icon">2️⃣</div><div><div class="content-title">How to Buy Crypto in India</div><div class="content-subtitle">Step-by-step guide for beginners</div></div></div>
+        <div class="content-body">
+          <div class="warning-box"><div class="warning-icon">⚠️</div><div class="warning-text">Always use reputable, KYC-compliant crypto platforms registered with Indian authorities. Never share your password or private keys with anyone.</div></div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;gap:12px;align-items:flex-start;padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs)">
+              <div style="font-size:22px;flex-shrink:0">🏦</div>
+              <div><div style="font-size:14px;font-weight:800;margin-bottom:4px">Step 1: Choose a Crypto Platform</div><div style="font-size:13px;color:var(--t2);line-height:1.6">Select a reputable Indian crypto platform that is KYC-compliant and supports UPI, NEFT, and IMPS payments for easy INR deposits.</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs)">
+              <div style="font-size:22px;flex-shrink:0">🪪</div>
+              <div><div style="font-size:14px;font-weight:800;margin-bottom:4px">Step 2: Complete KYC</div><div style="font-size:13px;color:var(--t2);line-height:1.6">Verify your identity using Aadhaar card or PAN card. This is mandatory per Indian regulations and usually takes 24–48 hours.</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs)">
+              <div style="font-size:22px;flex-shrink:0">💰</div>
+              <div><div style="font-size:14px;font-weight:800;margin-bottom:4px">Step 3: Add Funds (INR)</div><div style="font-size:13px;color:var(--t2);line-height:1.6">Link your bank account via UPI, NEFT, or IMPS. Start with an amount you can afford — experts recommend ₹500–₹1,000 for absolute beginners. You can also buy USDT from PublicDrop directly using UPI.</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs)">
+              <div style="font-size:22px;flex-shrink:0">🛒</div>
+              <div><div style="font-size:14px;font-weight:800;margin-bottom:4px">Step 4: Buy Your First Coin</div><div style="font-size:13px;color:var(--t2);line-height:1.6">Search for Bitcoin (BTC) or Ethereum (ETH). For trading pairs, consider BTC/USDT or ETH/USDT — these are the most liquid. Enter the INR amount, confirm, and you own cryptocurrency!</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs)">
+              <div style="font-size:22px;flex-shrink:0">🔐</div>
+              <div><div style="font-size:14px;font-weight:800;margin-bottom:4px">Step 5: Secure Your Crypto</div><div style="font-size:13px;color:var(--t2);line-height:1.6">For long-term holding, move coins to a hardware wallet (Ledger, Trezor). For small amounts, your exchange wallet is fine while you learn.</div></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs)">
+              <div style="font-size:22px;flex-shrink:0">📊</div>
+              <div><div style="font-size:14px;font-weight:800;margin-bottom:4px">Step 6: Track Your Portfolio</div><div style="font-size:13px;color:var(--t2);line-height:1.6">Use PublicDrop's free portfolio tracker to monitor your holdings, P&amp;L, and overall performance in real time — completely free.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WALLETS -->
+      <div class="content-card fade-up" id="wallets">
+        <div class="content-hdr"><div class="content-icon">3️⃣</div><div><div class="content-title">Wallets & Security</div><div class="content-subtitle">"Not your keys, not your coins"</div></div></div>
+        <div class="content-body">
+          <div class="warning-box"><div class="warning-icon">🚨</div><div class="warning-text"><strong>NEVER share your seed phrase (12–24 words) with anyone — ever.</strong> Anyone who has it can steal all your funds. No legitimate platform or support team will ever ask for it.</div></div>
+          <div class="tip-grid" style="margin-bottom:14px">
+            <div class="tip-card"><div class="tip-icon">🏦</div><div><div class="tip-title">Exchange Wallet (Hot)</div><div class="tip-desc">Easiest to use. Good for trading. Risk: exchange can be hacked or go bankrupt (FTX collapse, 2022).</div></div></div>
+            <div class="tip-card"><div class="tip-icon">📱</div><div><div class="tip-title">Software Wallet (Hot)</div><div class="tip-desc">Apps like MetaMask, Trust Wallet. You control your keys. Good for DeFi &amp; small amounts.</div></div></div>
+            <div class="tip-card"><div class="tip-icon">🔒</div><div><div class="tip-title">Hardware Wallet (Cold)</div><div class="tip-desc">Physical devices (Ledger, Trezor). Most secure. Costs ₹5,000–₹15,000. Best for large holdings.</div></div></div>
+            <div class="tip-card"><div class="tip-icon">📝</div><div><div class="tip-title">Paper Wallet</div><div class="tip-desc">Print private key on paper. Completely offline. Fragile — can burn or get wet. Keep multiple backups.</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DEFI -->
+      <div class="content-card fade-up" id="defi">
+        <div class="content-hdr"><div class="content-icon">4️⃣</div><div><div class="content-title">DeFi — Decentralized Finance</div><div class="content-subtitle">Banking without banks</div></div></div>
+        <div class="content-body">
+          <div class="steps">
+            <div class="step-card"><div class="step-num">What is DeFi</div><div class="step-title">💸 Open Finance</div><div class="step-desc">Financial services (lending, borrowing, trading) built on blockchain without banks. Anyone with a wallet can access them 24/7.</div></div>
+            <div class="step-card"><div class="step-num">Key Concept</div><div class="step-title">⚖️ Smart Contracts</div><div class="step-desc">Self-executing code on Ethereum/Solana that automatically handles transactions when conditions are met — no middleman needed.</div></div>
+            <div class="step-card"><div class="step-num">Earn Yield</div><div class="step-title">🌾 Liquidity Mining</div><div class="step-desc">Provide liquidity to DEXes (Uniswap, SushiSwap) and earn fees + token rewards. Yields range from 5% to 100%+ APY.</div></div>
+            <div class="step-card"><div class="step-num">Borrowing</div><div class="step-title">🏛️ Lending Protocols</div><div class="step-desc">Use Aave or Compound to borrow crypto against your holdings (overcollateralized). No credit check, instant approval.</div></div>
+          </div>
+          <div class="warning-box" style="margin-top:14px"><div class="warning-icon">⚠️</div><div class="warning-text">DeFi carries risks: smart contract bugs, impermanent loss, rug pulls. Start with small amounts and stick to well-audited protocols.</div></div>
+        </div>
+      </div>
+
+      <!-- NFTs -->
+      <div class="content-card fade-up" id="nft">
+        <div class="content-hdr"><div class="content-icon">5️⃣</div><div><div class="content-title">NFTs & Web3</div><div class="content-subtitle">Digital ownership explained</div></div></div>
+        <div class="content-body">
+          <p style="font-size:13.5px;color:var(--t2);line-height:1.7;margin-bottom:14px">An <strong style="color:var(--t1)">NFT (Non-Fungible Token)</strong> is a unique digital token on a blockchain that proves ownership of a digital asset — art, music, video, or even real-world items. "Non-fungible" means each one is unique (unlike Bitcoin where each coin is identical).</p>
+          <div class="steps">
+            <div class="step-card"><div class="step-num">Use Case 01</div><div class="step-title">🎨 Digital Art</div><div class="step-desc">Artists sell unique digital artworks. Buyers get verifiable ownership recorded on blockchain (Bored Apes, CryptoPunks).</div></div>
+            <div class="step-card"><div class="step-num">Use Case 02</div><div class="step-title">🎮 Gaming</div><div class="step-desc">In-game items (weapons, skins, land) as NFTs that players truly own and can sell outside the game.</div></div>
+            <div class="step-card"><div class="step-num">Use Case 03</div><div class="step-title">🎵 Music & Content</div><div class="step-desc">Musicians sell albums as NFTs, giving fans revenue shares and exclusive access — cutting out record labels.</div></div>
+            <div class="step-card"><div class="step-num">Use Case 04</div><div class="step-title">🏠 Real World Assets</div><div class="step-desc">Tokenizing physical assets like real estate, allowing fractional ownership and 24/7 trading.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAX -->
+      <div class="content-card fade-up" id="tax">
+        <div class="content-hdr"><div class="content-icon">6️⃣</div><div><div class="content-title">Crypto Taxes in India</div><div class="content-subtitle">Know your obligations — simplified</div></div></div>
+        <div class="content-body">
+          <div class="warning-box"><div class="warning-icon">📋</div><div class="warning-text">This is general educational information only. Consult a Chartered Accountant for personalized tax advice.</div></div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs)"><div style="font-size:14px;font-weight:700;margin-bottom:4px">30% Flat Tax</div><div style="font-size:13px;color:var(--t2);line-height:1.6">All crypto gains taxed at 30% flat rate (+ 4% cess) from FY 2022-23. No distinction between short-term and long-term.</div></div>
+            <div style="padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs)"><div style="font-size:14px;font-weight:700;margin-bottom:4px">1% TDS</div><div style="font-size:13px;color:var(--t2);line-height:1.6">1% TDS deducted by exchanges on every crypto sale over ₹50,000. Claimable when filing ITR.</div></div>
+            <div style="padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs)"><div style="font-size:14px;font-weight:700;margin-bottom:4px">No Loss Set-off</div><div style="font-size:13px;color:var(--t2);line-height:1.6">Losses from crypto CANNOT be offset against gains from other asset classes (stocks, mutual funds).</div></div>
+            <div style="padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs)"><div style="font-size:14px;font-weight:700;margin-bottom:4px">ITR Filing</div><div style="font-size:13px;color:var(--t2);line-height:1.6">Report crypto income under "Income from Other Sources" or "Business Income" depending on trading frequency.</div></div>
+            <div style="padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs)"><div style="font-size:14px;font-weight:700;margin-bottom:4px">VDA Definition</div><div style="font-size:13px;color:var(--t2);line-height:1.6">Crypto falls under Virtual Digital Assets (VDA). Gifts of VDA also taxable if value exceeds ₹50,000.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GLOSSARY -->
+      <div class="content-card fade-up" id="glossary">
+        <div class="content-hdr"><div class="content-icon">📖</div><div><div class="content-title">Crypto Glossary A–Z</div><div class="content-subtitle">Every term you'll ever need, searchable</div></div></div>
+        <div class="content-body">
+          <div class="gloss-search-wrap">
+            <span class="gloss-search-icon">🔍</span>
+            <input type="text" class="gloss-search" id="GLOSS_SEARCH" placeholder="Search glossary terms…" oninput="filterGlossary(this.value)" autocomplete="off">
+          </div>
+          <div class="gloss-grid" id="GLOSS_GRID"></div>
+        </div>
+      </div>
+
+      <!-- QUIZ -->
+      <div class="content-card fade-up" id="quiz">
+        <div class="content-hdr"><div class="content-icon">🧠</div><div><div class="content-title">Test Your Knowledge</div><div class="content-subtitle">Quick quiz to check what you've learned</div></div></div>
+        <div class="content-body" id="QUIZ_BODY"></div>
+      </div>
+
+      <!-- SAFETY TIPS -->
+      <div class="content-card fade-up" id="tips">
+        <div class="content-hdr"><div class="content-icon">💡</div><div><div class="content-title">Safety Tips for Indian Investors</div><div class="content-subtitle">Protect your funds from scams</div></div></div>
+        <div class="content-body">
+          <div class="tip-grid">
+            <div class="tip-card"><div class="tip-icon">🔐</div><div><div class="tip-title">Enable 2FA Everywhere</div><div class="tip-desc">Use Google Authenticator (not SMS) for all crypto accounts. SMS can be SIM-swapped by attackers.</div></div></div>
+            <div class="tip-card"><div class="tip-icon">🎣</div><div><div class="tip-title">Beware Phishing</div><div class="tip-desc">Check URLs carefully. Fake sites with typo domains steal passwords. Always bookmark official sites.</div></div></div>
+            <div class="tip-card"><div class="tip-icon">👜</div><div><div class="tip-title">Hardware Wallet</div><div class="tip-desc">If you own more than ₹50,000 in crypto, get a Ledger or Trezor. It's the gold standard for security.</div></div></div>
+            <div class="tip-card"><div class="tip-icon">🚨</div><div><div class="tip-title">Spot Scams</div><div class="tip-desc">"Guaranteed returns" is ALWAYS a scam. No legitimate investment guarantees profit. DYOR always.</div></div></div>
+            <div class="tip-card"><div class="tip-icon">📦</div><div><div class="tip-title">DCA Strategy</div><div class="tip-desc">Don't invest everything at once. Dollar-cost averaging (small regular purchases) reduces timing risk.</div></div></div>
+            <div class="tip-card"><div class="tip-icon">📱</div><div><div class="tip-title">Secure Your Phone</div><div class="tip-desc">Use a strong PIN/biometric. Don't use public Wi-Fi for crypto transactions. Keep all apps updated.</div></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /learn-content -->
+  </div><!-- /learn-layout -->
+</main>
+
+<footer>
+  <p>© 2026 <a href="index.html">PublicDrop.in</a> · Educational purposes only · <a href="about.html">About</a> · <a href="about.html#terms">Terms</a> · <a href="about.html#privacy">Privacy</a> · Not financial advice</p>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+/* ── Theme ── */
+(function(){const t=localStorage.getItem('pd_theme')||'light';document.documentElement.setAttribute('data-theme',t);document.getElementById('THEME_BTN').textContent=t==='dark'?'☀️':'🌙';})();
+function toggleTheme(){const c=document.documentElement.getAttribute('data-theme');const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);document.getElementById('THEME_BTN').textContent=n==='dark'?'☀️':'🌙';localStorage.setItem('pd_theme',n);}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3200);}
+function scrollToSection(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});}
+
+/* ── Menu ── */
+function openMenu(){document.getElementById('MOBILE_MENU').classList.add('open');document.getElementById('HAMBURGER').classList.add('open');}
+function closeMenu(){document.getElementById('MOBILE_MENU').classList.remove('open');document.getElementById('HAMBURGER').classList.remove('open');}
+function handleMenuOverlay(e){if(e.target===document.getElementById('MOBILE_MENU'))closeMenu();}
+
+/* ── Nav active ── */
+document.querySelectorAll('.learn-nav-link').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.learn-nav-link').forEach(b=>b.classList.remove('active'));btn.classList.add('active');});});
+
+/* ── Progress ── */
+let completed=parseInt(localStorage.getItem('pd_learn_progress')||'0');
+function updateProgress(){
+  const pct=Math.round((completed/6)*100);
+  document.getElementById('PROGRESS_BAR').style.width=pct+'%';
+  document.getElementById('PROGRESS_VAL').textContent=completed+' / 6 completed';
+  localStorage.setItem('pd_learn_progress',completed);
+}
+updateProgress();
+document.querySelectorAll('.content-card').forEach((card,i)=>{if(i<6){card.addEventListener('click',()=>{if(i+1>completed){completed=i+1;updateProgress();}});}});
+
+/* ── Glossary Data ── */
+const GLOSSARY=[
+  {term:'Address',def:'A unique identifier (like a bank account number) for sending/receiving crypto. Example: 0x742d35Cc…'},
+  {term:'Airdrop',def:'Free distribution of cryptocurrency tokens, usually to promote a new project or reward loyal holders.'},
+  {term:'Altcoin',def:'Any cryptocurrency other than Bitcoin. Ethereum, Solana, Cardano are all altcoins.'},
+  {term:'ATH (All-Time High)',def:'The highest price a cryptocurrency has ever reached.'},
+  {term:'Bear Market',def:'A prolonged period of declining prices (typically 20%+ drop). Opposite of bull market.'},
+  {term:'Block',def:'A container for transaction data on the blockchain. Blocks link together to form the blockchain.'},
+  {term:'Blockchain',def:'A public, immutable ledger of all transactions distributed across thousands of computers worldwide.'},
+  {term:'Bridge',def:'Technology that allows tokens to move between different blockchain networks (e.g., Ethereum to Solana).'},
+  {term:'Bull Market',def:'A period of rising prices and positive sentiment in the crypto market.'},
+  {term:'CEX',def:'Centralized Exchange — a traditional crypto exchange that holds your funds on your behalf.'},
+  {term:'Cold Wallet',def:'Offline storage for crypto (hardware wallet like Ledger). Not connected to internet = safer.'},
+  {term:'dApp',def:'Decentralized Application — an app built on blockchain that runs on smart contracts without a central server.'},
+  {term:'DeFi',def:'Decentralized Finance — financial services (lending, trading, yield) on blockchain without banks.'},
+  {term:'DEX',def:'Decentralized Exchange — a peer-to-peer marketplace (Uniswap, SushiSwap) where you trade directly from your wallet.'},
+  {term:'DYOR',def:'"Do Your Own Research" — always research before investing. Never follow blindly.'},
+  {term:'FUD',def:'"Fear, Uncertainty, Doubt" — negative news or sentiment (sometimes spread intentionally) that drops prices.'},
+  {term:'Gas Fees',def:'Transaction fees paid to miners/validators on Ethereum for processing transactions.'},
+  {term:'HODL',def:'Holding cryptocurrency long-term regardless of price drops. Originally a typo of "hold".'},
+  {term:'Hot Wallet',def:'A crypto wallet connected to the internet (MetaMask, Trust Wallet). Convenient but less secure.'},
+  {term:'KYC',def:'"Know Your Customer" — identity verification required by exchanges under anti-money-laundering laws.'},
+  {term:'Layer 1',def:'The base blockchain (Bitcoin, Ethereum, Solana). All transactions settle on this layer.'},
+  {term:'Layer 2',def:'A secondary protocol built on top of Layer 1 to improve speed and reduce fees (Polygon, Arbitrum).'},
+  {term:'Liquidity',def:'How easily an asset can be bought or sold without affecting its price. Bitcoin is highly liquid.'},
+  {term:'Market Cap',def:'Total value of a cryptocurrency = current price × circulating supply.'},
+  {term:'Mempool',def:'A waiting area where unconfirmed transactions sit before being included in a block.'},
+  {term:'Mining',def:'Using computing power to validate transactions and create new cryptocurrency. Energy-intensive.'},
+  {term:'NFT',def:'Non-Fungible Token — a unique digital asset on blockchain representing ownership of art, games, etc.'},
+  {term:'Node',def:'A computer that participates in a blockchain network by verifying and storing transaction data.'},
+  {term:'Private Key',def:'A secret code that proves you own your crypto. NEVER share it with anyone — ever.'},
+  {term:'Proof of Stake',def:'A consensus mechanism where validators lock up (stake) coins to validate transactions. Less energy than PoW.'},
+  {term:'Proof of Work',def:'Bitcoin\'s consensus mechanism where miners compete using computing power to validate blocks.'},
+  {term:'Public Key',def:'Your crypto address — safe to share for receiving funds. Generated from your private key.'},
+  {term:'Rekt',def:'Slang for suffering severe losses in crypto trading.'},
+  {term:'Rug Pull',def:'A scam where developers abandon a project and run away with investors\' funds.'},
+  {term:'Seed Phrase',def:'12–24 words that back up your wallet. Write on paper, store safely, NEVER online.'},
+  {term:'Smart Contract',def:'Self-executing code on blockchain that automatically enforces rules of an agreement.'},
+  {term:'Stablecoin',def:'Crypto pegged to a stable asset (USDT, USDC = $1). Used to avoid volatility.'},
+  {term:'Staking',def:'Locking up crypto to help validate transactions and earn rewards. Like earning interest.'},
+  {term:'TPS',def:'Transactions Per Second — speed measure. Bitcoin: 7 TPS. Visa: 24,000 TPS. Solana: 65,000 TPS.'},
+  {term:'VDA',def:'Virtual Digital Asset — Indian government\'s term for cryptocurrencies and NFTs.'},
+  {term:'Volatility',def:'How much a price fluctuates. Bitcoin can move 10%+ in a day — very volatile vs stocks.'},
+  {term:'Wallet',def:'Software or hardware that stores your private keys and lets you send/receive crypto.'},
+  {term:'Whale',def:'An entity holding a large amount of cryptocurrency. Their trades can move markets.'},
+  {term:'Whitepaper',def:'A technical document explaining a cryptocurrency project\'s goals, technology, and tokenomics.'},
+  {term:'Yield Farming',def:'Providing liquidity to DeFi protocols to earn rewards (tokens + fees). High risk, high reward.'},
+];
+
+function renderGlossary(items){
+  const grid=document.getElementById('GLOSS_GRID');
+  if(!items.length){grid.innerHTML='<div class="gloss-empty">No terms found. Try a different search.</div>';return;}
+  grid.innerHTML=items.map(g=>`<div class="gloss-item"><div class="gloss-term">${g.term}</div><div class="gloss-def">${g.def}</div></div>`).join('');
+}
+function filterGlossary(q){
+  const filtered=q?GLOSSARY.filter(g=>g.term.toLowerCase().includes(q.toLowerCase())||g.def.toLowerCase().includes(q.toLowerCase())):GLOSSARY;
+  renderGlossary(filtered);
+}
+renderGlossary(GLOSSARY);
+
+/* ── Quiz ── */
+const QUESTIONS=[
+  {q:'What does "HODL" mean in crypto?',opts:['Hold On for Dear Life','A type of wallet','A crypto exchange','A technical indicator'],ans:0,section:'Glossary'},
+  {q:'What is a seed phrase?',opts:['A type of stablecoin','12-24 words that back up your wallet','A trading strategy','An exchange fee'],ans:1,section:'Wallets & Safety'},
+  {q:'Which blockchain introduced smart contracts?',opts:['Bitcoin','Solana','Ethereum','Cardano'],ans:2,section:'What is Crypto'},
+  {q:'What is a rug pull?',opts:['A trading strategy','DeFi yield farming','A scam where devs abandon a project','A type of NFT'],ans:2,section:'DeFi'},
+  {q:'In India, crypto gains are taxed at what flat rate?',opts:['10%','15%','20%','30%'],ans:3,section:'Crypto & Taxes'},
+  {q:'What does CEX stand for?',opts:['Crypto Exchange','Centralized Exchange','Chain Exchange','Certified Exchange'],ans:1,section:'Glossary'},
+  {q:'What is USDT?',opts:['A type of NFT','A stablecoin pegged to USD','A DeFi protocol','A hardware wallet'],ans:1,section:'Glossary'},
+];
+let quizScore=0;
+const quizBody=document.getElementById('QUIZ_BODY');
+quizBody.innerHTML=QUESTIONS.map((q,qi)=>`
+  <div class="quiz-card" id="quiz-${qi}">
+    <div class="quiz-q">Q${qi+1}. ${q.q}</div>
+    <div style="font-size:10.5px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">${q.section}</div>
+    <div class="quiz-options">${q.opts.map((opt,oi)=>`<button class="quiz-opt" onclick="checkAnswer(${qi},${oi},${q.ans})">${opt}</button>`).join('')}</div>
+  </div>`).join('')+
+  `<div id="QUIZ_RESULT" style="display:none;padding:20px;background:var(--upb);border:1px solid var(--upbr);border-radius:var(--rs);text-align:center">
+    <div style="font-size:22px;margin-bottom:6px">🎉</div>
+    <div style="font-size:16px;font-weight:800;color:var(--up)" id="QUIZ_SCORE"></div>
+    <div style="font-size:13px;color:var(--t2);margin-top:4px">Great job learning about crypto!</div>
+    <button onclick="resetQuiz()" style="margin-top:12px;padding:8px 20px;border-radius:var(--pill);background:var(--up);color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer">Try Again</button>
+  </div>`;
+
+let quizAnswered=new Set();
+function checkAnswer(qi,oi,correct){
+  if(quizAnswered.has(qi))return;
+  quizAnswered.add(qi);
+  const card=document.getElementById('quiz-'+qi);
+  const opts=card.querySelectorAll('.quiz-opt');
+  opts.forEach((btn,i)=>{btn.disabled=true;if(i===correct)btn.classList.add('correct');else if(i===oi&&oi!==correct)btn.classList.add('wrong');});
+  if(oi===correct)quizScore++;
+  if(quizAnswered.size===QUESTIONS.length){
+    document.getElementById('QUIZ_RESULT').style.display='block';
+    document.getElementById('QUIZ_SCORE').textContent=`You scored ${quizScore}/${QUESTIONS.length}!`;
+  }
+}
+function resetQuiz(){quizScore=0;quizAnswered=new Set();setTimeout(()=>location.reload(),100);}
+
+/* ── Global Search ── */
+const SEARCH_INDEX=[
+  ...GLOSSARY.map(g=>({type:'Glossary',title:g.term,snippet:g.def,action:()=>scrollToSection('glossary')})),
+  {type:'Learn Guide',title:'What is Cryptocurrency?',snippet:'Bitcoin, Blockchain, Decentralization, Mining, Ethereum, Altcoins explained.',action:()=>scrollToSection('guide')},
+  {type:'Learn Guide',title:'How to Buy Crypto in India',snippet:'Step by step: choose platform, KYC, add funds, buy BTC/ETH, secure your crypto.',action:()=>scrollToSection('how-to-buy')},
+  {type:'Learn Guide',title:'Wallets & Security',snippet:'Exchange wallets, software wallets, hardware wallets, paper wallets.',action:()=>scrollToSection('wallets')},
+  {type:'Learn Guide',title:'DeFi — Decentralized Finance',snippet:'Smart contracts, liquidity mining, lending protocols, yield farming.',action:()=>scrollToSection('defi')},
+  {type:'Learn Guide',title:'NFTs & Web3',snippet:'Digital art, gaming NFTs, music NFTs, real-world asset tokenization.',action:()=>scrollToSection('nft')},
+  {type:'Learn Guide',title:'Crypto Taxes in India',snippet:'30% flat tax, 1% TDS, no loss set-off, VDA definition, ITR filing.',action:()=>scrollToSection('tax')},
+  ...QUESTIONS.map((q,i)=>({type:'Quiz Question',title:q.q,snippet:'Test your knowledge: '+q.opts.join(', '),action:()=>scrollToSection('quiz')})),
+];
+
+function handleLearnSearch(q){
+  const panel=document.getElementById('SEARCH_PANEL');
+  const clear=document.getElementById('SEARCH_CLEAR');
+  clear.classList.toggle('show',q.length>0);
+  if(!q.trim()){panel.classList.remove('open');panel.innerHTML='';return;}
+  const results=SEARCH_INDEX.filter(item=>item.title.toLowerCase().includes(q.toLowerCase())||item.snippet.toLowerCase().includes(q.toLowerCase())).slice(0,8);
+  if(!results.length){panel.innerHTML='<div class="sri-empty">No results found. Try a different term.</div>';panel.classList.add('open');return;}
+  panel.innerHTML=results.map((r,i)=>`
+    <div class="search-result-item" onclick="r${i}()">
+      <div class="sri-section">${r.type}</div>
+      <div class="sri-title">${highlight(r.title,q)}</div>
+      <div class="sri-snippet">${r.snippet.substring(0,80)}…</div>
+    </div>`).join('');
+  results.forEach((r,i)=>{window['r'+i]=()=>{r.action();clearSearch();}});
+  panel.classList.add('open');
+}
+function highlight(text,q){return text.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<mark style="background:var(--accentb);color:var(--accent);border-radius:2px;padding:0 2px">$1</mark>');}
+function clearSearch(){document.getElementById('LEARN_SEARCH').value='';document.getElementById('SEARCH_PANEL').classList.remove('open');document.getElementById('SEARCH_PANEL').innerHTML='';document.getElementById('SEARCH_CLEAR').classList.remove('show');}
+document.addEventListener('click',e=>{if(!e.target.closest('.learn-search-wrap'))document.getElementById('SEARCH_PANEL').classList.remove('open');});
+</script>
+
+<!-- ── Animated Logo ── -->
+<script>
+(function(){
+  var logoHTML=`
+  <div class="pd-logo-badge">
+    <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect class="pd-logo-bar pd-logo-bar1" x="4" y="16" width="4" height="14" rx="1" fill="rgba(255,255,255,.12)"/>
+      <rect class="pd-logo-bar pd-logo-bar2" x="10" y="11" width="4" height="19" rx="1" fill="rgba(255,255,255,.16)"/>
+      <rect class="pd-logo-bar pd-logo-bar3" x="16" y="13" width="4" height="17" rx="1" fill="rgba(255,255,255,.13)"/>
+      <rect class="pd-logo-bar pd-logo-bar4" x="22" y="7" width="4" height="23" rx="1" fill="rgba(255,255,255,.2)"/>
+      <rect class="pd-logo-bar pd-logo-bar5" x="28" y="9" width="4" height="21" rx="1" fill="rgba(255,255,255,.16)"/>
+      <polyline class="pd-logo-line" points="5,22 12,16 18,20 24,9 31,12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle class="pd-logo-dot pd-logo-dot1" cx="5" cy="22" r="1.5" fill="rgba(255,255,255,.5)"/>
+      <circle class="pd-logo-dot pd-logo-dot2" cx="12" cy="16" r="1.5" fill="rgba(255,255,255,.6)"/>
+      <circle class="pd-logo-dot pd-logo-dot3" cx="18" cy="20" r="1.5" fill="rgba(255,255,255,.5)"/>
+      <circle class="pd-logo-dot pd-logo-dot4" cx="24" cy="9" r="2.5" fill="white"/>
+      <circle class="pd-logo-dot pd-logo-dot5" cx="31" cy="12" r="1.5" fill="rgba(255,255,255,.6)"/>
+      <g class="pd-logo-arrow">
+        <line x1="24" y1="5" x2="24" y2="2" stroke="#00e8a2" stroke-width="1.5" stroke-linecap="round"/>
+        <polyline points="22,4 24,1 26,4" fill="none" stroke="#00e8a2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    </svg>
+  </div>
+  <div class="pd-wordmark">
+    <div class="pd-name-row">
+      <span class="pd-word-public">Public</span><span class="pd-word-drop">DROP</span>
+    </div>
+    <div class="pd-tagline"><span class="pd-live-dot"></span>Crypto Analytics</div>
+  </div>`;
+  var navLogo=document.getElementById('PD_LOGO_WRAP');
+  if(navLogo)navLogo.innerHTML=logoHTML;
+})();
+</script>
+</body>
+</html>

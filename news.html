@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Crypto News — PublicDrop.in</title>
+<meta name="description" content="Latest crypto news from Bitcoin, Ethereum, DeFi, NFT, AI tokens and more. Real-time market data and prediction market insights on PublicDrop.in">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:ital,opsz,wght@0,6..7.2,200..800;1,6..7.2,200..800&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+
+<!-- ═══ Firebase Auth ═══ -->
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import{getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword,sendPasswordResetEmail,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut,updateProfile}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+const cfg={apiKey:"AIzaSyAzzLvWmzxrfYva_PMvTNis53O_arpkNFs",authDomain:"publicdropin.firebaseapp.com",projectId:"publicdropin",storageBucket:"publicdropin.firebasestorage.app",messagingSenderId:"1039430223124",appId:"1:1039430223124:web:db45545c7fba10e09b6e01"};
+const app=initializeApp(cfg);
+const auth=getAuth(app);
+window._auth=auth;
+window._gp=new GoogleAuthProvider();
+
+onAuthStateChanged(auth,u=>{
+  window._fbUser=u;
+  const loginBtns=document.querySelectorAll('.nav-login-btn');
+  const chip=document.getElementById('NAV_USER_CHIP');
+  const mob=document.getElementById('MOB_AUTH_BTN');
+  if(u){
+    const name=u.displayName||u.email||'User';
+    const initial=name.charAt(0).toUpperCase();
+    loginBtns.forEach(b=>b.style.display='none');
+    if(chip){chip.style.display='flex';chip.querySelector('.nav-user-name').textContent=name.split(' ')[0];const av=chip.querySelector('.nav-user-avatar');if(av)av.textContent=initial;}
+    if(mob){mob.textContent='👤 '+name.split(' ')[0];mob.onclick=()=>{signOut(auth);toast('👋 Signed out!');};}
+  }else{
+    loginBtns.forEach(b=>b.style.display='');
+    if(chip)chip.style.display='none';
+    if(mob){mob.textContent='🔐 Login / Sign Up';mob.onclick=()=>{closeMenu();openAuthModal();};}
+  }
+});
+
+const FE={'auth/user-not-found':'No account found with this email.','auth/wrong-password':'Incorrect password.','auth/email-already-in-use':'Email already registered.','auth/weak-password':'Password must be at least 6 chars.','auth/invalid-email':'Invalid email address.','auth/too-many-requests':'Too many attempts — wait a moment.','auth/popup-closed-by-user':'Google sign-in cancelled.','auth/invalid-credential':'Incorrect email or password.','auth/network-request-failed':'Network error.'};
+const fe=c=>FE[c]||'Something went wrong. Try again.';
+function showErr(id,m){const e=document.getElementById(id);if(!e)return;e.textContent='⚠ '+m;e.style.display='block';clearTimeout(e._t);e._t=setTimeout(()=>e.style.display='none',6000);}
+function showOk(id,m){const e=document.getElementById(id);if(!e)return;e.textContent=m;e.style.display='block';clearTimeout(e._t);e._t=setTimeout(()=>e.style.display='none',5000);}
+function busy(id,on){const b=document.getElementById(id);if(!b)return;b.disabled=on;if(on){b._h=b.innerHTML;b.innerHTML='<span class="fb-spin"></span> Please wait…';}else if(b._h)b.innerHTML=b._h;}
+
+window.doLogin=async function(e){
+  if(e)addRipple&&addRipple(e);
+  const em=document.getElementById('AM_EMAIL').value.trim();
+  const pw=document.getElementById('AM_PASS').value;
+  if(!em||!pw){showErr('AM_ERR','Please enter email and password.');return;}
+  busy('AM_LOGIN_BTN',true);
+  try{await signInWithEmailAndPassword(auth,em,pw);closeAuthModal();toast('✅ Welcome back!');}
+  catch(err){showErr('AM_ERR',fe(err.code));busy('AM_LOGIN_BTN',false);}
+};
+window.doRegister=async function(e){
+  if(e)addRipple&&addRipple(e);
+  const nm=document.getElementById('AM_REG_NAME').value.trim();
+  const em=document.getElementById('AM_REG_EMAIL').value.trim();
+  const pw=document.getElementById('AM_REG_PASS').value;
+  const pw2=document.getElementById('AM_REG_PASS2').value;
+  if(!em||!pw){showErr('AM_REG_ERR','Fill in all fields.');return;}
+  if(pw!==pw2){showErr('AM_REG_ERR','Passwords do not match.');return;}
+  if(pw.length<6){showErr('AM_REG_ERR','Password too short.');return;}
+  busy('AM_REG_BTN',true);
+  try{const cred=await createUserWithEmailAndPassword(auth,em,pw);if(nm)await updateProfile(cred.user,{displayName:nm});closeAuthModal();toast('🎉 Account created! Welcome, '+(nm||em)+'!');}
+  catch(err){showErr('AM_REG_ERR',fe(err.code));busy('AM_REG_BTN',false);}
+};
+window.doGoogle=async function(){
+  ['AM_GOOGLE_BTN','AM_REG_GOOGLE_BTN'].forEach(id=>busy(id,true));
+  try{await signInWithPopup(auth,window._gp);closeAuthModal();toast('✅ Signed in with Google!');}
+  catch(err){showErr('AM_ERR',fe(err.code));['AM_GOOGLE_BTN','AM_REG_GOOGLE_BTN'].forEach(id=>busy(id,false));}
+};
+window.doReset=async function(e){
+  if(e)addRipple&&addRipple(e);
+  const em=document.getElementById('AM_FGT_EMAIL').value.trim();
+  if(!em){showErr('AM_FGT_ERR','Enter your email.');return;}
+  busy('AM_RESET_BTN',true);
+  try{await sendPasswordResetEmail(auth,em);showOk('AM_FGT_OK','✅ Reset email sent! Check your inbox.');}
+  catch(err){showErr('AM_FGT_ERR',fe(err.code));}
+  finally{busy('AM_RESET_BTN',false);}
+};
+window.doSignOut=async function(){await signOut(auth);toast('👋 Signed out. See you soon!');};
+window.checkStrength=function(pw){
+  const bar=document.getElementById('STR_BAR');const fill=document.getElementById('STR_FILL');const lbl=document.getElementById('STR_LBL');
+  if(!bar)return;bar.style.display='block';lbl.style.display='block';
+  let sc=0;if(pw.length>=6)sc++;if(pw.length>=10)sc++;if(/[A-Z]/.test(pw))sc++;if(/[0-9]/.test(pw))sc++;if(/[^A-Za-z0-9]/.test(pw))sc++;
+  const pct=Math.min(sc*22,100);
+  const col=sc<=1?'#E8334A':sc<=2?'#F59E0B':sc<=3?'#0EA66A':'#1A56DB';
+  const txt=sc<=1?'Weak':sc<=2?'Fair':sc<=3?'Good':'Strong';
+  fill.style.width=pct+'%';fill.style.background=col;lbl.textContent=txt;lbl.style.color=col;
+};
+window.togglePw=function(id,btn){const inp=document.getElementById(id);if(!inp)return;inp.type=inp.type==='password'?'text':'password';btn.textContent=inp.type==='password'?'👁':'🙈';};
+</script>
+
+<style>
+:root{
+  --ff:'Plus Jakarta Sans','Bricolage Grotesque',sans-serif;
+  --ff2:'Space Grotesk',sans-serif;
+  --fm:'DM Mono',monospace;
+  --bg:#F7F8FC;--surface:#FFFFFF;--surface2:#F2F3F8;--surface3:#E8EAF2;--surface4:#DDE0EE;
+  --border:rgba(0,0,0,.07);--border2:rgba(0,0,0,.12);--border3:rgba(0,0,0,.18);
+  --t1:#0A0C14;--t2:#4A4F6A;--t3:#8B90AB;--t4:#C2C6DB;
+  --up:#0EA66A;--upb:rgba(14,166,106,.1);--upbr:rgba(14,166,106,.22);
+  --dn:#E8334A;--dnb:rgba(232,51,74,.1);--dnbr:rgba(232,51,74,.22);
+  --accent:#1A56DB;--accentb:rgba(26,86,219,.1);--accentbr:rgba(26,86,219,.22);
+  --sha-sm:0 1px 3px rgba(0,0,0,.05),0 2px 8px rgba(0,0,0,.04);
+  --sha:0 2px 12px rgba(0,0,0,.07),0 8px 30px rgba(0,0,0,.05);
+  --sha-lg:0 12px 40px rgba(0,0,0,.12),0 4px 14px rgba(0,0,0,.06);
+  --r:14px;--rs:10px;--rx:7px;--pill:999px;--nav-h:60px;
+}
+[data-theme="dark"]{
+  --bg:#0B0C11;--surface:#12141C;--surface2:#181A24;--surface3:#1F2130;--surface4:#272A3B;
+  --border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.10);--border3:rgba(255,255,255,.16);
+  --t1:#F0F1F8;--t2:#8C91AD;--t3:#505570;--t4:#2E3148;
+  --sha-sm:0 1px 3px rgba(0,0,0,.3),0 2px 8px rgba(0,0,0,.2);
+  --sha:0 2px 12px rgba(0,0,0,.4),0 8px 30px rgba(0,0,0,.3);
+  --sha-lg:0 12px 40px rgba(0,0,0,.5),0 4px 14px rgba(0,0,0,.3);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;min-width:0;}
+html{scroll-behavior:smooth;font-size:16px;overflow-x:hidden;width:100%;}
+body{font-family:var(--ff);background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;transition:background .25s,color .25s;overflow-x:hidden;width:100%;position:relative;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+input,select,textarea{font-family:inherit;}
+img{display:block;max-width:100%;}
+h1,h2,h3{font-family:var(--ff2),var(--ff),sans-serif;}
+p,h1,h2,h3,h4,div,span{word-break:break-word;overflow-wrap:break-word;}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@keyframes heartPop{0%{transform:scale(1)}45%{transform:scale(1.55)}100%{transform:scale(1)}}
+@keyframes ripple{to{transform:scale(2);opacity:0}}
+@keyframes pdBar{to{transform:scaleY(1);}}
+@keyframes pdLine{to{stroke-dashoffset:0;}}
+@keyframes pdDot{to{transform:scale(1);}}
+@keyframes pdArrow{to{opacity:1;transform:translateY(0);}}
+@keyframes pdWordL{to{opacity:1;transform:translateX(0);}}
+@keyframes pdWordR{to{opacity:1;transform:translateX(0);}}
+@keyframes pdTag{to{opacity:1;}}
+@keyframes pdLivePulse{0%{transform:scale(.8);opacity:.7;}100%{transform:scale(2);opacity:0;}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes polyPulse{0%,100%{opacity:1}50%{opacity:.5}}
+.fade-up{animation:fadeUp .35s ease both;}
+.sk{border-radius:6px;background:linear-gradient(90deg,var(--surface2),var(--surface3),var(--surface2));background-size:200% 100%;animation:shimmer 1.5s infinite;display:block;}
+.fb-spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;}
+
+/* ═══ ANIMATED LOGO ═══ */
+.pd-logo-badge{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#1A56DB,#1e40af);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:visible;position:relative;}
+.pd-logo-badge svg{width:26px;height:26px;}
+.pd-logo-bar{transform-origin:bottom;transform:scaleY(0);animation:pdBar .4s cubic-bezier(.22,1,.36,1) both;}
+.pd-logo-bar1{animation-delay:.1s;}.pd-logo-bar2{animation-delay:.18s;}.pd-logo-bar3{animation-delay:.26s;}.pd-logo-bar4{animation-delay:.34s;}.pd-logo-bar5{animation-delay:.42s;}
+.pd-logo-line{stroke-dasharray:200;stroke-dashoffset:200;animation:pdLine .8s ease .55s forwards;}
+.pd-logo-dot{transform:scale(0);transform-origin:center;}
+.pd-logo-dot1{animation:pdDot .25s cubic-bezier(.34,1.56,.64,1) 1.1s forwards;}
+.pd-logo-dot2{animation:pdDot .25s cubic-bezier(.34,1.56,.64,1) 1.18s forwards;}
+.pd-logo-dot3{animation:pdDot .25s cubic-bezier(.34,1.56,.64,1) 1.26s forwards;}
+.pd-logo-dot4{animation:pdDot .3s cubic-bezier(.34,1.56,.64,1) 1.34s forwards;}
+.pd-logo-dot5{animation:pdDot .25s cubic-bezier(.34,1.56,.64,1) 1.42s forwards;}
+.pd-logo-arrow{opacity:0;transform:translateY(4px);animation:pdArrow .4s cubic-bezier(.34,1.56,.64,1) 1.55s forwards;}
+.pd-wordmark{display:flex;flex-direction:column;justify-content:center;margin-left:10px;line-height:1;}
+.pd-name-row{display:flex;align-items:baseline;gap:0;line-height:1;}
+.pd-word-public{font-size:18px;font-weight:800;color:var(--t1);letter-spacing:-.5px;opacity:0;transform:translateX(-10px);animation:pdWordL .5s cubic-bezier(.22,1,.36,1) .3s forwards;font-family:var(--ff2);}
+.pd-word-drop{font-size:18px;font-weight:800;background:linear-gradient(90deg,#1a5cff,#4d8bff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.5px;opacity:0;transform:translateX(10px);animation:pdWordR .5s cubic-bezier(.22,1,.36,1) .42s forwards;font-family:var(--ff2);}
+.pd-tagline{font-size:8.5px;font-weight:600;color:var(--t3);letter-spacing:2px;text-transform:uppercase;opacity:0;animation:pdTag .5s ease .85s forwards;}
+.pd-live-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:#00e8a2;margin-right:4px;vertical-align:middle;position:relative;}
+.pd-live-dot::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:1px solid #00e8a2;animation:pdLivePulse 1.6s ease 2s infinite;opacity:0;}
+
+/* ═══ NAV ═══ */
+nav{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:500;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:var(--sha-sm);}
+.nav-inner{max-width:1500px;margin:0 auto;padding:0 16px;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.logo{display:flex;align-items:center;gap:0;flex-shrink:0;text-decoration:none;cursor:pointer;}
+.nav-links{display:flex;align-items:center;gap:2px;flex:1;justify-content:center;}
+.nav-link{padding:7px 10px;border-radius:var(--rx);font-size:13px;font-weight:600;color:var(--t2);background:none;border:none;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:4px;cursor:pointer;text-decoration:none;}
+.nav-link:hover,.nav-link.active{color:var(--t1);background:var(--surface2);}
+.badge-new{font-size:9px;font-weight:700;padding:2px 5px;border-radius:var(--pill);background:var(--upb);color:var(--up);border:1px solid var(--upbr);}
+.nav-right-group{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.nav-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.theme-toggle{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border2);background:var(--surface2);color:var(--t2);display:flex;align-items:center;justify-content:center;font-size:15px;transition:all .2s;flex-shrink:0;cursor:pointer;}
+.theme-toggle:hover{border-color:var(--border3);color:var(--t1);}
+.nav-btn{padding:8px 14px;border-radius:var(--pill);font-size:13px;font-weight:700;transition:all .18s;border:none;cursor:pointer;}
+.nav-btn-solid{background:var(--t1);color:var(--bg);}
+.nav-btn-solid:hover{opacity:.88;transform:translateY(-1px);}
+.hamburger{display:flex;flex-direction:column;gap:4.5px;background:none;border:none;padding:7px;color:var(--t1);cursor:pointer;flex-shrink:0;}
+.hamburger span{width:20px;height:2px;background:currentColor;border-radius:2px;display:block;transition:all .3s;transform-origin:center;}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+
+/* NAV USER CHIP */
+.nav-user-chip{display:none;align-items:center;gap:7px;padding:5px 12px 5px 6px;border-radius:var(--pill);background:var(--surface2);border:1.5px solid var(--border2);cursor:pointer;transition:all .15s;}
+.nav-user-chip:hover{border-color:var(--border3);}
+.nav-user-avatar{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#1A56DB,#6366F1);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.nav-user-name{font-size:12.5px;font-weight:700;color:var(--t1);font-family:var(--ff2);}
+
+/* ═══ MOBILE MENU ═══ */
+.mobile-menu{position:fixed;inset:0;z-index:990;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .25s;}
+.mobile-menu.open{opacity:1;pointer-events:all;}
+.menu-panel{position:absolute;top:0;right:0;bottom:0;width:min(300px,88vw);background:var(--surface);box-shadow:var(--sha-lg);overflow-y:auto;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .3s cubic-bezier(.22,1,.36,1);}
+.mobile-menu.open .menu-panel{transform:translateX(0);}
+.menu-hdr{display:flex;align-items:center;justify-content:space-between;padding:18px 16px 14px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.menu-close{width:32px;height:32px;border-radius:50%;background:var(--surface2);border:1.5px solid var(--border2);color:var(--t2);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;}
+.menu-close:hover{color:var(--dn);border-color:var(--dn);}
+.menu-body{flex:1;padding:12px 12px 20px;display:flex;flex-direction:column;gap:2px;}
+.menu-section-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);padding:10px 10px 4px;}
+.mob-link{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:var(--rs);font-size:14px;font-weight:600;color:var(--t2);background:none;border:none;width:100%;text-align:left;transition:all .15s;cursor:pointer;text-decoration:none;}
+.mob-link:hover,.mob-link.active{color:var(--t1);background:var(--surface2);}
+.mob-link .mob-icon{width:20px;text-align:center;font-size:15px;}
+.mob-divider{height:1px;background:var(--border);margin:6px 0;}
+.mob-auth-btn{margin:8px 12px 0;padding:12px;border-radius:var(--rs);background:var(--t1);color:var(--bg);font-size:14px;font-weight:700;border:none;cursor:pointer;text-align:center;transition:all .18s;width:calc(100% - 24px);}
+.mob-auth-btn:hover{opacity:.88;}
+
+/* ═══ AUTH MODAL ═══ */
+.auth-modal{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .25s;}
+.auth-modal.open{opacity:1;pointer-events:all;}
+.auth-box{background:var(--surface);border:1px solid var(--border2);border-radius:20px;box-shadow:var(--sha-lg);width:100%;max-width:400px;overflow:hidden;animation:fadeUp .3s ease;}
+.auth-logo-wrap{display:flex;justify-content:center;padding:22px 0 10px;}
+.auth-tabs{display:flex;border-bottom:1px solid var(--border);padding:0 20px;}
+.auth-tab{flex:1;padding:12px 0;font-size:13px;font-weight:700;color:var(--t3);border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;font-family:var(--ff);}
+.auth-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.auth-panel{display:none;padding:22px 22px 24px;}
+.auth-panel.active{display:block;}
+.auth-input-wrap{position:relative;margin-bottom:12px;}
+.auth-input-wrap label{display:block;font-size:11.5px;font-weight:700;color:var(--t2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;}
+.auth-input{width:100%;padding:10px 40px 10px 13px;background:var(--surface2);border:1.5px solid var(--border2);border-radius:var(--rx);font-size:13.5px;color:var(--t1);outline:none;transition:border-color .2s;}
+.auth-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accentb);}
+.auth-input::placeholder{color:var(--t3);}
+.pw-eye{position:absolute;right:12px;bottom:10px;background:none;border:none;font-size:16px;cursor:pointer;color:var(--t3);padding:0;}
+.auth-btn{width:100%;padding:12px;border-radius:var(--rx);font-size:14px;font-weight:700;cursor:pointer;transition:all .18s;border:none;margin-top:4px;position:relative;overflow:hidden;}
+.auth-btn-primary{background:var(--accent);color:#fff;}
+.auth-btn-primary:hover{opacity:.9;transform:translateY(-1px);}
+.auth-btn-google{background:var(--surface2);color:var(--t1);border:1.5px solid var(--border2);margin-top:8px;}
+.auth-btn-google:hover{border-color:var(--border3);}
+.auth-divider{display:flex;align-items:center;gap:8px;margin:14px 0;}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border2);}
+.auth-divider span{font-size:11px;color:var(--t3);font-weight:600;}
+.auth-err{display:none;background:var(--dnb);border:1px solid var(--dnbr);color:var(--dn);padding:9px 12px;border-radius:var(--rx);font-size:12.5px;font-weight:600;margin-bottom:10px;}
+.auth-ok{display:none;background:var(--upb);border:1px solid var(--upbr);color:var(--up);padding:9px 12px;border-radius:var(--rx);font-size:12.5px;font-weight:600;margin-bottom:10px;}
+.auth-switch{text-align:center;margin-top:14px;font-size:12.5px;color:var(--t3);}
+.auth-switch a{color:var(--accent);font-weight:700;cursor:pointer;}
+.str-bar{display:none;height:4px;background:var(--surface3);border-radius:var(--pill);overflow:hidden;margin-top:5px;}
+.str-fill{height:100%;border-radius:var(--pill);transition:width .3s,background .3s;width:0;}
+.str-lbl{display:none;font-size:10.5px;font-weight:700;margin-top:3px;}
+
+/* ═══ PAGE ═══ */
+.page{width:100%;max-width:1200px;margin:0 auto;padding:20px 14px 80px;overflow:hidden;}
+.page-hdr{margin-bottom:18px;}
+.page-title{font-size:24px;font-weight:800;letter-spacing:-.8px;margin-bottom:5px;}
+.page-sub{color:var(--t2);font-size:13px;line-height:1.55;}
+
+/* ═══ LAYOUT ═══ */
+.news-layout{display:grid;grid-template-columns:1fr 300px;gap:16px;align-items:start;width:100%;overflow:hidden;}
+
+/* ═══ FILTER BAR ═══ */
+.filters{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;overflow-y:visible;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px;width:100%;}
+.filters::-webkit-scrollbar{display:none;}
+.nf{padding:6px 14px;border-radius:var(--pill);font-size:12px;font-weight:700;border:1.5px solid var(--border2);background:transparent;color:var(--t2);transition:all .14s;white-space:nowrap;flex-shrink:0;cursor:pointer;}
+.nf:hover{border-color:var(--border3);color:var(--t1);}
+.nf.active{background:var(--t1);color:var(--bg);border-color:var(--t1);}
+.nf-count{font-size:11px;font-weight:700;font-family:var(--fm);background:var(--surface2);border:1px solid var(--border);border-radius:var(--pill);padding:2px 9px;color:var(--t3);white-space:nowrap;flex-shrink:0;align-self:center;margin-left:auto;}
+
+/* ═══ CARDS ═══ */
+.feed{display:flex;flex-direction:column;width:100%;overflow:hidden;}
+.card{background:var(--surface);border:1px solid var(--border);border-bottom:none;overflow:hidden;width:100%;}
+.card:first-child{border-radius:var(--r) var(--r) 0 0;}
+.card:last-child{border-bottom:1px solid var(--border);border-radius:0 0 var(--r) var(--r);}
+.card:only-child{border-radius:var(--r);border-bottom:1px solid var(--border);}
+.card.hero{border-radius:var(--r)!important;border-bottom:1px solid var(--border)!important;}
+.hero-img-wrap{position:relative;overflow:hidden;border-radius:var(--r) var(--r) 0 0;background:var(--surface3);width:100%;}
+.hero-img{width:100%;height:190px;object-fit:cover;display:block;flex-shrink:0;}
+.hero-badge{position:absolute;top:10px;left:10px;display:inline-flex;align-items:center;gap:4px;background:var(--accent);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:var(--pill);white-space:nowrap;}
+.hero-body{padding:13px 14px 0;width:100%;}
+
+.cat{font-size:10px;font-weight:700;padding:2px 8px;border-radius:var(--pill);text-transform:uppercase;letter-spacing:.3px;flex-shrink:0;white-space:nowrap;}
+.c-btc{background:rgba(245,158,11,.14);color:#D97706;}
+.c-eth{background:rgba(99,102,241,.14);color:#4F46E5;}
+.c-defi{background:rgba(14,166,106,.14);color:#0EA66A;}
+.c-nft{background:rgba(236,72,153,.14);color:#DB2777;}
+.c-reg{background:rgba(232,51,74,.14);color:#E8334A;}
+.c-mkt{background:rgba(26,86,219,.14);color:#1A56DB;}
+.c-meme{background:rgba(245,158,11,.14);color:#D97706;}
+.c-ai{background:rgba(139,92,246,.14);color:#7C3AED;}
+.c-sol{background:rgba(153,69,255,.14);color:#9945FF;}
+.c-layer2{background:rgba(6,182,212,.14);color:#0891B2;}
+.c-mining{background:rgba(251,191,36,.14);color:#B45309;}
+.c-macro{background:rgba(52,211,153,.14);color:#065F46;}
+
+.author{display:flex;align-items:center;gap:8px;margin-bottom:7px;width:100%;overflow:hidden;}
+.av{width:26px;height:26px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:800;}
+.av-info{flex:1;overflow:hidden;}
+.av-name{font-size:12px;font-weight:700;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.av-time{font-size:10.5px;color:var(--t3);font-family:var(--fm);}
+.card-row{display:flex;gap:10px;padding:12px 13px 0;width:100%;overflow:hidden;align-items:flex-start;}
+.card-text{flex:1;min-width:0;overflow:hidden;}
+.card-thumb{width:76px;height:60px;flex-shrink:0;border-radius:var(--rs);overflow:hidden;background:var(--surface3);}
+.card-thumb img{width:100%;height:100%;object-fit:cover;}
+.card-title{font-size:14px;font-weight:700;line-height:1.4;color:var(--t1);margin-bottom:5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.card-title.lg{font-size:17px;font-weight:800;letter-spacing:-.3px;line-height:1.35;-webkit-line-clamp:3;}
+.card-excerpt{font-size:12.5px;color:var(--t2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:8px;}
+.card-excerpt.lg{-webkit-line-clamp:3;}
+.coin-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;}
+.ctag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:var(--pill);background:var(--surface3);color:var(--t2);font-family:var(--fm);white-space:nowrap;}
+.sbar{display:flex;width:100%;border-top:1px solid var(--border);margin-top:4px;overflow:hidden;}
+.sbtn{flex:1;display:flex;align-items:center;justify-content:center;gap:4px;padding:9px 4px;font-size:12.5px;font-weight:600;color:var(--t3);transition:color .15s,background .15s;white-space:nowrap;overflow:hidden;}
+.sbtn:hover{color:var(--t1);background:var(--surface2);}
+.card.hero .sbtn:first-child,.card:only-child .sbtn:first-child{border-radius:0 0 0 var(--r);}
+.card.hero .sbtn:last-child,.card:only-child .sbtn:last-child{border-radius:0 0 var(--r) 0;}
+.card:last-child .sbtn:first-child{border-radius:0 0 0 var(--r);}
+.card:last-child .sbtn:last-child{border-radius:0 0 var(--r) 0;}
+.ssep{width:1px;background:var(--border);align-self:stretch;margin:6px 0;flex-shrink:0;}
+.heart-ico{font-size:16px;line-height:1;flex-shrink:0;}
+.sbtn.liked{color:var(--dn)!important;}
+.sbtn.liked .heart-ico{animation:heartPop .3s ease;}
+.exp-panel{display:none;padding:13px 14px;border-top:1px solid var(--border);background:var(--surface2);font-size:13px;color:var(--t2);line-height:1.65;width:100%;overflow:hidden;}
+.exp-panel.open{display:block;}
+.exp-panel p{margin-bottom:10px;word-break:break-word;}
+.read-link{display:inline-flex;align-items:center;gap:5px;margin-top:8px;padding:8px 16px;border-radius:var(--pill);background:var(--accent);color:#fff;font-size:12.5px;font-weight:700;white-space:nowrap;}
+.read-link:hover{opacity:.88;}
+.load-wrap{text-align:center;margin-top:12px;}
+.load-btn{padding:10px 28px;border-radius:var(--pill);border:1.5px solid var(--border3);background:var(--surface);color:var(--t1);font-size:13px;font-weight:700;cursor:pointer;transition:all .18s;white-space:nowrap;}
+.load-btn:hover{background:var(--t1);color:var(--bg);}
+.load-btn:disabled{opacity:.4;cursor:not-allowed;}
+
+/* ═══ SIDEBAR ═══ */
+.sidebar{display:flex;flex-direction:column;gap:14px;width:100%;overflow:hidden;}
+.side-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;width:100%;box-shadow:var(--sha-sm);}
+.side-hdr{padding:11px 14px;border-bottom:1px solid var(--border);font-size:13.5px;font-weight:800;display:flex;align-items:center;gap:7px;overflow:hidden;}
+.side-src{font-size:10px;color:var(--t3);font-weight:500;margin-left:auto;font-family:var(--fm);flex-shrink:0;}
+.side-body{padding:10px 14px;width:100%;overflow:hidden;}
+
+/* Price rows */
+.pr{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);width:100%;overflow:hidden;}
+.pr:last-child{border-bottom:none;}
+.pr-l{display:flex;align-items:center;gap:7px;flex:1;overflow:hidden;}
+.pr-img{width:22px;height:22px;flex-shrink:0;border-radius:50%;background:var(--surface3);object-fit:cover;}
+.pr-name{font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pr-sym{font-size:10px;color:var(--t3);font-family:var(--fm);}
+.pr-r{text-align:right;flex-shrink:0;}
+.pr-val{font-family:var(--fm);font-size:12.5px;font-weight:600;}
+.pr-chg{font-family:var(--fm);font-size:11px;font-weight:700;}
+.up-c{color:#0EA66A;}.dn-c{color:#E8334A;}
+
+/* Trending */
+.ti{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);width:100%;overflow:hidden;cursor:pointer;transition:background .12s;border-radius:var(--rx);}
+.ti:hover{background:var(--surface2);}
+.ti:last-child{border-bottom:none;}
+.ti-rank{font-family:var(--fm);font-size:11px;color:var(--t4);width:18px;flex-shrink:0;text-align:center;font-weight:700;}
+.ti-rank.top{color:var(--dn);font-weight:800;}
+.ti-info{flex:1;overflow:hidden;}
+.ti-name{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ti-cnt{font-size:10.5px;color:var(--t3);font-family:var(--fm);margin-top:1px;}
+.ti-hot{font-size:12px;flex-shrink:0;margin-left:auto;}
+
+/* Polymarket */
+.pm-item{padding:9px 0;border-bottom:1px solid var(--border);width:100%;overflow:hidden;}
+.pm-item:last-child{border-bottom:none;}
+.pm-q{font-size:12px;font-weight:700;color:var(--t1);margin-bottom:5px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.pm-bar-wrap{display:flex;align-items:center;gap:6px;}
+.pm-bar-bg{flex:1;height:5px;border-radius:var(--pill);background:var(--surface3);overflow:hidden;}
+.pm-bar-fill{height:100%;border-radius:var(--pill);transition:width .4s;}
+.pm-yes{background:#0EA66A;}.pm-no{background:#E8334A;}
+.pm-pct{font-family:var(--fm);font-size:11px;font-weight:700;flex-shrink:0;width:32px;}
+.pm-vol{font-family:var(--fm);font-size:10px;color:var(--t3);margin-top:3px;}
+.pm-live-dot{width:6px;height:6px;border-radius:50%;background:#0EA66A;flex-shrink:0;animation:polyPulse 1.5s ease infinite;}
+.pm-status{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--t3);font-family:var(--fm);margin-top:3px;}
+
+/* Newsletter */
+.nl-card{background:linear-gradient(135deg,#1A56DB,#2563EB 55%,#7C3AED)!important;border:none!important;width:100%;overflow:hidden;}
+.nl-body{padding:18px 14px;width:100%;}
+.nl-title{font-size:15px;font-weight:800;color:#fff;margin-bottom:5px;}
+.nl-sub{font-size:12.5px;color:rgba(255,255,255,.75);margin-bottom:13px;line-height:1.5;}
+.nl-input{display:block;width:100%;padding:9px 12px;border-radius:var(--rx);border:1.5px solid rgba(255,255,255,.25);font-size:13px;background:rgba(255,255,255,.15);color:#fff;outline:none;margin-bottom:8px;font-family:var(--ff);}
+.nl-input::placeholder{color:rgba(255,255,255,.55);}
+.nl-input:focus{border-color:rgba(255,255,255,.6);}
+.nl-btn{display:block;width:100%;padding:9px;border-radius:var(--rx);background:#fff;color:#1A56DB;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--ff);transition:opacity .18s;}
+.nl-btn:hover{opacity:.9;}
+.nl-ok{display:none;width:100%;padding:14px 10px;border-radius:var(--rx);background:rgba(14,166,106,.25);border:1.5px solid rgba(14,166,106,.5);color:#fff;font-size:13px;font-weight:700;text-align:center;line-height:1.65;}
+
+/* Toast */
+#toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--t1);color:var(--bg);padding:10px 22px;border-radius:var(--pill);font-size:13px;font-weight:700;box-shadow:var(--sha-lg);z-index:9999;transition:transform .35s cubic-bezier(.34,1.56,.64,1);pointer-events:none;max-width:calc(100vw - 32px);text-align:center;white-space:nowrap;}
+#toast.show{transform:translateX(-50%) translateY(0);}
+
+/* Footer */
+footer{width:100%;background:var(--surface);border-top:1px solid var(--border);padding:18px 16px;text-align:center;}
+footer p{color:var(--t3);font-size:12px;line-height:1.7;word-break:break-word;}
+footer a{color:var(--t2);font-weight:600;}
+footer a:hover{color:var(--t1);}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:1000px){.nav-links{display:none;}}
+@media(max-width:860px){.news-layout{grid-template-columns:1fr;}.sidebar{order:2;}}
+@media(max-width:480px){
+  .page{padding:14px 12px 60px;}
+  .hero-img{height:160px;}
+  .page-title{font-size:22px;}
+  .card-title.lg{font-size:15px;}
+  .card-row{padding:10px 12px 0;gap:8px;}
+  .hero-body{padding:11px 12px 0;}
+  .sbtn{padding:9px 2px;font-size:11.5px;}
+  .exp-panel{padding:12px 12px;}
+  .side-hdr{padding:10px 12px;}
+  .side-body{padding:8px 12px;}
+  .nl-body{padding:16px 12px;}
+  .card-thumb{width:68px;height:54px;}
+  .pd-tagline{display:none;}
+}
+@media(max-width:360px){.page{padding:12px 10px 60px;}.card-title{font-size:13px;}.sbtn{font-size:11px;}}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <div class="nav-inner">
+    <!-- Left: Logo -->
+    <a class="logo" href="index.html" id="PD_LOGO_WRAP" style="text-decoration:none;display:flex;align-items:center;gap:0;padding:0;cursor:pointer;flex-shrink:0;"></a>
+
+    <!-- Center: Nav Links (desktop only) -->
+    <div class="nav-links">
+      <button class="nav-link" onclick="location.href='index.html'">📊 Cryptocurrencies</button>
+      <a class="nav-link" href="airdrop.html">🎁 Airdrops <span class="badge-new">NEW</span></a>
+      <button class="nav-link active">📰 News</button>
+      <a class="nav-link" href="learn.html">📚 Learn</a>
+      <a class="nav-link" href="about.html">ℹ️ About</a>
+    </div>
+
+    <!-- Right: User chip + Theme + Hamburger -->
+    <div class="nav-right-group">
+      <div class="nav-user-chip" id="NAV_USER_CHIP" onclick="doSignOut()" title="Click to sign out">
+        <div class="nav-user-avatar">U</div>
+        <span class="nav-user-name">User</span>
+      </div>
+      <button class="theme-toggle" id="THEME_BTN" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+      <button class="hamburger" id="HAMBURGER" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ MOBILE MENU ═══ -->
+<div class="mobile-menu" id="MOBILE_MENU" onclick="handleMenuOverlay(event)">
+  <div class="menu-panel">
+    <div class="menu-hdr">
+      <div id="MOB_LOGO_WRAP" style="display:flex;align-items:center;gap:0;"></div>
+      <button class="menu-close" onclick="closeMenu()">×</button>
+    </div>
+    <div class="menu-body">
+      <div class="menu-section-label">Navigation</div>
+      <a class="mob-link" href="index.html"><span class="mob-icon">📊</span>Cryptocurrencies</a>
+      <a class="mob-link" href="airdrop.html"><span class="mob-icon">🎁</span>Airdrops</a>
+      <button class="mob-link active"><span class="mob-icon">📰</span>News</button>
+      <a class="mob-link" href="learn.html"><span class="mob-icon">📚</span>Learn</a>
+      <a class="mob-link" href="about.html"><span class="mob-icon">ℹ️</span>About</a>
+      <div class="mob-divider"></div>
+    </div>
+    <button class="mob-auth-btn" id="MOB_AUTH_BTN" onclick="openAuthModal()">🔐 Login / Sign Up</button>
+  </div>
+</div>
+
+<!-- ═══ AUTH MODAL ═══ -->
+<div class="auth-modal" id="AUTH_MODAL" onclick="handleAuthOverlayClick(event)">
+  <div class="auth-box">
+    <div class="auth-logo-wrap" id="AM_LOGO_WRAP"></div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="TAB_LOGIN" onclick="switchAuthTab('login')">Sign In</button>
+      <button class="auth-tab" id="TAB_REG" onclick="switchAuthTab('register')">Register</button>
+      <button class="auth-tab" id="TAB_FGT" onclick="switchAuthTab('forgot')">Reset</button>
+    </div>
+
+    <!-- Login -->
+    <div class="auth-panel active" id="PANEL_LOGIN">
+      <div class="auth-err" id="AM_ERR"></div>
+      <div class="auth-input-wrap"><label>Email</label><input class="auth-input" id="AM_EMAIL" type="email" placeholder="you@email.com" autocomplete="email"></div>
+      <div class="auth-input-wrap"><label>Password</label><input class="auth-input" id="AM_PASS" type="password" placeholder="••••••••" autocomplete="current-password"><button class="pw-eye" onclick="togglePw('AM_PASS',this)">👁</button></div>
+      <button class="auth-btn auth-btn-primary" id="AM_LOGIN_BTN" onclick="doLogin(event)">Sign In</button>
+      <div class="auth-divider"><span>or</span></div>
+      <button class="auth-btn auth-btn-google" id="AM_GOOGLE_BTN" onclick="doGoogle()">🌐 Continue with Google</button>
+      <div class="auth-switch">No account? <a onclick="switchAuthTab('register')">Register free</a> · <a onclick="switchAuthTab('forgot')">Forgot password?</a></div>
+    </div>
+
+    <!-- Register -->
+    <div class="auth-panel" id="PANEL_REG">
+      <div class="auth-err" id="AM_REG_ERR"></div>
+      <div class="auth-input-wrap"><label>Name</label><input class="auth-input" id="AM_REG_NAME" type="text" placeholder="Your name" autocomplete="name"></div>
+      <div class="auth-input-wrap"><label>Email</label><input class="auth-input" id="AM_REG_EMAIL" type="email" placeholder="you@email.com" autocomplete="email"></div>
+      <div class="auth-input-wrap"><label>Password</label><input class="auth-input" id="AM_REG_PASS" type="password" placeholder="Min 6 chars" oninput="checkStrength(this.value)" autocomplete="new-password"><button class="pw-eye" onclick="togglePw('AM_REG_PASS',this)">👁</button>
+        <div class="str-bar" id="STR_BAR"><div class="str-fill" id="STR_FILL"></div></div>
+        <div class="str-lbl" id="STR_LBL"></div>
+      </div>
+      <div class="auth-input-wrap"><label>Confirm</label><input class="auth-input" id="AM_REG_PASS2" type="password" placeholder="Repeat password" autocomplete="new-password"><button class="pw-eye" onclick="togglePw('AM_REG_PASS2',this)">👁</button></div>
+      <button class="auth-btn auth-btn-primary" id="AM_REG_BTN" onclick="doRegister(event)">Create Account</button>
+      <div class="auth-divider"><span>or</span></div>
+      <button class="auth-btn auth-btn-google" id="AM_REG_GOOGLE_BTN" onclick="doGoogle()">🌐 Continue with Google</button>
+      <div class="auth-switch">Have an account? <a onclick="switchAuthTab('login')">Sign in</a></div>
+    </div>
+
+    <!-- Forgot -->
+    <div class="auth-panel" id="PANEL_FGT">
+      <div class="auth-err" id="AM_FGT_ERR"></div>
+      <div class="auth-ok" id="AM_FGT_OK"></div>
+      <p style="font-size:13px;color:var(--t2);margin-bottom:14px;line-height:1.6">Enter your email and we'll send a reset link.</p>
+      <div class="auth-input-wrap"><label>Email</label><input class="auth-input" id="AM_FGT_EMAIL" type="email" placeholder="you@email.com"></div>
+      <button class="auth-btn auth-btn-primary" id="AM_RESET_BTN" onclick="doReset(event)">Send Reset Link</button>
+      <div class="auth-switch"><a onclick="switchAuthTab('login')">← Back to Sign In</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE ═══ -->
+<div class="page">
+  <div class="page-hdr fade-up">
+    <h1 class="page-title">📰 Crypto News</h1>
+    <p class="page-sub">Latest stories from Bitcoin, Ethereum, DeFi, NFTs, AI tokens & the broader crypto market — updated live.</p>
+  </div>
+
+  <div class="news-layout">
+    <!-- LEFT: Feed -->
+    <div style="width:100%;overflow:hidden;">
+      <!-- Filter bar: dynamically populated after articles load -->
+      <div class="filters fade-up" id="FILTER_BAR">
+        <button class="nf active" onclick="setFilter('all',this)">All News</button>
+        <div class="nf-count" id="NEWS_COUNT">Loading…</div>
+      </div>
+      <!-- Refresh row -->
+      <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:8px;gap:8px;">
+        <span id="LAST_REFRESH" style="font-size:11px;color:var(--t3);font-family:var(--fm)"></span>
+        <button onclick="refreshFeed()" id="REFRESH_BTN" style="display:flex;align-items:center;gap:4px;padding:5px 12px;border-radius:var(--pill);border:1.5px solid var(--border2);background:var(--surface);color:var(--t2);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='var(--border3)';this.style.color='var(--t1)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--t2)'">↻ Refresh</button>
+      </div>
+      <!-- Feed -->
+      <div class="feed fade-up" id="FEED"></div>
+      <div class="load-wrap">
+        <button class="load-btn" id="LOAD_BTN" onclick="loadMore()">Load More Stories</button>
+      </div>
+    </div>
+
+    <!-- RIGHT: Sidebar -->
+    <div class="sidebar">
+
+      <!-- Live Prices -->
+      <div class="side-card">
+        <div class="side-hdr">💹 Live Prices</div>
+        <div class="side-body" id="PRICES">
+          <div class="sk" style="height:32px;margin-bottom:7px"></div>
+          <div class="sk" style="height:32px;margin-bottom:7px"></div>
+          <div class="sk" style="height:32px;margin-bottom:7px"></div>
+          <div class="sk" style="height:32px;margin-bottom:7px"></div>
+          <div class="sk" style="height:32px"></div>
+        </div>
+      </div>
+
+      <!-- Polymarket Predictions -->
+      <div class="side-card">
+        <div class="side-hdr">🎯 Prediction Markets<span class="side-src" style="display:flex;align-items:center;gap:4px"><span class="pm-live-dot"></span>Polymarket</span></div>
+        <div class="side-body" id="POLYMARKET">
+          <div class="sk" style="height:56px;margin-bottom:7px"></div>
+          <div class="sk" style="height:56px;margin-bottom:7px"></div>
+          <div class="sk" style="height:56px"></div>
+        </div>
+      </div>
+
+      <!-- Trending Topics -->
+      <div class="side-card">
+        <div class="side-hdr">🔥 Trending Topics<button onclick="buildTrending(allRawArticles)" title="Refresh trending" style="margin-left:auto;background:none;border:none;cursor:pointer;font-size:13px;color:var(--t3);padding:0 2px;transition:color .15s;" onmouseover="this.style.color='var(--t1)'" onmouseout="this.style.color='var(--t3)'">↻</button></div>
+        <div class="side-body" id="TRENDING_BODY">
+          <!-- dynamically populated -->
+          <div class="sk" style="height:40px;margin-bottom:7px"></div>
+          <div class="sk" style="height:40px;margin-bottom:7px"></div>
+          <div class="sk" style="height:40px"></div>
+        </div>
+      </div>
+
+      <!-- Fear & Greed -->
+      <div class="side-card">
+        <div class="side-hdr">😰 Fear &amp; Greed</div>
+        <div class="side-body" id="FEAR_GREED">
+          <div class="sk" style="height:64px"></div>
+        </div>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="side-card nl-card">
+        <div class="nl-body">
+          <div class="nl-title">📬 Daily Newsletter</div>
+          <div class="nl-sub">Get top crypto stories &amp; market updates delivered to your inbox every morning.</div>
+          <input type="email" id="NL_EMAIL" class="nl-input" placeholder="your@email.com">
+          <button class="nl-btn" onclick="subscribe()">Subscribe Free</button>
+          <div class="nl-ok" id="NL_OK">✅ Your Email is Registered for<br>Regular Crypto Advice and Update!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <p>© 2026 <a href="index.html">PublicDrop.in</a> · Prediction Markets via Polymarket · <a href="about.html#privacy">Privacy</a> · Not financial advice</p>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+/* ══ THEME ══ */
+(function(){
+  const t=localStorage.getItem('pd_theme')||'light';
+  document.documentElement.setAttribute('data-theme',t);
+  const btn=document.getElementById('THEME_BTN');
+  if(btn)btn.textContent=t==='dark'?'☀️':'🌙';
+})();
+function toggleTheme(){
+  const c=document.documentElement.getAttribute('data-theme');
+  const n=c==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',n);
+  localStorage.setItem('pd_theme',n);
+  const btn=document.getElementById('THEME_BTN');
+  if(btn)btn.textContent=n==='dark'?'☀️':'🌙';
+}
+
+/* ══ MOBILE MENU ══ */
+function toggleMenu(){
+  document.getElementById('HAMBURGER').classList.toggle('open');
+  document.getElementById('MOBILE_MENU').classList.toggle('open');
+}
+function closeMenu(){
+  document.getElementById('HAMBURGER').classList.remove('open');
+  document.getElementById('MOBILE_MENU').classList.remove('open');
+}
+function handleMenuOverlay(e){if(e.target===document.getElementById('MOBILE_MENU'))closeMenu();}
+
+/* ══ AUTH MODAL ══ */
+function openAuthModal(){document.getElementById('AUTH_MODAL').classList.add('open');switchAuthTab('login');}
+function closeAuthModal(){document.getElementById('AUTH_MODAL').classList.remove('open');}
+function handleAuthOverlayClick(e){if(e.target===document.getElementById('AUTH_MODAL'))closeAuthModal();}
+function switchAuthTab(tab){
+  const map={login:'LOGIN',register:'REG',forgot:'FGT'};
+  ['LOGIN','REG','FGT'].forEach(t=>{
+    document.getElementById('PANEL_'+t)?.classList.toggle('active',t===map[tab]);
+    document.getElementById('TAB_'+t)?.classList.toggle('active',t===map[tab]);
+  });
+}
+function addRipple(e){
+  const btn=e.currentTarget||e.target;
+  const r=document.createElement('span');
+  const rect=btn.getBoundingClientRect();
+  const size=Math.max(rect.width,rect.height);
+  r.style.cssText=`position:absolute;width:${size}px;height:${size}px;border-radius:50%;background:rgba(255,255,255,.3);transform:scale(0);animation:ripple .6s ease-out;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px;pointer-events:none`;
+  btn.style.position='relative';btn.style.overflow='hidden';
+  btn.appendChild(r);setTimeout(()=>r.remove(),700);
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeAuthModal();closeMenu();}});
+
+/* ══ TOAST ══ */
+function toast(m){
+  const t=document.getElementById('toast');
+  t.textContent=m;t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+/* ══ NEWSLETTER ══ */
+function subscribe(){
+  const v=document.getElementById('NL_EMAIL').value.trim();
+  if(!v||!v.includes('@')){toast('⚠️ Enter a valid email');return;}
+  document.getElementById('NL_EMAIL').style.display='none';
+  document.querySelector('.nl-btn').style.display='none';
+  document.getElementById('NL_OK').style.display='block';
+  toast('✅ Subscribed to daily crypto newsletter!');
+}
+
+/* ══════════════════════════════
+   NEWS ENGINE
+══════════════════════════════ */
+let articles=[],allRawArticles=[],activeFilter='all',shown=12;
+const liked=new Set();
+const SITE_URL='https://publicdrop.in/news.html';
+const SITE_NAME='PublicDrop.in — Crypto News';
+
+/* Extended category map */
+const CATMAP={
+  Bitcoin:'c-btc',Ethereum:'c-eth',DeFi:'c-defi',NFT:'c-nft',
+  Regulation:'c-reg',Market:'c-mkt',Meme:'c-meme',AI:'c-ai',
+  Solana:'c-sol','Layer 2':'c-layer2',Mining:'c-mining',Macro:'c-macro',
+  XRP:'c-mkt',BNB:'c-mkt',Cardano:'c-mkt',Avalanche:'c-mkt'
+};
+
+/* All possible filter tabs with their labels, icons, keys, patterns */
+const ALL_TABS=[
+  {f:'BTC',  label:'₿ Bitcoin',      cat:'Bitcoin',   r:/bitcoin|\bbtc\b/i},
+  {f:'ETH',  label:'Ethereum',       cat:'Ethereum',  r:/ethereum|\beth\b/i},
+  {f:'SOL',  label:'◎ Solana',       cat:'Solana',    r:/\bsolana\b|\bsol\b/i},
+  {f:'XRP',  label:'XRP',            cat:'XRP',       r:/\bxrp\b|ripple/i},
+  {f:'BNB',  label:'BNB',            cat:'BNB',       r:/\bbnb\b|binance/i},
+  {f:'defi', label:'DeFi',           cat:'DeFi',      r:/\bdefi\b|yield|liquidity|uniswap|aave|dex/i},
+  {f:'nft',  label:'NFT',            cat:'NFT',       r:/\bnft\b|opensea|ordinals/i},
+  {f:'ai',   label:'🤖 AI',          cat:'AI',        r:/\bai\b|artificial intelligence|chatgpt|llm/i},
+  {f:'meme', label:'🐸 Meme',        cat:'Meme',      r:/\bmeme\b|doge|shib|pepe|bonk|floki/i},
+  {f:'layer2',label:'Layer 2',       cat:'Layer 2',   r:/layer.?2|\bl2\b|arbitrum|optimism|polygon|base/i},
+  {f:'regulation',label:'Regulation',cat:'Regulation',r:/regulat|\bsec\b|government|cftc|senate/i},
+  {f:'macro', label:'Macro',         cat:'Macro',     r:/\bfed\b|inflation|interest rate|gdp|recession/i},
+  {f:'market',label:'Markets',       cat:'Market',    r:/market|price|rally|crash|bull|bear/i},
+];
+
+function getcat(a){
+  const t=((a.title||'')+' '+(a.body||'')).toLowerCase();
+  if(/bitcoin|\bbtc\b/.test(t))return 'Bitcoin';
+  if(/ethereum|\beth\b/.test(t))return 'Ethereum';
+  if(/\bsolana\b|\bsol\b/.test(t))return 'Solana';
+  if(/\bxrp\b|ripple/.test(t))return 'XRP';
+  if(/\bbnb\b|binance/.test(t))return 'BNB';
+  if(/\bdefi\b|yield|liquidity|protocol|amm|dex|uniswap|aave/.test(t))return 'DeFi';
+  if(/\bnft\b|opensea|ordinals|jpeg/.test(t))return 'NFT';
+  if(/regulat|\bsec\b|ban |government|cftc|legal|law|court|senate/.test(t))return 'Regulation';
+  if(/\bmeme\b|doge|shib|pepe|bonk|floki/.test(t))return 'Meme';
+  if(/\bai\b|artificial intelligence|chatgpt|llm|machine learning/.test(t))return 'AI';
+  if(/layer.?2|\bl2\b|arbitrum|optimism|polygon|zk.?sync|base/.test(t))return 'Layer 2';
+  if(/mining|miner|hash.?rate|asic|pow/.test(t))return 'Mining';
+  if(/\bfed\b|inflation|interest rate|macro|gdp|recession|cpi/.test(t))return 'Macro';
+  return 'Market';
+}
+
+function filterArticles(raw,f){
+  if(f==='all')return raw;
+  const tab=ALL_TABS.find(t=>t.f===f);
+  if(!tab)return raw;
+  return raw.filter(a=>tab.r.test((a.title||'')+' '+(a.body||'')));
+}
+
+/* Build dynamic filter tabs based on actual article counts */
+function buildFilterTabs(raw){
+  const bar=document.getElementById('FILTER_BAR');
+  const count=document.getElementById('NEWS_COUNT');
+  /* Count articles per tab */
+  const tabs=ALL_TABS.map(tab=>{
+    const n=raw.filter(a=>tab.r.test((a.title||'')+' '+(a.body||''))).length;
+    return{...tab,n};
+  }).filter(tab=>tab.n>=2); /* only show tabs with ≥2 articles */
+
+  /* Rebuild bar: All + dynamic tabs + count */
+  bar.innerHTML='';
+  const allBtn=document.createElement('button');
+  allBtn.className='nf'+(activeFilter==='all'?' active':'');
+  allBtn.textContent='All News';
+  allBtn.onclick=()=>setFilter('all',allBtn);
+  bar.appendChild(allBtn);
+
+  tabs.forEach(tab=>{
+    const btn=document.createElement('button');
+    btn.className='nf'+(activeFilter===tab.f?' active':'');
+    btn.innerHTML=tab.label+` <span style="font-size:9px;opacity:.6">${tab.n}</span>`;
+    btn.onclick=()=>setFilter(tab.f,btn);
+    btn.dataset.filter=tab.f;
+    bar.appendChild(btn);
+  });
+  bar.appendChild(count);
+}
+
+function reltime(ts){
+  const s=Math.floor(Date.now()/1000-ts);
+  if(s<60)return 'just now';
+  if(s<3600)return Math.floor(s/60)+'m ago';
+  if(s<86400)return Math.floor(s/3600)+'h ago';
+  return Math.floor(s/86400)+'d ago';
+}
+
+const GRADS=[
+  'linear-gradient(135deg,#1A56DB,#7C3AED)',
+  'linear-gradient(135deg,#0EA66A,#1A56DB)',
+  'linear-gradient(135deg,#E8334A,#D97706)',
+  'linear-gradient(135deg,#7C3AED,#DB2777)',
+  'linear-gradient(135deg,#D97706,#E8334A)',
+  'linear-gradient(135deg,#0EA66A,#7C3AED)',
+  'linear-gradient(135deg,#06B6D4,#1A56DB)',
+  'linear-gradient(135deg,#F97316,#E8334A)',
+];
+function grad(s){let h=0;for(let c of s)h=(h*31+c.charCodeAt(0))%GRADS.length;return GRADS[h];}
+function initials(s){return(s||'??').slice(0,2).toUpperCase();}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+
+/* ── Source 1: CryptoCompare (no key needed) ── */
+async function fetchCC(){
+  const url='https://min-api.cryptocompare.com/data/v2/news/?lang=EN&sortOrder=latest&extraParams=publicdrop';
+  const r=await fetch(url,{signal:AbortSignal.timeout(8000)});if(!r.ok)throw new Error('CC '+r.status);
+  const d=await r.json();if(d.Response==='Error')throw new Error(d.Message);
+  return(d.Data||[]).map(a=>({
+    id:String(a.id),title:a.title||'',body:a.body||'',url:a.url||'#',
+    img:a.imageurl||'',src:a.source_info?.name||a.source||'CryptoCompare',
+    ts:a.published_on||0,
+    tags:(a.tags||'').split('|').filter(t=>t&&t.length<=5&&t.length>=2).slice(0,3)
+  }));
+}
+
+/* ── Helper: fetch RSS via multiple proxy options ── */
+async function fetchRSS(rssUrl,count=20){
+  const encoded=encodeURIComponent(rssUrl);
+  const proxies=[
+    `https://api.rss2json.com/v1/api.json?rss_url=${encoded}&count=${count}`,
+    `https://rss2json.com/api.json?rss_url=${encoded}&count=${count}`,
+  ];
+  for(const proxy of proxies){
+    try{
+      const r=await fetch(proxy,{signal:AbortSignal.timeout(7000)});
+      if(!r.ok)continue;
+      const d=await r.json();
+      if(d.status==='ok'&&d.items?.length)return d.items;
+    }catch(e){}
+  }
+  return [];
+}
+
+/* ── Source 2: CoinDesk RSS ── */
+async function fetchCoinDesk(){
+  const items=await fetchRSS('https://www.coindesk.com/arc/outboundfeeds/rss/',20);
+  if(!items.length)throw 0;
+  return items.map(i=>({
+    id:i.guid||i.link,title:i.title||'',
+    body:(i.description||'').replace(/<[^>]+>/g,'').slice(0,500),
+    url:i.link||'#',img:i.thumbnail||i.enclosure?.link||'',
+    src:'CoinDesk',ts:Math.floor(new Date(i.pubDate).getTime()/1000),tags:[]
+  }));
+}
+
+/* ── Source 3: CoinTelegraph RSS ── */
+async function fetchCoinTelegraph(){
+  const items=await fetchRSS('https://cointelegraph.com/rss',20);
+  if(!items.length)throw 0;
+  return items.map(i=>({
+    id:i.guid||i.link,title:i.title||'',
+    body:(i.description||'').replace(/<[^>]+>/g,'').slice(0,500),
+    url:i.link||'#',img:i.thumbnail||i.enclosure?.link||'',
+    src:'CoinTelegraph',ts:Math.floor(new Date(i.pubDate).getTime()/1000),tags:[]
+  }));
+}
+
+/* ── Source 4: Decrypt RSS ── */
+async function fetchDecrypt(){
+  const items=await fetchRSS('https://decrypt.co/feed',20);
+  if(!items.length)throw 0;
+  return items.map(i=>({
+    id:i.guid||i.link,title:i.title||'',
+    body:(i.description||'').replace(/<[^>]+>/g,'').slice(0,500),
+    url:i.link||'#',img:i.thumbnail||i.enclosure?.link||'',
+    src:'Decrypt',ts:Math.floor(new Date(i.pubDate).getTime()/1000),tags:[]
+  }));
+}
+
+/* ── Source 5: Bitcoin Magazine RSS ── */
+async function fetchBitcoinMag(){
+  const items=await fetchRSS('https://bitcoinmagazine.com/feed',15);
+  if(!items.length)throw 0;
+  return items.map(i=>({
+    id:i.guid||i.link,title:i.title||'',
+    body:(i.description||'').replace(/<[^>]+>/g,'').slice(0,500),
+    url:i.link||'#',img:i.thumbnail||i.enclosure?.link||'',
+    src:'Bitcoin Magazine',ts:Math.floor(new Date(i.pubDate).getTime()/1000),tags:['BTC']
+  }));
+}
+
+/* ── Source 6: The Block RSS ── */
+async function fetchTheBlock(){
+  const items=await fetchRSS('https://www.theblock.co/rss/all.xml',15);
+  if(!items.length)throw 0;
+  return items.map(i=>({
+    id:i.guid||i.link,title:i.title||'',
+    body:(i.description||'').replace(/<[^>]+>/g,'').slice(0,500),
+    url:i.link||'#',img:i.thumbnail||i.enclosure?.link||'',
+    src:'The Block',ts:Math.floor(new Date(i.pubDate).getTime()/1000),tags:[]
+  }));
+}
+
+async function fetchAllNews(){
+  /* Try CryptoCompare first — fastest, most articles */
+  let ccData=[];
+  try{ccData=await fetchCC();}catch(e){}
+
+  /* Show CC articles immediately if we got them */
+  if(ccData.length){
+    allRawArticles=ccData;
+    buildFilterTabs(ccData);
+    applyFilterAndRender();
+    buildTrending(ccData);
+  }
+
+  /* Fetch all RSS feeds in parallel */
+  const feeds=[fetchCoinDesk,fetchCoinTelegraph,fetchDecrypt,fetchBitcoinMag,fetchTheBlock];
+  const results=await Promise.allSettled(feeds.map(fn=>fn()));
+  const rssData=results.filter(r=>r.status==='fulfilled').flatMap(r=>r.value);
+
+  /* Merge CC + RSS, deduplicate by title */
+  const all=[...ccData,...rssData];
+  const seen=new Set();
+  const merged=all
+    .filter(a=>{if(!a.title||seen.has(a.title))return false;seen.add(a.title);return true;})
+    .sort((a,b)=>b.ts-a.ts);
+
+  allRawArticles=merged;
+  return merged;
+}
+
+function applyFilterAndRender(){
+  const filtered=filterArticles(allRawArticles,activeFilter);
+  articles=filtered.length>=2?filtered:allRawArticles;
+  document.getElementById('NEWS_COUNT').textContent=articles.length+' articles';
+  shown=12;
+  render();
+}
+
+function showSkeleton(){
+  document.getElementById('FEED').innerHTML=[1,2,3,4,5].map(()=>`
+    <div style="background:var(--surface);border:1px solid var(--border);padding:13px;margin-bottom:1px;display:flex;gap:10px;overflow:hidden;width:100%">
+      <div style="flex:1;display:flex;flex-direction:column;gap:7px;overflow:hidden">
+        <div class="sk" style="height:10px;width:80px;border-radius:4px"></div>
+        <div class="sk" style="height:13px;border-radius:4px"></div>
+        <div class="sk" style="height:13px;width:65%;border-radius:4px"></div>
+        <div class="sk" style="height:10px;width:50%;border-radius:4px"></div>
+      </div>
+      <div class="sk" style="width:68px;height:54px;border-radius:var(--rs);flex-shrink:0"></div>
+    </div>`).join('');
+}
+
+function updateRefreshTime(){
+  const el=document.getElementById('LAST_REFRESH');
+  if(el)el.textContent='Updated '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+}
+
+async function refreshFeed(){
+  const btn=document.getElementById('REFRESH_BTN');
+  if(btn){btn.disabled=true;btn.innerHTML='↻ Loading…';}
+  allRawArticles=[];
+  activeFilter='all';
+  await loadFeed();
+  if(btn){btn.disabled=false;btn.innerHTML='↻ Refresh';}
+}
+
+async function loadFeed(){
+  showSkeleton();
+  document.getElementById('NEWS_COUNT').textContent='Loading…';
+  let raw;
+  try{raw=await fetchAllNews();}catch{raw=[];}
+
+  if(!raw.length&&!allRawArticles.length){
+    document.getElementById('FEED').innerHTML=`
+      <div style="padding:48px 16px;text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);width:100%">
+        <div style="font-size:36px;margin-bottom:10px">📰</div>
+        <div style="font-size:14px;font-weight:700">No articles found</div>
+        <div style="font-size:12.5px;margin-top:6px;color:var(--t3)">Try a different category or check back soon</div>
+        <button onclick="loadFeed()" style="margin-top:14px;padding:8px 20px;border-radius:var(--pill);border:1.5px solid var(--border3);background:none;color:var(--t1);font-size:13px;font-weight:700;cursor:pointer;">↻ Retry</button>
+      </div>`;
+    document.getElementById('NEWS_COUNT').textContent='0 articles';
+    return;
+  }
+
+  if(raw.length){
+    allRawArticles=raw;
+    buildFilterTabs(raw);
+    applyFilterAndRender();
+    buildTrending(raw);
+    updateRefreshTime();
+  }
+}
+
+function render(){
+  const vis=articles.slice(0,shown);
+  document.getElementById('FEED').innerHTML=vis.map((a,i)=>{
+    const cat=getcat(a);
+    const cls=CATMAP[cat]||'c-mkt';
+    const time=reltime(a.ts);
+    const src=a.src;
+    const g=grad(src);
+    const isLiked=liked.has(a.id);
+    const safeId=esc(a.id);
+    const safeUrl=esc(a.url);
+
+    const authorBlock=`
+      <div class="author">
+        <div class="av" style="background:${g}">${initials(src)}</div>
+        <div class="av-info">
+          <div class="av-name">${esc(src)}</div>
+          <div class="av-time">${time}</div>
+        </div>
+        <span class="cat ${cls}">${cat}</span>
+      </div>`;
+
+    const coinBlock=a.tags.length?`<div class="coin-tags">${a.tags.map(c=>`<span class="ctag">$${esc(c)}</span>`).join('')}</div>`:'';
+
+    const sbar=`
+      <div class="sbar">
+        <button class="sbtn${isLiked?' liked':''}" id="hb${i}" onclick="doLike(${i},'${safeId}')">
+          <span class="heart-ico">${isLiked?'❤️':'🤍'}</span>
+        </button>
+        <div class="ssep"></div>
+        <button class="sbtn" onclick="doShare()">↗ Share</button>
+        <div class="ssep"></div>
+        <button class="sbtn" id="exlbl${i}" onclick="doExpand(${i})">Read ↓</button>
+      </div>
+      <div class="exp-panel" id="exp${i}">
+        ${a.body?`<p>${esc(a.body)}</p>`:'<p style="color:var(--t3)">No preview available.</p>'}
+        ${coinBlock}
+        <a class="read-link" href="${safeUrl}" target="_blank" rel="noopener noreferrer">Open Full Article ↗</a>
+      </div>`;
+
+    if(i===0&&a.img){
+      return `<div class="card hero">
+        <div class="hero-img-wrap">
+          <img class="hero-img" src="${esc(a.img)}" alt="" onerror="this.parentElement.style.background='var(--surface3)';this.style.display='none'">
+          <div class="hero-badge">⭐ FEATURED</div>
+        </div>
+        <div class="hero-body">${authorBlock}<div class="card-title lg">${esc(a.title)}</div>${a.body?`<div class="card-excerpt lg">${esc(a.body.slice(0,240))}…</div>`:''}</div>
+        ${sbar}
+      </div>`;
+    }
+
+    return `<div class="card">
+      <div class="card-row">
+        <div class="card-text">
+          ${authorBlock}
+          <div class="card-title">${esc(a.title)}</div>
+          ${a.body?`<div class="card-excerpt">${esc(a.body.slice(0,150))}</div>`:''}
+        </div>
+        ${a.img?`<div class="card-thumb"><img src="${esc(a.img)}" alt="" onerror="this.parentElement.style.display='none'" loading="lazy"></div>`:''}
+      </div>
+      ${sbar}
+    </div>`;
+  }).join('');
+
+  const btn=document.getElementById('LOAD_BTN');
+  btn.disabled=shown>=articles.length;
+  btn.textContent=shown>=articles.length?'All caught up ✓':'Load More Stories';
+}
+
+/* ── Build Trending Topics from actual fetched article data ── */
+function buildTrending(raw){
+  if(!raw||!raw.length)return;
+  /* Extract real trending topics dynamically from article titles/bodies */
+  const TOPIC_PATTERNS=[
+    {k:'Bitcoin ETF',        r:/bitcoin etf|btc etf/i,           f:'BTC'},
+    {k:'Bitcoin Price',      r:/bitcoin price|btc price|\bbtc \$|bitcoin hit/i, f:'BTC'},
+    {k:'Ethereum Update',    r:/ethereum update|eth upgrade|dencun|pectra/i, f:'ETH'},
+    {k:'Ethereum ETF',       r:/ethereum etf|eth etf/i,          f:'ETH'},
+    {k:'Solana',             r:/\bsolana\b|\bsol\b/i,            f:'SOL'},
+    {k:'XRP & Ripple',       r:/\bxrp\b|ripple/i,               f:'XRP'},
+    {k:'Crypto Regulation',  r:/regulat|sec |cftc|senate|congress|ban |government/i, f:'regulation'},
+    {k:'DeFi',               r:/\bdefi\b|yield|liquidity|uniswap|aave|dex\b/i, f:'defi'},
+    {k:'NFT Market',         r:/\bnft\b|opensea|ordinals/i,      f:'nft'},
+    {k:'AI & Crypto',        r:/\bai\b|artificial intelligence|chatgpt|llm/i, f:'ai'},
+    {k:'Meme Coins',         r:/meme.?coin|doge|shib|pepe|bonk|floki/i, f:'meme'},
+    {k:'Layer 2',            r:/layer.?2|\bl2\b|arbitrum|optimism|polygon|base\b/i, f:'layer2'},
+    {k:'Fed & Rates',        r:/\bfed\b|interest rate|rate cut|rate hike|powell/i, f:'macro'},
+    {k:'Bitcoin Mining',     r:/mining|miner|hashrate|halving/i, f:'BTC'},
+    {k:'Stablecoins',        r:/stablecoin|usdt|usdc|tether/i,   f:'market'},
+    {k:'Binance',            r:/\bbinance\b|\bbnb\b/i,           f:'BNB'},
+    {k:'Crypto Market',      r:/bull run|bear market|rally|crash|all.?time high/i, f:'market'},
+    {k:'Web3 & Blockchain',  r:/web3|blockchain|smart contract/i, f:'market'},
+  ];
+
+  /* Count real occurrences across all articles */
+  const counts=TOPIC_PATTERNS.map(tp=>{
+    const n=raw.filter(a=>tp.r.test((a.title||'')+' '+(a.body||''))).length;
+    return{...tp,n};
+  });
+
+  /* Only show topics that actually appear in today's data, sorted by count */
+  const sorted=counts
+    .filter(t=>t.n>=1)
+    .sort((a,b)=>b.n-a.n)
+    .slice(0,10);
+
+  const el=document.getElementById('TRENDING_BODY');
+  if(!sorted.length){
+    el.innerHTML='<div style="color:var(--t3);font-size:13px;padding:6px 0">No trending data yet</div>';
+    return;
+  }
+  el.innerHTML=sorted.map((t,i)=>`
+    <div class="ti" onclick="setFilterByName('${t.f}')">
+      <div class="ti-rank${i<3?' top':''}">${i+1}</div>
+      <div class="ti-info">
+        <div class="ti-name">${t.k}</div>
+        <div class="ti-cnt">${t.n} article${t.n!==1?'s':''}</div>
+      </div>
+      <div class="ti-hot">${i===0?'🔥':i===1?'📈':i===2?'⚡':''}</div>
+    </div>`).join('');
+}
+
+function setFilterByName(filterKey){
+  activeFilter=filterKey;
+  document.querySelectorAll('.nf').forEach(b=>b.classList.remove('active'));
+  const matchBtn=document.querySelector(`#FILTER_BAR .nf[data-filter="${filterKey}"]`);
+  if(matchBtn)matchBtn.classList.add('active');
+  else{/* fallback: activate All */const allBtn=document.querySelector('#FILTER_BAR .nf');if(allBtn)allBtn.classList.add('active');}
+  if(allRawArticles.length){applyFilterAndRender();}else{loadFeed();}
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function doLike(i,id){
+  const btn=document.getElementById('hb'+i);if(!btn)return;
+  const ico=btn.querySelector('.heart-ico');
+  if(liked.has(id)){liked.delete(id);btn.classList.remove('liked');ico.textContent='🤍';}
+  else{liked.add(id);btn.classList.add('liked');ico.textContent='❤️';ico.style.animation='none';requestAnimationFrame(()=>{ico.style.animation='';});}
+}
+
+function doShare(){
+  const data={title:SITE_NAME,text:'📰 Read the latest crypto news on PublicDrop.in',url:SITE_URL};
+  if(navigator.share)navigator.share(data).catch(()=>{});
+  else navigator.clipboard.writeText(SITE_URL).then(()=>toast('🔗 publicdrop.in link copied!')).catch(()=>toast('🔗 Share: '+SITE_URL));
+}
+
+function doExpand(i){
+  const panel=document.getElementById('exp'+i);
+  const lbl=document.getElementById('exlbl'+i);
+  if(!panel)return;
+  const open=panel.classList.toggle('open');
+  lbl.textContent=open?'Close ↑':'Read ↓';
+}
+
+function loadMore(){shown+=10;render();toast('📰 More stories loaded!');}
+
+function setFilter(f,btn){
+  activeFilter=f;
+  document.querySelectorAll('#FILTER_BAR .nf').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  if(allRawArticles.length){
+    applyFilterAndRender();
+  } else {
+    loadFeed();
+  }
+}
+
+/* ══ LIVE PRICES ══ */
+const PAIRS=[
+  {pair:'BTC_USDT',name:'Bitcoin',sym:'BTC'},
+  {pair:'ETH_USDT',name:'Ethereum',sym:'ETH'},
+  {pair:'SOL_USDT',name:'Solana',sym:'SOL'},
+  {pair:'XRP_USDT',name:'XRP',sym:'XRP'},
+  {pair:'BNB_USDT',name:'BNB',sym:'BNB'},
+  {pair:'DOGE_USDT',name:'Dogecoin',sym:'DOGE'},
+  {pair:'ADA_USDT',name:'Cardano',sym:'ADA'},
+  {pair:'AVAX_USDT',name:'Avalanche',sym:'AVAX'},
+];
+const LOGOS={
+  BTC:'https://assets.coincap.io/assets/icons/btc@2x.png',
+  ETH:'https://assets.coincap.io/assets/icons/eth@2x.png',
+  SOL:'https://assets.coincap.io/assets/icons/sol@2x.png',
+  XRP:'https://assets.coincap.io/assets/icons/xrp@2x.png',
+  BNB:'https://assets.coincap.io/assets/icons/bnb@2x.png',
+  DOGE:'https://assets.coincap.io/assets/icons/doge@2x.png',
+  ADA:'https://assets.coincap.io/assets/icons/ada@2x.png',
+  AVAX:'https://assets.coincap.io/assets/icons/avax@2x.png',
+};
+
+function priceRow(name,sym,logo,price,chg){
+  const up=chg>=0;
+  return `<div class="pr">
+    <div class="pr-l">
+      <img class="pr-img" src="${logo}" alt="${sym}" onerror="this.style.display='none'">
+      <div><div class="pr-name">${name}</div><div class="pr-sym">${sym}/USDT</div></div>
+    </div>
+    <div class="pr-r">
+      <div class="pr-val">$${price>=1?price.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):price.toFixed(5)}</div>
+      <div class="pr-chg ${up?'up-c':'dn-c'}">${up?'▲':'▼'}${Math.abs(chg).toFixed(2)}%</div>
+    </div>
+  </div>`;
+}
+
+async function loadPrices(){
+  const el=document.getElementById('PRICES');
+  try{
+    const r=await fetch('https://api.gateio.ws/api/v4/spot/tickers');
+    if(!r.ok)throw 0;
+    const data=await r.json();
+    const map={};data.forEach(t=>{map[t.currency_pair]=t;});
+    const html=PAIRS.map(p=>{const t=map[p.pair];if(!t)return'';return priceRow(p.name,p.sym,LOGOS[p.sym],parseFloat(t.last),parseFloat(t.change_percentage));}).join('');
+    if(html)el.innerHTML=html;else throw 0;
+  }catch{
+    try{
+      const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,ripple,binancecoin,dogecoin,cardano,avalanche-2&vs_currencies=usd&include_24hr_change=true');
+      const d=await r.json();
+      const cgKey={BTC:'bitcoin',ETH:'ethereum',SOL:'solana',XRP:'ripple',BNB:'binancecoin',DOGE:'dogecoin',ADA:'cardano',AVAX:'avalanche-2'};
+      el.innerHTML=PAIRS.map(p=>{const info=d[cgKey[p.sym]];if(!info)return'';return priceRow(p.name,p.sym,LOGOS[p.sym],info.usd,info.usd_24h_change||0);}).join('');
+    }catch{el.innerHTML='<div style="color:var(--t3);font-size:13px;padding:10px 0">Price data unavailable</div>';}
+  }
+}
+
+/* ══ FEAR & GREED INDEX ══ */
+async function loadFearGreed(){
+  const el=document.getElementById('FEAR_GREED');
+  try{
+    const r=await fetch('https://api.alternative.me/fng/?limit=1');
+    const d=await r.json();
+    const v=d.data[0];
+    const val=parseInt(v.value);
+    const label=v.value_classification;
+    const color=val<=25?'#E8334A':val<=45?'#F59E0B':val<=55?'#A0A0A0':val<=75?'#0EA66A':'#1A56DB';
+    const emoji=val<=25?'😱':val<=45?'😨':val<=55?'😐':val<=75?'😊':'🤑';
+    el.innerHTML=`
+      <div style="display:flex;align-items:center;gap:12px;padding:4px 0">
+        <div style="font-size:32px">${emoji}</div>
+        <div>
+          <div style="font-size:28px;font-weight:800;font-family:var(--fm);color:${color}">${val}</div>
+          <div style="font-size:12px;font-weight:700;color:${color}">${label}</div>
+        </div>
+        <div style="flex:1">
+          <div style="height:8px;background:linear-gradient(90deg,#E8334A,#F59E0B,#0EA66A,#1A56DB);border-radius:var(--pill);position:relative;">
+            <div style="position:absolute;top:-3px;width:14px;height:14px;border-radius:50%;background:${color};border:2px solid var(--surface);left:calc(${val}% - 7px);transition:left .5s;"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:9px;color:var(--t3);">
+            <span>Fear</span><span>Neutral</span><span>Greed</span>
+          </div>
+        </div>
+      </div>`;
+  }catch{el.innerHTML='<div style="color:var(--t3);font-size:13px;padding:6px 0">Fear & Greed unavailable</div>';}
+}
+
+/* ══ POLYMARKET (Public REST + WSS) ══ */
+const PM_BANKING_CRYPTO_KEYWORDS=/bitcoin|ethereum|crypto|btc|eth|sol|xrp|defi|nft|token|coin|blockchain|solana|binance|ripple|cardano|altcoin|stablecoin|usdt|usdc|fed rate|interest rate|federal reserve|bank|banking|rate cut|rate hike|inflation|treasury|central bank|wall street|stock market|nasdaq|s&p|financial/i;
+
+let pmWs=null;
+const pmCache={};
+
+async function loadPolymarket(){
+  const el=document.getElementById('POLYMARKET');
+
+  try{
+    /* Fetch active (not closed) markets, sorted by volume */
+    const r=await fetch('https://gamma-api.polymarket.com/markets?closed=false&active=true&limit=30&order=volume24hr&ascending=false',{signal:AbortSignal.timeout(8000)});
+    if(!r.ok)throw 0;
+    const data=await r.json();
+    if(!data||!data.length)throw 0;
+
+    /* Filter: must be active/running AND banking/crypto related */
+    const now=Date.now()/1000;
+    const running=data.filter(m=>{
+      /* Skip if market is resolved or expired */
+      if(m.closed===true||m.resolved===true)return false;
+      /* Skip if end date is in the past */
+      if(m.endDate&&new Date(m.endDate).getTime()/1000<now)return false;
+      /* Must be banking or crypto related */
+      const q=(m.question||'').toLowerCase();
+      return PM_BANKING_CRYPTO_KEYWORDS.test(q);
+    }).slice(0,6);
+
+    if(running.length>=2){
+      renderPolymarkets(running);
+      connectPolyWSS(running.map(m=>m.conditionId).filter(Boolean));
+    } else {
+      /* Try wider fetch without strict filter if not enough */
+      const wider=data.filter(m=>{
+        if(m.closed===true||m.resolved===true)return false;
+        if(m.endDate&&new Date(m.endDate).getTime()/1000<now)return false;
+        return true;
+      }).slice(0,6);
+      if(wider.length)renderPolymarkets(wider);
+      else throw 0;
+    }
+  }catch{
+    renderPolyFallback();
+  }
+}
+
+function renderPolymarkets(markets){
+  const el=document.getElementById('POLYMARKET');
+  el.innerHTML=markets.map(m=>{
+    const yesPct=m.outcomePrices?Math.round(parseFloat(m.outcomePrices[0]||0.5)*100):50;
+    const noPct=100-yesPct;
+    /* Show total volume (not just 24hr) if available */
+    const vol=m.volume?'$'+fmtK(parseFloat(m.volume)):m.volume24hr?'$'+fmtK(parseFloat(m.volume24hr)):'—';
+    const vol24=m.volume24hr&&parseFloat(m.volume24hr)>0?'24h: $'+fmtK(parseFloat(m.volume24hr)):'';
+    const q=(m.question||'').slice(0,90);
+    const cid=m.conditionId||m.id||'';
+    /* End date */
+    let endStr='';
+    if(m.endDate){
+      const ed=new Date(m.endDate);
+      const diff=Math.ceil((ed-Date.now())/(1000*60*60*24));
+      if(diff>0&&diff<=365)endStr=diff===1?'Ends tomorrow':`Ends in ${diff}d`;
+      else if(diff>365)endStr='Long-running';
+    }
+    pmCache[cid]={yesPct,el:null};
+    return `<div class="pm-item" id="pm_${cid.replace(/[^a-z0-9]/gi,'_')}">
+      <div class="pm-q">${esc(q)}</div>
+      <div class="pm-bar-wrap">
+        <span style="font-size:10px;color:var(--up);font-weight:700;flex-shrink:0;width:28px">YES</span>
+        <div class="pm-bar-bg">
+          <div class="pm-bar-fill pm-yes" style="width:${yesPct}%"></div>
+        </div>
+        <span class="pm-pct" style="color:var(--up)">${yesPct}%</span>
+      </div>
+      <div class="pm-bar-wrap" style="margin-top:3px">
+        <span style="font-size:10px;color:var(--dn);font-weight:700;flex-shrink:0;width:28px">NO</span>
+        <div class="pm-bar-bg">
+          <div class="pm-bar-fill pm-no" style="width:${noPct}%"></div>
+        </div>
+        <span class="pm-pct" style="color:var(--dn)">${noPct}%</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderPolyFallback(){
+  const el=document.getElementById('POLYMARKET');
+  /* Current running markets (2026) — banking & crypto only */
+  const fallback=[
+    {q:'Will Bitcoin reach $200K before end of 2026?',yes:58,vol:'$6.1M',vol24:'$210K',end:'Ends in 240d'},
+    {q:'Will the Fed cut interest rates in H1 2026?',yes:67,vol:'$9.3M',vol24:'$380K',end:'Ends in 55d'},
+    {q:'Will Ethereum ETF total AUM exceed $10B in 2026?',yes:49,vol:'$3.2M',vol24:'$120K',end:'Ends in 180d'},
+    {q:'Will SEC approve a spot XRP ETF by end of 2026?',yes:72,vol:'$4.8M',vol24:'$195K',end:'Ends in 240d'},
+    {q:'Will crypto total market cap exceed $5 trillion in 2026?',yes:54,vol:'$5.5M',vol24:'$230K',end:'Ends in 300d'},
+    {q:'Will US banks be allowed to hold crypto by Q3 2026?',yes:61,vol:'$2.7M',vol24:'$88K',end:'Ends in 120d'},
+  ];
+  el.innerHTML=fallback.map(m=>`
+    <div class="pm-item">
+      <div class="pm-q">${m.q}</div>
+      <div class="pm-bar-wrap">
+        <span style="font-size:10px;color:var(--up);font-weight:700;flex-shrink:0;width:28px">YES</span>
+        <div class="pm-bar-bg"><div class="pm-bar-fill pm-yes" style="width:${m.yes}%"></div></div>
+        <span class="pm-pct" style="color:var(--up)">${m.yes}%</span>
+      </div>
+      <div class="pm-bar-wrap" style="margin-top:3px">
+        <span style="font-size:10px;color:var(--dn);font-weight:700;flex-shrink:0;width:28px">NO</span>
+        <div class="pm-bar-bg"><div class="pm-bar-fill pm-no" style="width:${100-m.yes}%"></div></div>
+        <span class="pm-pct" style="color:var(--dn)">${100-m.yes}%</span>
+      </div>
+    </div>`).join('');
+}
+
+function fmtK(n){
+  if(n>=1e6)return(n/1e6).toFixed(1)+'M';
+  if(n>=1e3)return(n/1e3).toFixed(1)+'K';
+  return n.toFixed(0);
+}
+
+/* ── Polymarket WebSocket (public CLOB WSS) ── */
+function connectPolyWSS(conditionIds){
+  if(!conditionIds.length)return;
+  if(pmWs){try{pmWs.close();}catch(e){}}
+
+  try{
+    pmWs=new WebSocket('wss://ws-subscriptions-clob.polymarket.com/ws/market');
+    pmWs.onopen=()=>{
+      /* Subscribe to price changes for each market */
+      conditionIds.forEach(id=>{
+        try{pmWs.send(JSON.stringify({type:'subscribe',channel:'market',market:id}));}catch(e){}
+      });
+    };
+    pmWs.onmessage=(e)=>{
+      try{
+        const msg=JSON.parse(e.data);
+        if(msg&&msg.type==='price_change'&&msg.market){
+          const cid=msg.market;
+          const safeId='pm_'+cid.replace(/[^a-z0-9]/gi,'_');
+          const pmEl=document.getElementById(safeId);
+          if(pmEl&&msg.price!==undefined){
+            const pct=Math.round(parseFloat(msg.price)*100);
+            const fill=pmEl.querySelector('.pm-bar-fill');
+            const pctEl=pmEl.querySelector('.pm-pct');
+            if(fill)fill.style.width=pct+'%';
+            if(pctEl)pctEl.textContent=pct+'%';
+          }
+        }
+      }catch(e){}
+    };
+    pmWs.onerror=()=>{/* Silent — fallback already shown */};
+    pmWs.onclose=()=>{
+      /* Reconnect after 15s */
+      setTimeout(()=>connectPolyWSS(conditionIds),15000);
+    };
+  }catch(e){}
+}
+
+/* ══ INIT ══ */
+loadFeed();
+loadPrices();
+loadFearGreed();
+loadPolymarket();
+setInterval(loadPrices,30000);
+setInterval(loadFearGreed,120000);
+setInterval(loadPolymarket,60000);
+</script>
+
+<!-- ── Animated Logo ── -->
+<script>
+(function(){
+  var logoHTML=`
+  <div class="pd-logo-badge">
+    <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect class="pd-logo-bar pd-logo-bar1" x="4" y="16" width="4" height="14" rx="1" fill="rgba(255,255,255,.12)"/>
+      <rect class="pd-logo-bar pd-logo-bar2" x="10" y="11" width="4" height="19" rx="1" fill="rgba(255,255,255,.16)"/>
+      <rect class="pd-logo-bar pd-logo-bar3" x="16" y="13" width="4" height="17" rx="1" fill="rgba(255,255,255,.13)"/>
+      <rect class="pd-logo-bar pd-logo-bar4" x="22" y="7" width="4" height="23" rx="1" fill="rgba(255,255,255,.2)"/>
+      <rect class="pd-logo-bar pd-logo-bar5" x="28" y="9" width="4" height="21" rx="1" fill="rgba(255,255,255,.16)"/>
+      <polyline class="pd-logo-line" points="5,22 12,16 18,20 24,9 31,12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle class="pd-logo-dot pd-logo-dot1" cx="5" cy="22" r="1.5" fill="rgba(255,255,255,.5)"/>
+      <circle class="pd-logo-dot pd-logo-dot2" cx="12" cy="16" r="1.5" fill="rgba(255,255,255,.6)"/>
+      <circle class="pd-logo-dot pd-logo-dot3" cx="18" cy="20" r="1.5" fill="rgba(255,255,255,.5)"/>
+      <circle class="pd-logo-dot pd-logo-dot4" cx="24" cy="9" r="2.5" fill="white"/>
+      <circle class="pd-logo-dot pd-logo-dot5" cx="31" cy="12" r="1.5" fill="rgba(255,255,255,.6)"/>
+      <g class="pd-logo-arrow">
+        <line x1="24" y1="5" x2="24" y2="2" stroke="#00e8a2" stroke-width="1.5" stroke-linecap="round"/>
+        <polyline points="22,4 24,1 26,4" fill="none" stroke="#00e8a2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    </svg>
+  </div>
+  <div class="pd-wordmark">
+    <div class="pd-name-row">
+      <span class="pd-word-public">Public</span><span class="pd-word-drop">DROP</span>
+    </div>
+    <div class="pd-tagline"><span class="pd-live-dot"></span>Crypto Analytics</div>
+  </div>`;
+
+  /* Nav logo */
+  var navLogo=document.getElementById('PD_LOGO_WRAP');
+  if(navLogo)navLogo.innerHTML=logoHTML;
+
+  /* Mobile menu logo */
+  var mobLogo=document.getElementById('MOB_LOGO_WRAP');
+  if(mobLogo)mobLogo.innerHTML=logoHTML;
+
+  /* Auth modal logo */
+  var amLogo=document.getElementById('AM_LOGO_WRAP');
+  if(amLogo)amLogo.innerHTML=logoHTML;
+})();
+</script>
+</body>
+</html>
