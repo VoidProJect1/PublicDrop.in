@@ -34,10 +34,10 @@ GLOBAL_FILE = f"{DATA_DIR}/global_data.json"
 os.makedirs(DATA_DIR, exist_ok=True)
 
 API_KEYS = [
-    "",  # Key 1 — add your CoinGecko Demo key e.g. "CG-xxxxxxxxxxxx"
-    "",  # Key 2
-    "",  # Key 3
-    "",  # Key 4
+    "CG-LbjZu7PazoBCLibGb8gppS9Q",  # Key 1 — add your CoinGecko Demo key e.g. "CG-xxxxxxxxxxxx"
+    "CG-GtoSuTR9QDb4gLMptVyRxgJX",  # Key 2
+    "CG-v55tzoZ8fazyDv3h6pcx16bm",  # Key 3
+    "CG-Azhz14KRRxGmQAANQzms8gFH",  # Key 4
 ]
 API_KEYS = [k.strip() for k in API_KEYS if k.strip()] or [""]
 
