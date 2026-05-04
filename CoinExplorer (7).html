@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="description" content="PublicDrop Coin Explorer — Browse 13,000+ cryptocurrencies with live prices, market cap, 24h change and full coin details.">
+<title>Coin Explorer — PublicDrop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Plus+Jakarta+Sans:ital,opsz,wght@0,6..7.2,200..800;1,6..7.2,200..800&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+<style>
+/* ═══ VARIABLES ═══ */
+:root{
+  --ff:'Plus Jakarta Sans','Bricolage Grotesque',sans-serif;
+  --ff2:'Space Grotesk',sans-serif;
+  --fm:'DM Mono',monospace;
+  --bg:#F7F8FC;--surface:#FFFFFF;--surface2:#F2F3F8;--surface3:#E8EAF2;--surface4:#DDE0EE;
+  --border:rgba(0,0,0,.07);--border2:rgba(0,0,0,.12);--border3:rgba(0,0,0,.18);
+  --t1:#0A0C14;--t2:#4A4F6A;--t3:#8B90AB;--t4:#C2C6DB;
+  --up:#0EA66A;--upb:rgba(14,166,106,.1);--upbr:rgba(14,166,106,.22);
+  --dn:#E8334A;--dnb:rgba(232,51,74,.1);--dnbr:rgba(232,51,74,.22);
+  --accent:#1A56DB;--accentb:rgba(26,86,219,.1);--accentbr:rgba(26,86,219,.22);
+  --sha-sm:0 1px 3px rgba(0,0,0,.05),0 2px 8px rgba(0,0,0,.04);
+  --sha:0 2px 12px rgba(0,0,0,.07),0 8px 30px rgba(0,0,0,.05);
+  --sha-lg:0 12px 40px rgba(0,0,0,.12),0 4px 14px rgba(0,0,0,.06);
+  --r:14px;--rs:10px;--rx:7px;--pill:999px;--nav-h:60px;
+}
+[data-theme="dark"]{
+  --bg:#0B0C11;--surface:#12141C;--surface2:#181A24;--surface3:#1F2130;--surface4:#272A3B;
+  --border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.10);--border3:rgba(255,255,255,.16);
+  --t1:#F0F1F8;--t2:#8C91AD;--t3:#505570;--t4:#2E3148;
+  --sha-sm:0 1px 3px rgba(0,0,0,.3),0 2px 8px rgba(0,0,0,.2);
+  --sha:0 2px 12px rgba(0,0,0,.4),0 8px 30px rgba(0,0,0,.3);
+  --sha-lg:0 12px 40px rgba(0,0,0,.5),0 4px 14px rgba(0,0,0,.3);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;min-width:0;}
+html{scroll-behavior:smooth;font-size:16px;overflow-x:hidden;}
+body{font-family:var(--ff);background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;transition:background .25s,color .25s;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+input,select{font-family:inherit;}
+img{display:block;max-width:100%;}
+h1,h2,h3,.sec-title{font-family:'Space Grotesk',var(--ff),sans-serif;}
+
+/* ═══ NAV ═══ */
+nav{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:500;backdrop-filter:blur(16px);box-shadow:var(--sha-sm);}
+.nav-inner{max-width:1500px;margin:0 auto;padding:0 16px;height:var(--nav-h);display:flex;align-items:center;gap:10px;}
+.logo{display:flex;align-items:center;gap:0;flex-shrink:0;text-decoration:none;cursor:pointer;}
+.nav-links{display:flex;align-items:center;gap:2px;margin-left:8px;}
+.nav-link{padding:7px 10px;border-radius:var(--rx);font-size:13px;font-weight:600;color:var(--t2);background:none;border:none;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:4px;cursor:pointer;}
+.nav-link:hover,.nav-link.active{color:var(--t1);background:var(--surface2);}
+.badge-new{font-size:9px;font-weight:700;padding:2px 5px;border-radius:var(--pill);background:var(--upb);color:var(--up);border:1px solid var(--upbr);}
+.nav-right{display:flex;align-items:center;gap:6px;margin-left:auto;flex-shrink:0;}
+.theme-toggle{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border2);background:var(--surface2);color:var(--t2);display:flex;align-items:center;justify-content:center;font-size:15px;transition:all .2s;flex-shrink:0;cursor:pointer;}
+.theme-toggle:hover{border-color:var(--border3);color:var(--t1);}
+.nav-btn{padding:8px 14px;border-radius:var(--pill);font-size:13px;font-weight:700;transition:all .18s;border:none;cursor:pointer;}
+.nav-btn-solid{background:var(--t1);color:var(--bg);}
+.nav-btn-solid:hover{opacity:.88;transform:translateY(-1px);}
+.hamburger{display:none;flex-direction:column;gap:4.5px;background:none;border:none;padding:7px;color:var(--t1);cursor:pointer;flex-shrink:0;}
+.hamburger span{width:20px;height:2px;background:currentColor;border-radius:2px;display:block;transition:all .3s;transform-origin:center;}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+
+/* ═══ ANIMATED LOGO ═══ */
+#PD_LOGO_WRAP{gap:0;padding:0;cursor:pointer;}
+.pd-logo-badge{width:36px;height:36px;border-radius:10px;background:linear-gradient(145deg,#1a5cff,#0a3dd4);border:1px solid rgba(90,140,255,.5);flex-shrink:0;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(26,92,255,.35);}
+.pd-logo-badge::before{content:'';position:absolute;top:-30%;left:-30%;width:60%;height:60%;background:rgba(255,255,255,.13);border-radius:50%;filter:blur(8px);}
+.pd-logo-badge svg{width:100%;height:100%;}
+.pd-logo-bar{transform-origin:bottom;transform:scaleY(0);}
+.pd-logo-bar1{animation:pdBarUp .35s ease .1s forwards;}
+.pd-logo-bar2{animation:pdBarUp .35s ease .18s forwards;}
+.pd-logo-bar3{animation:pdBarUp .35s ease .26s forwards;}
+.pd-logo-bar4{animation:pdBarUp .35s ease .34s forwards;}
+.pd-logo-bar5{animation:pdBarUp .35s ease .42s forwards;}
+@keyframes pdBarUp{to{transform:scaleY(1);}}
+.pd-logo-line{stroke-dasharray:200;stroke-dashoffset:200;animation:pdLine .8s ease .55s forwards;}
+@keyframes pdLine{to{stroke-dashoffset:0;}}
+.pd-logo-dot{transform:scale(0);transform-origin:center;}
+.pd-logo-dot1{animation:pdDot .25s cubic-bezier(.34,1.56,.64,1) 1.1s forwards;}
+.pd-logo-dot2{animation:pdDot .25s cubic-bezier(.34,1.56,.64,1) 1.18s forwards;}
+.pd-logo-dot3{animation:pdDot .25s cubic-bezier(.34,1.56,.64,1) 1.26s forwards;}
+.pd-logo-dot4{animation:pdDot .3s cubic-bezier(.34,1.56,.64,1) 1.34s forwards;}
+.pd-logo-dot5{animation:pdDot .25s cubic-bezier(.34,1.56,.64,1) 1.42s forwards;}
+@keyframes pdDot{to{transform:scale(1);}}
+.pd-logo-arrow{opacity:0;transform:translateY(4px);animation:pdArrow .4s cubic-bezier(.34,1.56,.64,1) 1.55s forwards;}
+@keyframes pdArrow{to{opacity:1;transform:translateY(0);}}
+.pd-wordmark{display:flex;flex-direction:column;justify-content:center;margin-left:10px;line-height:1;}
+.pd-name-row{display:flex;align-items:baseline;gap:0;line-height:1;}
+.pd-word-public{font-size:18px;font-weight:800;color:var(--t1);letter-spacing:-.5px;opacity:0;transform:translateX(-10px);animation:pdWordL .5s cubic-bezier(.22,1,.36,1) .3s forwards;}
+.pd-word-drop{font-size:18px;font-weight:800;background:linear-gradient(90deg,#1a5cff,#4d8bff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.5px;opacity:0;transform:translateX(10px);animation:pdWordR .5s cubic-bezier(.22,1,.36,1) .42s forwards;}
+@keyframes pdWordL{to{opacity:1;transform:translateX(0);}}
+@keyframes pdWordR{to{opacity:1;transform:translateX(0);}}
+.pd-tagline{font-size:8.5px;font-weight:600;color:var(--t3);letter-spacing:2px;text-transform:uppercase;opacity:0;animation:pdTag .5s ease .85s forwards;}
+@keyframes pdTag{to{opacity:1;}}
+.pd-live-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:#00e8a2;margin-right:4px;vertical-align:middle;position:relative;}
+.pd-live-dot::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:1px solid #00e8a2;animation:pdLivePulse 1.6s ease 2s infinite;opacity:0;}
+@keyframes pdLivePulse{0%{transform:scale(.8);opacity:.7;}100%{transform:scale(2);opacity:0;}}
+@media(max-width:520px){.pd-logo-badge{width:30px;height:30px;border-radius:8px;}.pd-word-public,.pd-word-drop{font-size:15px;}.pd-tagline{display:none;}}
+
+/* ═══ MOBILE MENU ═══ */
+.mobile-menu{position:fixed;inset:0;z-index:990;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .25s;}
+.mobile-menu.open{opacity:1;pointer-events:all;}
+.menu-panel{position:absolute;top:0;right:0;bottom:0;width:min(300px,88vw);background:var(--surface);box-shadow:var(--sha-lg);overflow-y:auto;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .3s cubic-bezier(.22,1,.36,1);}
+.mobile-menu.open .menu-panel{transform:translateX(0);}
+.menu-hdr{padding:16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+.menu-hdr-logo{font-family:var(--ff2);font-size:17px;font-weight:800;letter-spacing:-.4px;}
+.menu-hdr-logo span{background:linear-gradient(90deg,#1a5cff,#4d8bff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.menu-close{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border2);background:var(--surface2);color:var(--t2);font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.menu-body{padding:10px 8px;flex:1;}
+.menu-section-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);padding:6px 8px 4px;}
+.mob-link{display:flex;align-items:center;gap:10px;padding:10px 8px;border-radius:var(--rx);font-size:14px;font-weight:600;color:var(--t2);transition:all .15s;width:100%;text-align:left;background:none;border:none;cursor:pointer;}
+.mob-link:hover{background:var(--surface2);color:var(--t1);}
+.mob-icon{width:22px;text-align:center;font-size:15px;flex-shrink:0;}
+.mob-divider{height:1px;background:var(--border);margin:8px 0;}
+.menu-setting{padding:8px;margin-bottom:4px;}
+.menu-setting-label{font-size:12px;font-weight:600;color:var(--t2);margin-bottom:6px;}
+.menu-theme-row{display:flex;align-items:center;justify-content:space-between;}
+.menu-theme-btn{padding:6px 12px;border-radius:var(--rx);background:var(--surface2);border:1.5px solid var(--border2);font-size:12px;font-weight:700;color:var(--t2);cursor:pointer;transition:all .15s;}
+.menu-theme-btn:hover{border-color:var(--border3);color:var(--t1);}
+
+/* ═══ PAGE ═══ */
+.page{max-width:1500px;margin:0 auto;padding:20px 16px 60px;}
+
+/* ═══ HERO BANNER ═══ */
+.explorer-hero{background:linear-gradient(135deg,var(--surface) 0%,var(--surface2) 100%);border:1px solid var(--border);border-radius:var(--r);padding:32px 32px 28px;margin-bottom:16px;box-shadow:var(--sha-sm);position:relative;overflow:hidden;}
+.explorer-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;background:radial-gradient(circle,rgba(26,86,219,.10) 0%,transparent 70%);pointer-events:none;}
+.explorer-hero::after{content:'';position:absolute;bottom:-60px;left:-40px;width:240px;height:240px;background:radial-gradient(circle,rgba(0,232,162,.07) 0%,transparent 70%);pointer-events:none;}
+.explorer-hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.explorer-title{font-size:30px;font-weight:800;letter-spacing:-.8px;margin-bottom:6px;}
+.explorer-title span{background:linear-gradient(90deg,#1a5cff,#4d8bff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.explorer-sub{font-size:14px;color:var(--t2);line-height:1.6;max-width:520px;}
+.update-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:var(--pill);background:var(--upb);color:var(--up);border:1px solid var(--upbr);font-size:11.5px;font-weight:700;flex-shrink:0;}
+.update-dot{width:6px;height:6px;border-radius:50%;background:var(--up);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+
+/* ═══ STATS GRID ═══ */
+.explorer-stats{display:grid;grid-template-columns:repeat(9,1fr);gap:12px;margin-top:22px;}
+@media(max-width:1100px){.explorer-stats{grid-template-columns:repeat(5,1fr);}}
+@media(max-width:700px){.explorer-stats{grid-template-columns:repeat(3,1fr);gap:8px;}}
+@media(max-width:420px){.explorer-stats{grid-template-columns:repeat(2,1fr);}}
+.ex-stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px;display:flex;flex-direction:column;gap:3px;box-shadow:var(--sha-sm);transition:box-shadow .2s,border-color .2s;}
+.ex-stat:hover{box-shadow:var(--sha);border-color:var(--border2);}
+.ex-stat-val{font-size:17px;font-weight:800;letter-spacing:-.4px;font-family:var(--ff2);line-height:1.2;}
+.ex-stat-lbl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--t3);}
+@media(max-width:700px){.ex-stat{padding:10px 10px;}.ex-stat-val{font-size:15px;}.ex-stat-lbl{font-size:8.5px;}}
+
+/* ═══ EXPLORER SEARCH BAR ═══ */
+.explorer-search-wrap{margin-bottom:16px;position:relative;}
+.explorer-search-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--t3);pointer-events:none;display:flex;z-index:2;}
+#EXPLORER_SEARCH{width:100%;padding:14px 16px 14px 48px;background:var(--surface);border:1.5px solid var(--border2);border-radius:var(--r);font-size:15px;color:var(--t1);outline:none;transition:all .2s;box-shadow:var(--sha-sm);}
+#EXPLORER_SEARCH:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accentb);}
+#EXPLORER_SEARCH::placeholder{color:var(--t3);}
+.search-clear{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;border:1.5px solid var(--border2);background:var(--surface2);color:var(--t3);font-size:14px;display:none;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;}
+.search-clear:hover{border-color:var(--dn);color:var(--dn);}
+.search-clear.show{display:flex;}
+.search-mode-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:var(--pill);background:var(--accentb);color:var(--accent);border:1px solid var(--accentbr);font-size:11px;font-weight:700;margin-bottom:10px;}
+
+/* ═══ FILTERS ═══ */
+.filters-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--r) var(--r) 0 0;padding:12px 14px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--sha-sm);}
+.filters-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.filter-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.filter-title{font-size:15px;font-weight:800;letter-spacing:-.3px;}
+.coin-badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:var(--pill);background:var(--accentb);color:var(--accent);border:1px solid var(--accentbr);}
+.filter-right{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.sort-select{padding:7px 11px;background:var(--surface2);border:1.5px solid var(--border2);border-radius:var(--rx);font-size:12px;font-weight:600;color:var(--t1);cursor:pointer;outline:none;transition:border-color .15s;}
+.sort-select:focus{border-color:var(--accent);}
+.icon-btn{width:34px;height:34px;border-radius:var(--rx);border:1.5px solid var(--border2);background:var(--surface2);color:var(--t2);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;transition:all .15s;}
+.icon-btn:hover{border-color:var(--border3);color:var(--t1);}
+.filters-tabs{display:flex;gap:5px;flex-wrap:wrap;}
+.tab-pill{padding:5px 13px;border-radius:var(--pill);font-size:12px;font-weight:700;color:var(--t2);background:var(--surface2);border:1.5px solid var(--border2);cursor:pointer;transition:all .15s;white-space:nowrap;}
+.tab-pill:hover{color:var(--t1);border-color:var(--border3);}
+.tab-pill.active{background:var(--t1);color:var(--bg);border-color:var(--t1);}
+.cat-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;}
+.cat-tags{display:flex;gap:5px;flex-wrap:nowrap;min-width:max-content;}
+.cat-tag{padding:5px 12px;border-radius:var(--pill);font-size:11.5px;font-weight:700;color:var(--t2);background:transparent;border:1.5px solid var(--border2);cursor:pointer;transition:all .15s;white-space:nowrap;}
+.cat-tag:hover{border-color:var(--border3);color:var(--t1);}
+.cat-tag.active{background:var(--t1);color:var(--bg);border-color:var(--t1);}
+
+/* ═══ TABLE ═══ */
+.table-card{background:var(--surface);border:1px solid var(--border);border-top:none;overflow:hidden;box-shadow:var(--sha-sm);}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table{width:100%;border-collapse:collapse;}
+thead th{padding:10px 12px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--t3);background:var(--surface2);border-bottom:1px solid var(--border);cursor:pointer;white-space:nowrap;user-select:none;text-align:left;transition:color .15s;}
+thead th.r{text-align:right;}
+thead th:hover{color:var(--t1);}
+thead th.sorted{color:var(--accent);}
+tbody tr{border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;}
+tbody tr:hover{background:var(--surface2);}
+tbody tr:last-child{border-bottom:none;}
+td{padding:11px 12px;font-size:13px;vertical-align:middle;}
+td.r{text-align:right;}
+.td-rank{font-family:var(--fm);font-size:11px;color:var(--t3);width:42px;}
+.coin-cell{display:flex;align-items:center;gap:10px;min-width:160px;}
+.coin-img{width:32px;height:32px;border-radius:50%;background:var(--surface3);flex-shrink:0;object-fit:cover;}
+.coin-img-placeholder{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--surface3),var(--surface4));flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--t3);font-family:var(--ff2);}
+.coin-name{font-weight:700;font-size:13.5px;}
+.coin-sym{font-size:10.5px;color:var(--t3);font-family:var(--fm);text-transform:uppercase;margin-top:1px;}
+.td-price{font-family:var(--fm);font-weight:600;font-size:13px;white-space:nowrap;}
+.price-updated{animation:priceFlash .5s ease;}
+@keyframes priceFlash{0%{opacity:.4;}100%{opacity:1;}}
+.chg-badge{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:6px;font-size:11.5px;font-weight:700;font-family:var(--fm);white-space:nowrap;}
+.chg-up{background:var(--upb);color:var(--up);border:1px solid var(--upbr);}
+.chg-dn{background:var(--dnb);color:var(--dn);border:1px solid var(--dnbr);}
+.chg-na{background:var(--surface2);color:var(--t3);border:1px solid var(--border);}
+.td-mcap,.td-vol{font-family:var(--fm);font-size:12px;color:var(--t2);white-space:nowrap;}
+.td-supply{font-family:var(--fm);font-size:11.5px;color:var(--t2);}
+.td-ath{font-family:var(--fm);font-size:11.5px;color:var(--t2);}
+.td-arrow{font-size:13px;color:var(--t4);width:24px;text-align:center;transition:color .15s,transform .15s;}
+tbody tr:hover .td-arrow{color:var(--accent);transform:translateX(3px);}
+.tbl-loading{padding:60px 24px;text-align:center;}
+.spinner{width:36px;height:36px;border:2.5px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .65s linear infinite;margin:0 auto 14px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tbl-empty{padding:60px 24px;text-align:center;color:var(--t3);font-size:14px;}
+.sk{border-radius:5px;background:linear-gradient(90deg,var(--surface2),var(--surface3),var(--surface2));background-size:200% 100%;animation:shimmer 1.5s infinite;}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ═══ PAGINATION ═══ */
+.pagination{background:var(--surface);border:1px solid var(--border);border-top:1px solid var(--border);border-radius:0 0 var(--r) var(--r);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.pg-info{font-size:12px;color:var(--t3);font-family:var(--fm);}
+.pg-btns{display:flex;gap:3px;flex-wrap:wrap;}
+.pg-btn{min-width:32px;height:32px;border-radius:var(--rx);border:1.5px solid var(--border2);background:transparent;cursor:pointer;font-size:12px;font-weight:700;color:var(--t2);transition:all .15s;padding:0 6px;}
+.pg-btn:hover{border-color:var(--border3);color:var(--t1);background:var(--surface2);}
+.pg-btn.active{background:var(--t1);border-color:var(--t1);color:var(--bg);}
+.pg-btn:disabled{opacity:.3;cursor:not-allowed;}
+.pg-dots{font-size:12px;color:var(--t3);padding:0 4px;line-height:32px;}
+
+/* ═══ COIN DETAIL MODAL ═══ */
+.coin-modal{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .2s;display:flex;align-items:center;justify-content:center;padding:16px;}
+.coin-modal.open{opacity:1;pointer-events:all;}
+.coin-modal-card{background:var(--surface);border-radius:var(--r);box-shadow:var(--sha-lg);width:100%;max-width:680px;max-height:88vh;overflow-y:auto;transform:translateY(20px) scale(.97);transition:transform .25s cubic-bezier(.22,1,.36,1);}
+.coin-modal.open .coin-modal-card{transform:translateY(0) scale(1);}
+.cm-header{padding:20px 20px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:14px;position:sticky;top:0;background:var(--surface);z-index:2;}
+.cm-coin-info{flex:1;min-width:0;}
+.cm-name{font-size:20px;font-weight:800;letter-spacing:-.5px;}
+.cm-sym{font-size:12px;font-family:var(--fm);color:var(--t3);text-transform:uppercase;margin-top:2px;}
+.cm-rank{font-size:11px;font-weight:700;padding:2px 8px;border-radius:var(--pill);background:var(--surface2);border:1px solid var(--border);color:var(--t2);display:inline-block;margin-top:4px;}
+.cm-close{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border2);background:var(--surface2);color:var(--t2);font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0;}
+.cm-close:hover{border-color:var(--dn);color:var(--dn);}
+.cm-body{padding:18px 20px;}
+.cm-price-row{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap;}
+.cm-price{font-size:28px;font-weight:800;letter-spacing:-1px;font-family:var(--ff2);}
+.cm-section{margin-bottom:18px;}
+.cm-section-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:10px;}
+.cm-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.cm-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.cm-stat{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rx);padding:10px 12px;}
+.cm-stat-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:3px;}
+.cm-stat-val{font-size:13px;font-weight:700;font-family:var(--fm);color:var(--t1);}
+.cm-desc{font-size:13px;line-height:1.7;color:var(--t2);max-height:120px;overflow:hidden;position:relative;transition:max-height .3s;}
+.cm-desc.expanded{max-height:none;}
+.cm-read-more{font-size:12px;font-weight:700;color:var(--accent);cursor:pointer;background:none;border:none;margin-top:6px;padding:0;}
+.cm-links{display:flex;gap:7px;flex-wrap:wrap;}
+.cm-link{display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:var(--rx);background:var(--surface2);border:1px solid var(--border);font-size:12px;font-weight:700;color:var(--t2);transition:all .15s;text-decoration:none;}
+.cm-link:hover{border-color:var(--border3);color:var(--t1);}
+.cm-cats{display:flex;gap:5px;flex-wrap:wrap;}
+.cm-cat{font-size:11px;font-weight:700;padding:3px 9px;border-radius:var(--pill);background:var(--accentb);color:var(--accent);border:1px solid var(--accentbr);}
+.cm-explorers{display:flex;flex-direction:column;gap:5px;}
+.cm-explorer{font-size:12px;color:var(--accent);word-break:break-all;}
+
+/* ═══ STATUS BAR ═══ */
+.status-bar{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rx);padding:8px 14px;margin-bottom:14px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t2);}
+.status-bar span{font-weight:700;color:var(--accent);}
+.next-update{margin-left:auto;font-family:var(--fm);font-size:11px;color:var(--t3);}
+
+/* ═══ FOOTER ═══ */
+footer{background:var(--surface);border-top:1px solid var(--border);padding:36px 24px 22px;margin-top:40px;}
+.footer-inner{max-width:1500px;margin:0 auto;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:36px;margin-bottom:28px;}
+.footer-brand .brand-logo{font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:10px;}
+.footer-brand p{color:var(--t2);font-size:13px;line-height:1.65;max-width:240px;margin-bottom:14px;}
+.footer-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px;}
+.f-tag{font-size:10.5px;font-weight:600;padding:3px 9px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--pill);color:var(--t2);}
+.footer-socials{display:flex;gap:7px;}
+.f-soc{width:32px;height:32px;border-radius:var(--rx);border:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;justify-content:center;color:var(--t2);font-size:12px;font-weight:700;transition:all .15s;}
+.f-soc:hover{border-color:var(--border3);color:var(--t1);}
+.footer-col h4{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:12px;}
+.footer-col ul{list-style:none;}
+.footer-col ul li{margin-bottom:8px;}
+.footer-col ul li a,.footer-col ul li button{color:var(--t2);font-size:13px;font-weight:500;transition:color .15s;background:none;border:none;padding:0;cursor:pointer;display:block;text-align:left;}
+.footer-col ul li a:hover,.footer-col ul li button:hover{color:var(--t1);}
+.footer-bottom{border-top:1px solid var(--border);padding-top:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.footer-bottom p{color:var(--t3);font-size:12px;}
+.disclaimer{font-size:11.5px;color:var(--t3);max-width:500px;line-height:1.5;}
+
+/* ═══ TOAST & SCROLL ═══ */
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--t1);color:var(--bg);padding:11px 22px;border-radius:var(--pill);font-size:13px;font-weight:700;box-shadow:var(--sha-lg);z-index:9999;transition:transform .38s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none;max-width:90vw;text-align:center;}
+#toast.show{transform:translateX(-50%) translateY(0);}
+#scrollTop{position:fixed;bottom:28px;right:20px;width:40px;height:40px;border-radius:50%;background:var(--t1);color:var(--bg);border:none;cursor:pointer;font-size:16px;display:none;align-items:center;justify-content:center;box-shadow:var(--sha);z-index:98;transition:all .2s;}
+#scrollTop.show{display:flex;}
+#scrollTop:hover{transform:translateY(-2px);}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.fade-up{animation:fadeUp .4s ease both;}
+.delay-1{animation-delay:.07s;}
+.delay-2{animation-delay:.12s;}
+.delay-3{animation-delay:.18s;}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:1200px){.footer-grid{grid-template-columns:1fr 1fr;gap:24px;}}
+@media(max-width:900px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .hide-md{display:none;}
+  .cm-grid-3{grid-template-columns:1fr 1fr;}
+}
+/* Mobile table: compact 3-col layout */
+@media(max-width:700px){
+  table{table-layout:fixed;width:100%;}
+  /* rank: narrow */
+  thead th:nth-child(1),td:nth-child(1){width:32px;padding:8px 4px 8px 10px;font-size:10px;}
+  /* coin cell: flexible */
+  thead th:nth-child(2),td:nth-child(2){width:auto;}
+  .coin-cell{gap:7px;}
+  .coin-img,.coin-img-placeholder{width:28px;height:28px;font-size:9px;}
+  .coin-name{font-size:12.5px;}
+  .coin-sym{font-size:10px;}
+  /* price: fixed width */
+  thead th:nth-child(3),td:nth-child(3){width:90px;font-size:11.5px;padding:8px 6px;}
+  /* 24h change: always visible on mobile, fixed width */
+  .hide-md-no-chg{display:none;}
+  thead th:nth-child(4),td:nth-child(4){width:76px;padding:8px 8px 8px 4px;}
+  .chg-badge{font-size:10px;padding:3px 5px;}
+}
+@media(max-width:640px){
+  .page{padding:12px 12px 60px;}
+  .explorer-hero{padding:18px 16px 16px;}
+  .explorer-title{font-size:20px;}
+  .footer-grid{grid-template-columns:1fr;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;}
+  .cm-grid{grid-template-columns:1fr;}
+  .cm-grid-3{grid-template-columns:1fr 1fr;}
+  .cm-price{font-size:22px;}
+}
+@media(max-width:380px){
+  .nav-btn-solid{display:none;}
+  .tab-pill{padding:4px 9px;font-size:11px;}
+  .cat-tag{padding:4px 9px;font-size:10.5px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="index.html" id="PD_LOGO_WRAP" style="text-decoration:none;display:flex;align-items:center;gap:0;padding:0;cursor:pointer;"></a>
+    <div class="nav-links">
+      <button class="nav-link" onclick="location.href='index.html'">📊 Cryptocurrencies</button>
+      <button class="nav-link" onclick="toast('🚧 Exchanges — Coming soon!')">🏛️ Exchanges</button>
+      <a class="nav-link" href="airdrop.html">🎁 Airdrops <span class="badge-new">NEW</span></a>
+      <button class="nav-link" onclick="location.href='news.html'">📰 News</button>
+      <a class="nav-link" href="learn.html">📚 Learn</a>
+      <a class="nav-link active" href="CoinExplorer.html">🔭 Coin Explorer</a>
+      <a class="nav-link" href="https://docs.publicdrop.in" target="_blank">📄 API Docs</a>
+    </div>
+    <div class="nav-right">
+      <button class="theme-toggle" id="THEME_BTN" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+      <button class="nav-btn nav-btn-solid" onclick="toast('🔐 Login — Coming soon!')">Get Started</button>
+      <button class="hamburger" id="HAMBURGER" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="MOBILE_MENU" onclick="if(event.target===this)closeMenu()">
+  <div class="menu-panel">
+    <div class="menu-hdr">
+      <div class="menu-hdr-logo">Public<span>DROP</span></div>
+      <button class="menu-close" onclick="closeMenu()">✕</button>
+    </div>
+    <div class="menu-body">
+      <div class="menu-section-label">Navigation</div>
+      <button class="mob-link" onclick="closeMenu();location.href='index.html'"><span class="mob-icon">📊</span>Cryptocurrencies</button>
+      <a class="mob-link active" href="CoinExplorer.html" onclick="closeMenu()"><span class="mob-icon">🔭</span>Coin Explorer</a>
+      <a class="mob-link" href="airdrop.html" onclick="closeMenu()"><span class="mob-icon">🎁</span>Airdrops <span class="badge-new" style="margin-left:4px">NEW</span></a>
+      <button class="mob-link" onclick="closeMenu();location.href='news.html'"><span class="mob-icon">📰</span>Crypto News</button>
+      <a class="mob-link" href="learn.html" onclick="closeMenu()"><span class="mob-icon">📚</span>Learn</a>
+      <div class="mob-divider"></div>
+      <div class="menu-section-label">More</div>
+      <a class="mob-link" href="https://docs.publicdrop.in" target="_blank" onclick="closeMenu()"><span class="mob-icon">📄</span>API Docs</a>
+      <div class="mob-divider"></div>
+      <div class="menu-section-label">Settings</div>
+      <div class="menu-setting">
+        <div class="menu-theme-row">
+          <div class="menu-setting-label" style="margin-bottom:0">Theme</div>
+          <button class="menu-theme-btn" id="MOB_THEME_BTN" onclick="toggleTheme()">🌙 Dark</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="page">
+
+  <!-- HERO -->
+  <div class="explorer-hero fade-up">
+    <div class="explorer-hero-top">
+      <div>
+        <div class="explorer-title">🔭 Coin <span>Explorer</span></div>
+        <div class="explorer-sub">Browse <strong>14,300+ cryptocurrencies</strong> with live prices, market dominance, and full coin details — all powered by the PublicDrop free API.</div>
+      </div>
+      <div class="update-badge" id="UPDATE_BADGE">
+        <span class="update-dot"></span> Live Data
+      </div>
+    </div>
+    <div class="explorer-stats">
+      <div class="ex-stat"><div class="ex-stat-val" id="STAT_TOTAL">—</div><div class="ex-stat-lbl">Total Coins</div></div>
+      <div class="ex-stat"><div class="ex-stat-val" id="STAT_MCAP" style="color:var(--accent)">—</div><div class="ex-stat-lbl">Market Cap</div></div>
+      <div class="ex-stat"><div class="ex-stat-val" id="STAT_VOL" style="color:var(--t2)">—</div><div class="ex-stat-lbl">24h Volume</div></div>
+      <div class="ex-stat">
+        <div class="ex-stat-val" id="STAT_MCAP_CHG">—</div>
+        <div class="ex-stat-lbl">Market Cap 24h</div>
+      </div>
+      <div class="ex-stat"><div class="ex-stat-val" id="STAT_BTC" style="color:#f7931a">—</div><div class="ex-stat-lbl">BTC Dominance</div></div>
+      <div class="ex-stat"><div class="ex-stat-val" id="STAT_ETH" style="color:#627eea">—</div><div class="ex-stat-lbl">ETH Dominance</div></div>
+      <div class="ex-stat"><div class="ex-stat-val" id="STAT_GAINERS" style="color:var(--up)">—</div><div class="ex-stat-lbl">Gainers</div></div>
+      <div class="ex-stat"><div class="ex-stat-val" id="STAT_LOSERS" style="color:var(--dn)">—</div><div class="ex-stat-lbl">Losers</div></div>
+      <div class="ex-stat"><div class="ex-stat-val" id="STAT_NEUTRAL" style="color:var(--t3)">—</div><div class="ex-stat-lbl">Neutral</div></div>
+    </div>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div class="status-bar fade-up delay-1" id="STATUS_BAR">
+    <span id="SB_TEXT">Loading coins from PublicDrop database…</span>
+  </div>
+
+  <!-- EXPLORER SEARCH -->
+  <div class="explorer-search-wrap fade-up delay-1">
+    <div class="explorer-search-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </div>
+    <input type="text" id="EXPLORER_SEARCH" placeholder="Search 13,000+ coins by name or symbol… Bitcoin, BTC, ETH, Solana" autocomplete="off" spellcheck="false" oninput="onSearch(this.value)">
+    <button class="search-clear" id="SEARCH_CLEAR" onclick="clearSearch()">✕</button>
+  </div>
+
+  <!-- FILTERS + TABLE -->
+  <div class="filters-bar fade-up delay-2">
+    <div class="filters-top">
+      <div class="filter-left">
+        <div class="filter-title" id="FILTER_TITLE">All Coins</div>
+        <div class="coin-badge" id="COIN_COUNT_BADGE">—</div>
+      </div>
+      <div class="filter-right">
+        <select class="sort-select" id="SORT_SEL" onchange="doSort(this.value)">
+          <option value="rank">By Rank</option>
+          <option value="price_h">Price High→Low</option>
+          <option value="price_l">Price Low→High</option>
+          <option value="change_d">Top Gainers</option>
+          <option value="change_a">Top Losers</option>
+          <option value="ath">All Time High</option>
+          <option value="name">Name A→Z</option>
+        </select>
+        <button class="icon-btn hide-md" onclick="toast('📋 Export coming soon!')" title="Export">⬇</button>
+      </div>
+    </div>
+    <div class="filters-tabs">
+      <button class="tab-pill active" id="TAB_ALL" onclick="setTab('all',this)">All</button>
+      <button class="tab-pill" id="TAB_TOP100" onclick="setTab('top100',this)">⭐ Top 100</button>
+      <button class="tab-pill" id="TAB_TOP500" onclick="setTab('top500',this)">Top 500</button>
+    </div>
+    <div class="cat-scroll">
+      <div class="cat-tags">
+        <button class="cat-tag active" onclick="setCat('all',this)">All Categories</button>
+        <button class="cat-tag" onclick="setCat('defi',this)">💎 DeFi</button>
+        <button class="cat-tag" onclick="setCat('meme',this)">🐸 Meme</button>
+        <button class="cat-tag" onclick="setCat('layer-1',this)">⛓️ Layer 1</button>
+        <button class="cat-tag" onclick="setCat('layer-2',this)">🔗 Layer 2</button>
+        <button class="cat-tag" onclick="setCat('ai',this)">🤖 AI</button>
+        <button class="cat-tag" onclick="setCat('gaming',this)">🎮 Gaming</button>
+        <button class="cat-tag" onclick="setCat('nft',this)">🖼️ NFT</button>
+        <button class="cat-tag" onclick="setCat('stablecoin',this)">💵 Stablecoin</button>
+        <button class="cat-tag" onclick="setCat('exchange',this)">🏛️ Exchange</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-scroll">
+      <div id="TABLE_WRAP">
+        <div class="tbl-loading"><div class="spinner"></div><div style="font-size:14px;font-weight:600;color:var(--t2)">Loading coins from PublicDrop database…</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="pagination" id="PAGINATION" style="display:none"></div>
+
+</div>
+
+<!-- COIN DETAIL MODAL -->
+<div class="coin-modal" id="COIN_MODAL" onclick="if(event.target===this)closeCoinModal()">
+  <div class="coin-modal-card" id="COIN_MODAL_CARD">
+    <div class="cm-header">
+      <img id="CM_IMG" src="" alt="" class="coin-img" style="width:48px;height:48px;" onerror="this.style.display='none'">
+      <div class="cm-coin-info">
+        <div class="cm-name" id="CM_NAME">—</div>
+        <div class="cm-sym" id="CM_SYM">—</div>
+        <div class="cm-rank" id="CM_RANK">—</div>
+      </div>
+      <button class="cm-close" onclick="closeCoinModal()">✕</button>
+    </div>
+    <div class="cm-body" id="CM_BODY">
+      <div class="tbl-loading"><div class="spinner"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand-logo">PublicDrop</div>
+        <p>Real-time crypto market data, airdrops, and portfolio tools. Built for Indian crypto investors.</p>
+        <div class="footer-tags">
+          <div class="f-tag">⚡ PublicDrop Live API</div>
+          <div class="f-tag">🔭 14,300+ Coins</div>
+          <div class="f-tag">📊 Live Prices</div>
+          <div class="f-tag">🇮🇳 publicdrop.in</div>
+        </div>
+        <div class="footer-socials" style="margin-top:12px">
+          <a href="https://x.com/PublicDropIN/" target="_blank" class="f-soc" title="X (Twitter)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.912-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="https://t.me/publicdropIN/" target="_blank" class="f-soc" title="Telegram">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          </a>
+          <a href="https://docs.publicdrop.in" target="_blank" class="f-soc" title="API Docs" style="font-size:10px;font-weight:800;letter-spacing:-.3px;width:auto;padding:0 10px;color:var(--accent);border-color:var(--accentbr);background:var(--accentb);">API</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Explorer</h4>
+        <ul>
+          <li><button onclick="setTab('all',document.getElementById('TAB_ALL'))">All Coins</button></li>
+          <li><button onclick="setTab('top100',document.getElementById('TAB_TOP100'))">Top 100</button></li>
+          <li><button onclick="setCat('defi',null)">DeFi Tokens</button></li>
+          <li><button onclick="setCat('meme',null)">Meme Coins</button></li>
+          <li><button onclick="setCat('layer-1',null)">Layer 1</button></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="index.html">Live Prices</a></li>
+          <li><a href="airdrop.html">Airdrops</a></li>
+          <li><button onclick="toast('🚧 Coming soon!')">Price Alerts</button></li>
+          <li><button onclick="toast('🚧 Coming soon!')">API Access</button></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="news.html">Market News</a></li>
+          <li><a href="learn.html">Beginner Guide</a></li>
+          <li><a href="learn.html#glossary">Crypto Glossary</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="about.html#contact">Contact</a></li>
+          <li><a href="about.html#privacy">Privacy Policy</a></li>
+          <li><a href="about.html#terms">Terms of Use</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 PublicDrop.in · All rights reserved · Powered by PublicDrop Live API</p>
+      <div class="disclaimer">⚠️ <strong>Not financial advice.</strong> Crypto carries high risk. Always DYOR before investing.</div>
+    </div>
+  </div>
+</footer>
+
+<div id="toast"></div>
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+/* ═══════════════════════════════════════════
+   CONFIG
+═══════════════════════════════════════════ */
+const API_BASE = 'https://publicdrop.in/APIv3';
+const PER_PAGE = 100; // rows shown per page in the table
+
+/* ═══════════════════════════════════════════
+   STATE
+   MODE: 'browse' | 'search' | 'category'
+   - browse: lazy-loads /coins?page=N per paginated DB page
+   - search: uses /search?q= endpoint, all in memory
+   - category: uses /categories?cat= endpoint, all in memory
+═══════════════════════════════════════════ */
+let MODE        = 'browse';   // current data mode
+let BROWSE_PAGE = 1;          // current DB page (each DB page = 100 items)
+let BROWSE_TOTAL = 0;         // total coins in DB
+let BROWSE_CACHE = {};        // { dbPage: [coins] }
+
+let SEARCH_RESULTS = [];      // results from /search API
+let CAT_RESULTS    = [];      // results from /categories API
+
+let activeTab   = 'all';
+let activeCat   = 'all';
+let sortKey     = 'rank';
+let searchQ     = '';
+let searchTimer = null;
+
+/* ═══════════════════════════════════════════
+   THEME
+═══════════════════════════════════════════ */
+(function(){
+  const t = localStorage.getItem('pd_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', t);
+  const b = document.getElementById('THEME_BTN');
+  if(b) b.textContent = t === 'dark' ? '☀️' : '🌙';
+  const m = document.getElementById('MOB_THEME_BTN');
+  if(m) m.textContent = t === 'dark' ? '☀️ Light' : '🌙 Dark';
+})();
+
+function toggleTheme(){
+  const cur  = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  document.getElementById('THEME_BTN').textContent = next === 'dark' ? '☀️' : '🌙';
+  const m = document.getElementById('MOB_THEME_BTN');
+  if(m) m.textContent = next === 'dark' ? '☀️ Light' : '🌙 Dark';
+  localStorage.setItem('pd_theme', next);
+}
+
+/* ═══════════════════════════════════════════
+   MOBILE MENU
+═══════════════════════════════════════════ */
+function toggleMenu(){
+  document.getElementById('MOBILE_MENU').classList.toggle('open');
+  document.getElementById('HAMBURGER').classList.toggle('open');
+}
+function closeMenu(){
+  document.getElementById('MOBILE_MENU').classList.remove('open');
+  document.getElementById('HAMBURGER').classList.remove('open');
+}
+
+/* ═══════════════════════════════════════════
+   TOAST & SCROLL
+═══════════════════════════════════════════ */
+function toast(m, d=3200){
+  const t = document.getElementById('toast');
+  t.textContent = m;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(()=>t.classList.remove('show'), d);
+}
+window.addEventListener('scroll', ()=>{
+  document.getElementById('scrollTop').classList.toggle('show', scrollY > 600);
+});
+
+/* ═══════════════════════════════════════════
+   FORMATTERS
+═══════════════════════════════════════════ */
+function fmtPrice(n){
+  if(n == null || isNaN(n)) return '—';
+  n = parseFloat(n);
+  if(n >= 10000)     return '$' + n.toLocaleString('en-US', {maximumFractionDigits:2});
+  if(n >= 1)         return '$' + n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:4});
+  if(n >= 0.1)       return '$' + n.toFixed(4);
+  if(n >= 0.01)      return '$' + n.toFixed(5);
+  if(n >= 0.001)     return '$' + n.toFixed(6);
+  if(n >= 0.0001)    return '$' + n.toFixed(7);
+  if(n >= 0.00001)   return '$' + n.toFixed(8);
+  if(n >= 0.000001)  return '$' + n.toFixed(9);
+  if(n >= 0.0000001) return '$' + n.toFixed(10);
+  if(n > 0){
+    // For extremely small values, show without scientific notation
+    const s = n.toFixed(20).replace(/0+$/, '');
+    const match = s.match(/^0\.(0*)([1-9]\d{0,3})/);
+    if(match) return '$0.' + match[1] + match[2];
+    return '$' + n.toFixed(12);
+  }
+  return '$0.00';
+}
+function fmtLarge(n){
+  if(n == null || isNaN(n)) return '—';
+  n = parseFloat(n);
+  if(n >= 1e12) return '$' + (n/1e12).toFixed(2) + 'T';
+  if(n >= 1e9)  return '$' + (n/1e9).toFixed(2) + 'B';
+  if(n >= 1e6)  return '$' + (n/1e6).toFixed(2) + 'M';
+  if(n >= 1e3)  return '$' + (n/1e3).toFixed(2) + 'K';
+  return '$' + n.toFixed(2);
+}
+function fmtSupply(n){
+  if(n == null || isNaN(n)) return '—';
+  n = parseFloat(n);
+  if(n >= 1e12) return (n/1e12).toFixed(2) + 'T';
+  if(n >= 1e9)  return (n/1e9).toFixed(2) + 'B';
+  if(n >= 1e6)  return (n/1e6).toFixed(2) + 'M';
+  if(n >= 1e3)  return (n/1e3).toFixed(2) + 'K';
+  return n.toLocaleString();
+}
+function fmtChg(n){
+  if(n == null || isNaN(n)) return null;
+  return parseFloat(n).toFixed(2);
+}
+function timeAgo(iso){
+  if(!iso) return '—';
+  const diff = Date.now() - new Date(iso).getTime();
+  const m = Math.floor(diff/60000);
+  if(m < 1) return 'just now';
+  if(m < 60) return m + 'm ago';
+  const h = Math.floor(m/60);
+  if(h < 24) return h + 'h ago';
+  return Math.floor(h/24) + 'd ago';
+}
+
+/* ═══════════════════════════════════════════
+   STATUS: Load hero stats from /status
+═══════════════════════════════════════════ */
+async function loadStatus(){
+  try {
+    const s = await fetch(`${API_BASE}/status`).then(r=>r.json());
+
+    // Total coins
+    document.getElementById('STAT_TOTAL').textContent = (s.total_coins||0).toLocaleString();
+
+    // Market Cap in B$
+    const mcap = s.total_market_cap_usd;
+    if(mcap != null){
+      document.getElementById('STAT_MCAP').textContent = mcap >= 1e12
+        ? '$' + (mcap/1e12).toFixed(2) + 'T'
+        : '$' + (mcap/1e9).toFixed(1) + 'B';
+    }
+
+    // 24h Volume in B$ or M$
+    const vol = s.total_volume_24h_usd;
+    if(vol != null){
+      document.getElementById('STAT_VOL').textContent = vol >= 1e9
+        ? '$' + (vol/1e9).toFixed(2) + 'B'
+        : '$' + (vol/1e6).toFixed(1) + 'M';
+    }
+
+    // Market Cap 24h % change
+    const chgEl = document.getElementById('STAT_MCAP_CHG');
+    const chg = s.market_cap_change_24h;
+    if(chg != null){
+      const pct = (chg * 100).toFixed(2);
+      const isUp = parseFloat(pct) >= 0;
+      chgEl.textContent = (isUp ? '+' : '') + pct + '%';
+      chgEl.style.color = isUp ? 'var(--up)' : 'var(--dn)';
+    }
+
+    // BTC & ETH Dominance
+    document.getElementById('STAT_BTC').textContent = (s.btc_dominance||0).toFixed(2) + '%';
+    document.getElementById('STAT_ETH').textContent = (s.eth_dominance||0).toFixed(2) + '%';
+
+    // Gainers / Losers / Neutral
+    document.getElementById('STAT_GAINERS').textContent = (s.gainers||0).toLocaleString();
+    document.getElementById('STAT_LOSERS').textContent  = (s.losers||0).toLocaleString();
+    document.getElementById('STAT_NEUTRAL').textContent = (s.neutral||0).toLocaleString();
+
+    BROWSE_TOTAL = s.total_coins || 0;
+  } catch(e){ console.warn('Status fetch failed', e); }
+}
+
+/* ═══════════════════════════════════════════
+   BROWSE MODE: Lazy-load /coins?page=N
+   Each DB page returns ~100 coins.
+   We cache pages so back-navigation is instant.
+═══════════════════════════════════════════ */
+async function loadBrowsePage(dbPage){
+  if(BROWSE_CACHE[dbPage]) return BROWSE_CACHE[dbPage];
+
+  showTableLoading();
+  try {
+    const res = await fetch(`${API_BASE}/coins?page=${dbPage}`).then(r=>r.json());
+    const coins = res.coins || [];
+    const total = res.total || BROWSE_TOTAL;
+    const totalPages = res.total_pages || res.pages || null;
+    BROWSE_TOTAL = total;
+
+    // Parse categories
+    for(const c of coins){
+      try { c.categories_arr = JSON.parse(c.categories || '[]'); } catch{ c.categories_arr = []; }
+    }
+    BROWSE_CACHE[dbPage] = { coins, total, totalPages };
+    return BROWSE_CACHE[dbPage];
+  } catch(e){
+    document.getElementById('TABLE_WRAP').innerHTML = `<div class="tbl-empty">⚠️ Could not load coins. Check if API is reachable at publicdrop.in</div>`;
+    console.error(e);
+    return null;
+  }
+}
+
+async function goBrowsePage(dbPage){
+  MODE = 'browse';
+  activeCat = 'all';
+  // Reset category UI
+  document.querySelectorAll('.cat-tag').forEach(b => b.classList.remove('active'));
+  document.querySelector('.cat-tag')?.classList.add('active');
+
+  BROWSE_PAGE = dbPage;
+  const data = await loadBrowsePage(dbPage);
+  if(!data) return;
+
+  let coins = applyTabFilter([...data.coins]);
+  coins = applySort(coins);
+
+  const totalDBPages = data.totalPages || Math.ceil(data.total / (data.coins.length || 100));
+  renderTableDirect(coins);
+  renderBrowsePagination(dbPage, totalDBPages, data.total);
+  updateFilterTitle('All Coins', data.total);
+  updateSBText(`Page ${dbPage} of ${totalDBPages} · <span>${data.total.toLocaleString()}</span> total coins`);
+}
+
+/* ═══════════════════════════════════════════
+   SEARCH MODE: Uses /search?q=
+   Returns coins with live price_usd + change_24h
+═══════════════════════════════════════════ */
+async function runSearch(q){
+  if(!q || q.length < 1){
+    goBrowsePage(1);
+    return;
+  }
+
+  MODE = 'search';
+  showTableLoading();
+  updateSBText(`Searching for "<strong>${q}</strong>"…`);
+
+  try {
+    const res = await fetch(`${API_BASE}/search?q=${encodeURIComponent(q)}`).then(r=>r.json());
+    SEARCH_RESULTS = res.results || [];
+
+    // Parse categories if present
+    for(const c of SEARCH_RESULTS){
+      if(typeof c.categories === 'string'){
+        try { c.categories_arr = JSON.parse(c.categories); } catch{ c.categories_arr = []; }
+      } else { c.categories_arr = c.categories || []; }
+    }
+
+    const sorted = applySort([...SEARCH_RESULTS]);
+    renderTableDirect(sorted);
+    renderInMemoryPagination(sorted, 1);
+    updateFilterTitle(`Search: "${q}"`, SEARCH_RESULTS.length);
+    updateSBText(`Found <span>${SEARCH_RESULTS.length.toLocaleString()}</span> results for "<strong>${q}</strong>"`);
+
+    document.getElementById('UPDATE_BADGE').innerHTML = `<span class="update-dot"></span> Live prices`;
+  } catch(e){
+    document.getElementById('TABLE_WRAP').innerHTML = `<div class="tbl-empty">⚠️ Search failed. Try again.</div>`;
+    console.error(e);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   CATEGORY MODE: Uses /categories?cat=
+═══════════════════════════════════════════ */
+async function loadCategory(cat){
+  MODE = 'category';
+  showTableLoading();
+  updateSBText(`Loading category: <strong>${cat}</strong>…`);
+
+  try {
+    const res = await fetch(`${API_BASE}/categories?cat=${encodeURIComponent(cat)}`).then(r=>r.json());
+    CAT_RESULTS = res.coins || [];
+
+    // Parse categories if present
+    for(const c of CAT_RESULTS){
+      if(typeof c.categories === 'string'){
+        try { c.categories_arr = JSON.parse(c.categories); } catch{ c.categories_arr = []; }
+      } else { c.categories_arr = c.categories || []; }
+    }
+
+    let coins = applyTabFilter([...CAT_RESULTS]);
+    coins = applySort(coins);
+
+    renderTableDirect(coins);
+    renderInMemoryPagination(coins, 1);
+    const label = cat.charAt(0).toUpperCase() + cat.slice(1).replace(/-/g, ' ');
+    updateFilterTitle(label, CAT_RESULTS.length);
+    updateSBText(`<span>${CAT_RESULTS.length.toLocaleString()}</span> coins in <strong>${label}</strong> category`);
+  } catch(e){
+    document.getElementById('TABLE_WRAP').innerHTML = `<div class="tbl-empty">⚠️ Category load failed. Try again.</div>`;
+    console.error(e);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   FILTERS
+═══════════════════════════════════════════ */
+function applyTabFilter(coins){
+  if(activeTab === 'top100') return coins.filter(c => c.rank && c.rank <= 100);
+  if(activeTab === 'top500') return coins.filter(c => c.rank && c.rank <= 500);
+  return coins;
+}
+
+function applySort(coins){
+  return coins.sort((a, b) => {
+    if(sortKey === 'rank')    return (a.rank||99999) - (b.rank||99999);
+    if(sortKey === 'price_h') return (b.price_usd||0) - (a.price_usd||0);
+    if(sortKey === 'price_l') return (a.price_usd||0) - (b.price_usd||0);
+    if(sortKey === 'change_d') return (b.change_24h||0) - (a.change_24h||0);
+    if(sortKey === 'change_a') return (a.change_24h||0) - (b.change_24h||0);
+    if(sortKey === 'ath')     return (b.ath_usd||0) - (a.ath_usd||0);
+    if(sortKey === 'name')    return (a.name||'').localeCompare(b.name||'');
+    return 0;
+  });
+}
+
+function setTab(tab, el){
+  activeTab = tab;
+  document.querySelectorAll('.tab-pill').forEach(b => b.classList.remove('active'));
+  if(el) el.classList.add('active');
+  refreshCurrentView();
+}
+
+function setCat(cat, el){
+  activeCat = cat;
+  document.querySelectorAll('.cat-tag').forEach(b => b.classList.remove('active'));
+  if(el) el.classList.add('active');
+  else {
+    document.querySelectorAll('.cat-tag').forEach(b => {
+      const txt = b.textContent.toLowerCase();
+      if(cat === 'all' && txt.includes('all')) b.classList.add('active');
+      else if(txt.includes(cat.replace(/-/g,' '))) b.classList.add('active');
+    });
+  }
+
+  if(cat === 'all'){
+    goBrowsePage(1);
+  } else {
+    loadCategory(cat);
+  }
+}
+
+function doSort(key){
+  sortKey = key;
+  // Gainers/losers need price data; browse mode doesn't have it
+  // so we switch to live-search mode for these sorts
+  if((key === 'change_d' || key === 'change_a') && MODE === 'browse'){
+    runGainersLosers(key);
+    return;
+  }
+  refreshCurrentView();
+}
+
+async function runGainersLosers(key){
+  MODE = 'search';
+  showTableLoading();
+  const label = key === 'change_d' ? '📈 Top Gainers' : '📉 Top Losers';
+  updateSBText('Loading ' + label + ' with live 24h price data…');
+  // Queries to get a broad pool of coins that have live prices
+  const queries = ['btc','eth','sol','bnb','ada','xrp','dot','avax','matic','link',
+                   'uni','aave','doge','shib','pepe','arb','op','near','atom','inj',
+                   'sui','apt','sei','tia','stx','floki','wif','bonk','meme','pyth'];
+  const seenIds = new Set();
+  SEARCH_RESULTS = [];
+  for(const q of queries){
+    try {
+      const res = await fetch(API_BASE+'/search?q='+encodeURIComponent(q)).then(r=>r.json());
+      for(const c of (res.results||[])){
+        if(!seenIds.has(c.id||c.symbol) && c.change_24h != null){
+          seenIds.add(c.id||c.symbol);
+          SEARCH_RESULTS.push(c);
+        }
+      }
+    } catch{}
+  }
+  if(!SEARCH_RESULTS.length){
+    document.getElementById('TABLE_WRAP').innerHTML =
+      '<div class="tbl-empty">⚠️ Could not load live price data for sorting.</div>';
+    return;
+  }
+  const sorted = applySort([...SEARCH_RESULTS]);
+  renderTableDirect(sorted);
+  renderInMemoryPagination(sorted, 1);
+  updateFilterTitle(label, SEARCH_RESULTS.length);
+  updateSBText('<span>'+SEARCH_RESULTS.length.toLocaleString()+'</span> coins sorted by '+label);
+}
+
+function refreshCurrentView(){
+  if(MODE === 'search'){
+    const sorted = applySort(applyTabFilter([...SEARCH_RESULTS]));
+    renderTableDirect(sorted);
+    renderInMemoryPagination(sorted, 1);
+  } else if(MODE === 'category'){
+    const sorted = applySort(applyTabFilter([...CAT_RESULTS]));
+    renderTableDirect(sorted);
+    renderInMemoryPagination(sorted, 1);
+  } else {
+    goBrowsePage(1);
+  }
+}
+
+function onSearch(q){
+  searchQ = q.trim();
+  document.getElementById('SEARCH_CLEAR').classList.toggle('show', q.length > 0);
+  clearTimeout(searchTimer);
+  if(searchQ.length === 0){
+    goBrowsePage(1);
+    return;
+  }
+  searchTimer = setTimeout(() => runSearch(searchQ), 350);
+}
+
+function clearSearch(){
+  document.getElementById('EXPLORER_SEARCH').value = '';
+  document.getElementById('SEARCH_CLEAR').classList.remove('show');
+  searchQ = '';
+  goBrowsePage(1);
+}
+
+/* ═══════════════════════════════════════════
+   COIN REGISTRY — index → coin object
+   Lets modal look up exact coin by row index,
+   avoiding any id/symbol mismatch bugs.
+═══════════════════════════════════════════ */
+const COIN_REG = {};
+let COIN_REG_IDX = 0;
+
+function regCoin(coin){
+  const idx = COIN_REG_IDX++;
+  COIN_REG[idx] = coin;
+  return idx;
+}
+
+/* ═══════════════════════════════════════════
+   RENDER TABLE
+═══════════════════════════════════════════ */
+function coinImgTag(coin){
+  const src = coin.logo_local
+    ? `https://publicdrop.in${coin.logo_local}`
+    : coin.logo_large || coin.logo_url || '';
+  if(src){
+    return `<img src="${src}" alt="${coin.symbol}" class="coin-img" loading="lazy" onerror="this.outerHTML='<div class=\\'coin-img-placeholder\\'>${(coin.symbol||'?').substring(0,3)}</div>'">`;
+  }
+  return `<div class="coin-img-placeholder">${(coin.symbol||'?').substring(0,3)}</div>`;
+}
+
+function showTableLoading(){
+  document.getElementById('TABLE_WRAP').innerHTML = `<div class="tbl-loading"><div class="spinner"></div><div style="font-size:14px;font-weight:600;color:var(--t2)">Loading…</div></div>`;
+  document.getElementById('PAGINATION').style.display = 'none';
+}
+
+function renderTableDirect(coins){
+  if(!coins.length){
+    document.getElementById('TABLE_WRAP').innerHTML = `<div class="tbl-empty">🔍 No coins found. Try a different search or filter.</div>`;
+    return;
+  }
+
+  const chgSorted = sortKey === 'change_d' || sortKey === 'change_a';
+  const priceSorted = sortKey === 'price_h' || sortKey === 'price_l';
+
+  let html = `<table>
+    <thead>
+      <tr>
+        <th style="width:32px">#</th>
+        <th>Coin</th>
+        <th class="r ${priceSorted?'sorted':''}">Price ${priceSorted?'↕':''}</th>
+        <th class="r ${chgSorted?'sorted':''}">24h ${chgSorted?'↕':''}</th>
+        <th class="r hide-md-no-chg hide-md">ATH</th>
+        <th class="r hide-md-no-chg hide-md">Supply</th>
+        <th class="hide-md" style="width:28px"></th>
+      </tr>
+    </thead>
+    <tbody>`;
+
+  for(const coin of coins){
+    const idx     = regCoin(coin);
+    const usd     = coin.price_usd;
+    const chg24   = coin.change_24h;
+    const chgFmt  = fmtChg(chg24);
+    const chgClass = chgFmt != null ? (parseFloat(chgFmt) >= 0 ? 'chg-up' : 'chg-dn') : 'chg-na';
+    const chgStr  = chgFmt != null ? `${parseFloat(chgFmt)>=0?'+':''}${chgFmt}%` : '—';
+
+    html += `<tr onclick="window.location.href='https://publicdrop.in/coin/${(coin.symbol||'').toLowerCase()}'">
+      <td class="td-rank">${coin.rank || '—'}</td>
+      <td>
+        <div class="coin-cell">
+          ${coinImgTag(coin)}
+          <div>
+            <div class="coin-name">${coin.name || coin.id || coin.symbol}</div>
+            <div class="coin-sym">${coin.symbol || ''}</div>
+          </div>
+        </div>
+      </td>
+      <td class="r td-price">${usd != null ? fmtPrice(usd) : '<span style="color:var(--t4);font-size:11px">No price</span>'}</td>
+      <td class="r"><span class="chg-badge ${chgClass}">${chgStr}</span></td>
+      <td class="r td-ath hide-md-no-chg hide-md">${coin.ath_usd ? fmtPrice(coin.ath_usd) : '—'}</td>
+      <td class="r td-supply hide-md-no-chg hide-md">${fmtSupply(coin.total_supply)}</td>
+      <td class="td-arrow hide-md">→</td>
+    </tr>`;
+  }
+
+  html += '</tbody></table>';
+  document.getElementById('TABLE_WRAP').innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════
+   PAGINATION — BROWSE (DB pages, lazy)
+═══════════════════════════════════════════ */
+function renderBrowsePagination(currentDBPage, totalDBPages, totalCoins){
+  const el = document.getElementById('PAGINATION');
+  if(totalDBPages <= 1){ el.style.display='none'; return; }
+  el.style.display = 'flex';
+
+  const start = (currentDBPage - 1) * 100 + 1;
+  const end   = Math.min(currentDBPage * 100, totalCoins);
+
+  let btns = `<button class="pg-btn" onclick="goBrowsePage(${currentDBPage-1})" ${currentDBPage===1?'disabled':''}>‹ Prev</button>`;
+
+  let pages = new Set([1, totalDBPages, currentDBPage, currentDBPage-1, currentDBPage+1].filter(p=>p>=1&&p<=totalDBPages));
+  const sorted = [...pages].sort((a,b)=>a-b);
+  let prev = 0;
+  for(const p of sorted){
+    if(prev && p - prev > 1) btns += `<span class="pg-dots">…</span>`;
+    btns += `<button class="pg-btn ${p===currentDBPage?'active':''}" onclick="goBrowsePage(${p})">${p}</button>`;
+    prev = p;
+  }
+  btns += `<button class="pg-btn" onclick="goBrowsePage(${currentDBPage+1})" ${currentDBPage===totalDBPages?'disabled':''}>Next ›</button>`;
+
+  el.innerHTML = `<div class="pg-info">Showing ${start.toLocaleString()}–${end.toLocaleString()} of ${totalCoins.toLocaleString()}</div><div class="pg-btns">${btns}</div>`;
+}
+
+/* ═══════════════════════════════════════════
+   PAGINATION — IN-MEMORY (search / category)
+   Client-side pagination over already-loaded array
+═══════════════════════════════════════════ */
+let imPg = 1;
+let imCoins = [];
+
+function renderInMemoryPagination(coins, pg){
+  imCoins = coins;
+  imPg = pg;
+  showIMPage(pg);
+}
+
+function showIMPage(pg){
+  imPg = pg;
+  const start = (pg-1)*PER_PAGE;
+  const slice = imCoins.slice(start, start+PER_PAGE);
+  renderTableDirect(slice);
+
+  const el = document.getElementById('PAGINATION');
+  const total = imCoins.length;
+  const pages = Math.ceil(total/PER_PAGE);
+  if(pages <= 1){ el.style.display='none'; return; }
+  el.style.display = 'flex';
+
+  const s = start+1, e = Math.min(pg*PER_PAGE, total);
+  let btns = `<button class="pg-btn" onclick="showIMPage(${pg-1})" ${pg===1?'disabled':''}>‹ Prev</button>`;
+  let pageSet = new Set([1, pages, pg, pg-1, pg+1].filter(p=>p>=1&&p<=pages));
+  const sorted = [...pageSet].sort((a,b)=>a-b);
+  let prev = 0;
+  for(const p of sorted){
+    if(prev && p-prev>1) btns += `<span class="pg-dots">…</span>`;
+    btns += `<button class="pg-btn ${p===pg?'active':''}" onclick="showIMPage(${p})">${p}</button>`;
+    prev = p;
+  }
+  btns += `<button class="pg-btn" onclick="showIMPage(${pg+1})" ${pg===pages?'disabled':''}>Next ›</button>`;
+
+  el.innerHTML = `<div class="pg-info">${s.toLocaleString()}–${e.toLocaleString()} of ${total.toLocaleString()}</div><div class="pg-btns">${btns}</div>`;
+  window.scrollTo({top: document.querySelector('.filters-bar').offsetTop - 80, behavior:'smooth'});
+}
+
+/* ═══════════════════════════════════════════
+   UI HELPERS
+═══════════════════════════════════════════ */
+function updateFilterTitle(title, count){
+  document.getElementById('FILTER_TITLE').textContent = title;
+  document.getElementById('COIN_COUNT_BADGE').textContent = (count||0).toLocaleString() + ' coins';
+}
+function updateSBText(html){
+  document.getElementById('SB_TEXT').innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════
+   COIN DETAIL MODAL — uses /details?sym=SYMBOL
+   Always looks up by symbol (not id) to avoid
+   wrong-coin bugs (e.g. "bitcoin" vs "BTC").
+═══════════════════════════════════════════ */
+async function openCoinModal(regIdx){
+  // Retrieve the exact coin object the user clicked
+  const rowCoin = COIN_REG[regIdx] || {};
+  // Symbol is the correct lookup key for the /details API
+  const sym  = rowCoin.symbol || rowCoin.id || '';
+  const name = rowCoin.name   || sym;
+
+  const modal = document.getElementById('COIN_MODAL');
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // Pre-fill header with data we already have
+  const imgEl = document.getElementById('CM_IMG');
+  const preImg = rowCoin.logo_local
+    ? `https://publicdrop.in${rowCoin.logo_local}`
+    : rowCoin.logo_large || rowCoin.logo_url || '';
+  if(preImg){ imgEl.src = preImg; imgEl.style.display=''; }
+  else imgEl.style.display = 'none';
+
+  document.getElementById('CM_NAME').textContent = name;
+  document.getElementById('CM_SYM').textContent  = sym;
+  document.getElementById('CM_RANK').textContent = rowCoin.rank ? `Rank #${rowCoin.rank}` : '—';
+  document.getElementById('CM_BODY').innerHTML   = `<div class="tbl-loading"><div class="spinner"></div><div style="font-size:13px;color:var(--t2)">Loading full details…</div></div>`;
+
+  try {
+    // /details?sym= expects the SYMBOL (e.g. BTC, ETH), not the CoinGecko id
+    let coin = await fetch(`${API_BASE}/details?sym=${encodeURIComponent(sym)}`).then(r=>r.json());
+
+    // Some coins may be stored under their id — try that as fallback
+    if(coin.error && rowCoin.id && rowCoin.id !== sym){
+      coin = await fetch(`${API_BASE}/details?sym=${encodeURIComponent(rowCoin.id)}`).then(r=>r.json());
+    }
+    if(coin.error){
+      document.getElementById('CM_BODY').innerHTML = `<div class="tbl-empty">⚠️ ${coin.error}<br><small style="color:var(--t3)">Symbol: ${sym}</small></div>`;
+      return;
+    }
+
+    // Update header with richer data from details endpoint
+    const imgSrc = coin.logo_large || coin.logo_url || (coin.logo_local ? `https://publicdrop.in${coin.logo_local}` : '');
+    if(imgSrc){ imgEl.src = imgSrc; imgEl.style.display=''; }
+    else imgEl.style.display = 'none';
+    document.getElementById('CM_NAME').textContent = coin.name || name;
+    document.getElementById('CM_SYM').textContent  = coin.symbol || sym;
+    document.getElementById('CM_RANK').textContent = coin.rank ? `Rank #${coin.rank}` : 'Unranked';
+
+    // Price & 24h change: prefer from the row we clicked (live data),
+    // fall back to whatever the details endpoint has
+    const usd   = rowCoin.price_usd  ?? coin.price_usd;
+    const chg24 = rowCoin.change_24h ?? coin.change_24h;
+    const chgFmt  = fmtChg(chg24);
+    const chgClass = chgFmt != null ? (parseFloat(chgFmt)>=0?'chg-up':'chg-dn') : 'chg-na';
+
+    // Categories
+    let catsHTML = '';
+    try {
+      const cats = Array.isArray(coin.categories)
+        ? coin.categories
+        : (typeof coin.categories === 'string' ? JSON.parse(coin.categories) : []);
+      if(cats.length) catsHTML = `
+        <div class="cm-section">
+          <div class="cm-section-title">Categories</div>
+          <div class="cm-cats">${cats.slice(0,8).map(c=>`<span class="cm-cat">${c}</span>`).join('')}</div>
+        </div>`;
+    } catch{}
+
+    // Social links
+    const links = [];
+    if(coin.website)   links.push(`<a href="${coin.website}" target="_blank" class="cm-link">🌐 Website</a>`);
+    if(coin.whitepaper) links.push(`<a href="${coin.whitepaper}" target="_blank" class="cm-link">📄 Whitepaper</a>`);
+    if(coin.twitter)   links.push(`<a href="https://twitter.com/${coin.twitter}" target="_blank" class="cm-link">𝕏 Twitter</a>`);
+    if(coin.telegram)  links.push(`<a href="https://t.me/${coin.telegram}" target="_blank" class="cm-link">✈️ Telegram</a>`);
+    if(coin.reddit)    links.push(`<a href="${coin.reddit}" target="_blank" class="cm-link">🔴 Reddit</a>`);
+    if(coin.discord)   links.push(`<a href="${coin.discord}" target="_blank" class="cm-link">💬 Discord</a>`);
+    if(coin.github)    links.push(`<a href="${coin.github}" target="_blank" class="cm-link">🐙 GitHub</a>`);
+
+    // Block explorers
+    let explorersHTML = '';
+    try {
+      const exps = Array.isArray(coin.block_explorers) ? coin.block_explorers
+        : (typeof coin.block_explorers === 'string' ? JSON.parse(coin.block_explorers) : []);
+      const valid = exps.filter(e=>e&&e.length>5).slice(0,4);
+      if(valid.length) explorersHTML = `
+        <div class="cm-section">
+          <div class="cm-section-title">Block Explorers</div>
+          <div class="cm-explorers">${valid.map(e=>`<a href="${e}" target="_blank" class="cm-link" style="font-size:11px;word-break:break-all">🔗 ${e}</a>`).join('')}</div>
+        </div>`;
+    } catch{}
+
+    // Contracts
+    let contractsHTML = '';
+    try {
+      const conts = typeof coin.contracts === 'string' ? JSON.parse(coin.contracts) : (coin.contracts || {});
+      const entries = Object.entries(conts).filter(([,v])=>v);
+      if(entries.length) contractsHTML = `
+        <div class="cm-section">
+          <div class="cm-section-title">Contract Addresses</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            ${entries.slice(0,5).map(([net,addr])=>`
+              <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--rx);padding:8px 10px">
+                <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:2px">${net}</div>
+                <div style="font-size:11px;font-family:var(--fm);color:var(--t2);word-break:break-all">${addr}</div>
+              </div>`).join('')}
+          </div>
+        </div>`;
+    } catch{}
+
+    document.getElementById('CM_BODY').innerHTML = `
+      <div class="cm-price-row">
+        <div class="cm-price">${usd != null ? fmtPrice(usd) : '<span style="font-size:16px;color:var(--t3)">Price unavailable</span>'}</div>
+        ${chgFmt != null ? `<span class="chg-badge ${chgClass}">${parseFloat(chgFmt)>=0?'+':''}${chgFmt}%</span>` : ''}
+      </div>
+
+      <div class="cm-section">
+        <div class="cm-section-title">Market Data</div>
+        <div class="cm-grid-3">
+          <div class="cm-stat"><div class="cm-stat-label">ATH</div><div class="cm-stat-val">${coin.ath_usd ? fmtPrice(coin.ath_usd) : '—'}</div></div>
+          <div class="cm-stat"><div class="cm-stat-label">ATL</div><div class="cm-stat-val">${coin.atl_usd ? fmtPrice(coin.atl_usd) : '—'}</div></div>
+          <div class="cm-stat"><div class="cm-stat-label">Max Supply</div><div class="cm-stat-val">${coin.max_supply ? fmtSupply(coin.max_supply) : '∞'}</div></div>
+          <div class="cm-stat"><div class="cm-stat-label">Total Supply</div><div class="cm-stat-val">${coin.total_supply ? fmtSupply(coin.total_supply) : '—'}</div></div>
+          <div class="cm-stat"><div class="cm-stat-label">ATH Date</div><div class="cm-stat-val">${coin.ath_date ? coin.ath_date.substring(0,10) : '—'}</div></div>
+          <div class="cm-stat"><div class="cm-stat-label">Last Fetched</div><div class="cm-stat-val">${timeAgo(coin.fetched_at)}</div></div>
+        </div>
+      </div>
+
+      <div class="cm-section">
+        <div class="cm-section-title">Details</div>
+        <div class="cm-grid">
+          <div class="cm-stat"><div class="cm-stat-label">Genesis Date</div><div class="cm-stat-val">${coin.genesis_date || '—'}</div></div>
+          <div class="cm-stat"><div class="cm-stat-label">Algorithm</div><div class="cm-stat-val">${coin.hashing_algorithm || '—'}</div></div>
+        </div>
+      </div>
+
+      ${coin.description ? `
+      <div class="cm-section">
+        <div class="cm-section-title">About</div>
+        <div class="cm-desc" id="CM_DESC">${coin.description.replace(/\n/g,'<br>').substring(0,600)}${coin.description.length>600?'…':''}</div>
+        ${coin.description.length > 200 ? `<button class="cm-read-more" onclick="toggleDesc()">Read more ↓</button>` : ''}
+      </div>` : ''}
+
+      ${catsHTML}
+
+      ${links.length ? `
+      <div class="cm-section">
+        <div class="cm-section-title">Links</div>
+        <div class="cm-links">${links.join('')}</div>
+      </div>` : ''}
+
+      ${explorersHTML}
+      ${contractsHTML}
+    `;
+
+  } catch(e){
+    document.getElementById('CM_BODY').innerHTML = `<div class="tbl-empty">⚠️ Failed to load coin details.</div>`;
+    console.error(e);
+  }
+}
+
+
+function closeCoinModal(){
+  document.getElementById('COIN_MODAL').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function toggleDesc(){
+  const d = document.getElementById('CM_DESC');
+  const expanded = d.classList.toggle('expanded');
+  document.querySelector('.cm-read-more').textContent = expanded ? 'Show less ↑' : 'Read more ↓';
+}
+
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeCoinModal(); });
+
+/* ═══════════════════════════════════════════
+   ANIMATED LOGO
+═══════════════════════════════════════════ */
+(function(){
+  const logoHTML = `
+  <div class="pd-logo-badge">
+    <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect class="pd-logo-bar pd-logo-bar1" x="4" y="16" width="4" height="14" rx="1" fill="rgba(255,255,255,.12)"/>
+      <rect class="pd-logo-bar pd-logo-bar2" x="10" y="11" width="4" height="19" rx="1" fill="rgba(255,255,255,.16)"/>
+      <rect class="pd-logo-bar pd-logo-bar3" x="16" y="13" width="4" height="17" rx="1" fill="rgba(255,255,255,.13)"/>
+      <rect class="pd-logo-bar pd-logo-bar4" x="22" y="7" width="4" height="23" rx="1" fill="rgba(255,255,255,.2)"/>
+      <rect class="pd-logo-bar pd-logo-bar5" x="28" y="9" width="4" height="21" rx="1" fill="rgba(255,255,255,.16)"/>
+      <polyline class="pd-logo-line" points="5,22 12,16 18,20 24,9 31,12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle class="pd-logo-dot pd-logo-dot1" cx="5" cy="22" r="1.5" fill="rgba(255,255,255,.5)"/>
+      <circle class="pd-logo-dot pd-logo-dot2" cx="12" cy="16" r="1.5" fill="rgba(255,255,255,.6)"/>
+      <circle class="pd-logo-dot pd-logo-dot3" cx="18" cy="20" r="1.5" fill="rgba(255,255,255,.5)"/>
+      <circle class="pd-logo-dot pd-logo-dot4" cx="24" cy="9" r="2.5" fill="white"/>
+      <circle class="pd-logo-dot pd-logo-dot5" cx="31" cy="12" r="1.5" fill="rgba(255,255,255,.6)"/>
+      <g class="pd-logo-arrow">
+        <line x1="24" y1="5" x2="24" y2="2" stroke="#00e8a2" stroke-width="1.5" stroke-linecap="round"/>
+        <polyline points="22,4 24,1 26,4" fill="none" stroke="#00e8a2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    </svg>
+  </div>
+  <div class="pd-wordmark">
+    <div class="pd-name-row">
+      <span class="pd-word-public">Public</span><span class="pd-word-drop">DROP</span>
+    </div>
+    <div class="pd-tagline"><span class="pd-live-dot"></span>Crypto Analytics</div>
+  </div>`;
+  const w = document.getElementById('PD_LOGO_WRAP');
+  if(w) w.innerHTML = logoHTML;
+})();
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+async function init(){
+  // Load status (hero stats) in parallel
+  loadStatus();
+  // Load first page of coins
+  await goBrowsePage(1);
+}
+
+init();
+</script>
+</body>
+</html>
