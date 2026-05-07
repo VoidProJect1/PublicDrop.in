@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="description" content="PublicDrop — Live crypto prices, airdrops, portfolio tracker. Track Bitcoin, Ethereum and 1000+ coins with real-time exchange data.">
+<meta name="keywords" content="crypto prices, bitcoin price, ethereum, cryptocurrency tracker, airdrops, publicdrop, india crypto">
+<title>PublicDrop — Live Crypto Prices & Market Data</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PLCGW0JZWK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PLCGW0JZWK');
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+
+
+<script type="module" src="firebase-auth"></script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+
+<div class="ticker-wrap" id="TICKER_WRAP">
+  <div class="ticker-inner" id="TICKER_INNER">
+    <div class="tick"><span class="sym">PublicDrop Live — Loading prices…</span></div>
+  </div>
+</div>
+
+
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="index.html" id="PD_LOGO_WRAP" style="text-decoration:none;display:flex;align-items:center;gap:0;padding:0;cursor:pointer;"></a>
+
+    <div class="nav-links">
+      <button class="nav-link active" onclick="location.href='index.html'"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-ico"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Cryptocurrencies</button>
+      <a class="nav-link" href="airdrop.html"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-ico"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg> Airdrops <span class="badge-new">NEW</span></a>
+      <button class="nav-link" onclick="location.href='news.html'"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-ico"><path d="M4 3h16a1 1 0 0 1 1 1v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4a1 1 0 0 1 1-1z"/><path d="M8 7h8"/><path d="M8 11h8"/><path d="M8 15h5"/></svg> News</button>
+      <a class="nav-link" href="learn.html"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-ico"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> Learn</a>
+      <a class="nav-link" href="/coins"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-ico"><circle cx="12" cy="12" r="2"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="m4.93 4.93 2.83 2.83"/><path d="m16.24 16.24 2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="m4.93 19.07 2.83-2.83"/><path d="m16.24 7.76 2.83-2.83"/></svg> Coin Explorer</a>
+      <a class="nav-link" href="/api"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-ico"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.4"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.4"/><path d="M19.1 4.9C23 8.8 23 15.2 19.1 19.1"/></svg> API Docs</a>
+      <button class="nav-link" onclick="togglePortfolio()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-ico"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg> Portfolio</button>
+    </div>
+
+    <div class="nav-right">
+      <button class="nav-search-btn" onclick="openSearch()" title="Search coins">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+      <button class="theme-toggle" id="THEME_BTN" onclick="toggleTheme()" title="Toggle theme"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+      <button class="nav-btn nav-btn-solid nav-login-btn" onclick="openAuthModal()">Get Started</button>
+      <div class="nav-user-chip" id="NAV_USER_CHIP" onclick="toggleUserDropdown(event)" title="Account menu" style="position:relative;">
+        <div class="nav-user-avatar" id="NAV_AVATAR_INNER">U</div>
+        <span class="nav-user-name" id="NAV_AVATAR_NAME">User</span>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left:2px;opacity:.5"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div id="USER_DROPDOWN" style="display:none;position:absolute;top:calc(var(--nav-h) - 4px);right:56px;background:var(--surface);border:1.5px solid var(--border2);border-radius:var(--r);box-shadow:var(--sha-lg);min-width:180px;z-index:600;overflow:hidden;">
+        <div style="padding:12px 14px 8px;border-bottom:1px solid var(--border);">
+          <div style="font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:3px">Signed in as</div>
+          <div id="DROPDOWN_NAME" style="font-size:13px;font-weight:700;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:150px"></div>
+        </div>
+        <div style="padding:6px;">
+          <button onclick="doSignOut();toggleUserDropdown()" style="width:100%;display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:var(--rx);font-size:13px;font-weight:700;color:var(--dn);background:none;border:none;cursor:pointer;text-align:left;transition:background .15s;" onmouseover="this.style.background='var(--dnb)'" onmouseout="this.style.background='none'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Sign Out
+          </button>
+        </div>
+      </div>
+      <div id="NAV_AVATAR" style="display:none"></div>
+      <button class="hamburger" id="HAMBURGER" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+
+<div class="search-overlay" id="SEARCH_OVERLAY" onclick="handleSearchOverlayClick(event)">
+  <div class="search-box">
+    <div class="search-box-inner">
+      <div class="search-input-wrap">
+        <div class="search-input-icon">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </div>
+        <input type="text" id="GLOBAL_SEARCH_INPUT" placeholder="Search coins, symbols… BTC, Ethereum, SOL" autocomplete="off" spellcheck="false">
+      </div>
+      <button class="search-close-btn" onclick="closeSearch()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="search-results" id="SEARCH_RESULTS"></div>
+  </div>
+</div>
+
+
+<div class="mobile-menu" id="MOBILE_MENU" onclick="handleMenuOverlayClick(event)">
+  <div class="menu-panel">
+    <div class="menu-hdr">
+      <div class="menu-hdr-logo">Public<span>DROP</span></div>
+      <button class="menu-close" onclick="closeMenu()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="menu-body">
+      <div class="menu-section-label">Navigation</div>
+      <button class="mob-link" onclick="closeMenu();location.href='index.html'"><span class="mob-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mob-ico"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>Cryptocurrencies</button>
+      <a class="mob-link" href="airdrop.html" onclick="closeMenu()"><span class="mob-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mob-ico"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></span>Airdrops <span class="badge-new" style="margin-left:4px">NEW</span></a>
+      <button class="mob-link" onclick="closeMenu();location.href='news.html'"><span class="mob-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mob-ico"><path d="M4 3h16a1 1 0 0 1 1 1v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4a1 1 0 0 1 1-1z"/><path d="M8 7h8"/><path d="M8 11h8"/><path d="M8 15h5"/></svg></span>Crypto News</button>
+      <a class="mob-link" href="learn.html" onclick="closeMenu()"><span class="mob-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mob-ico"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>Learn</a>
+      <a class="mob-link" href="/coins" onclick="closeMenu()"><span class="mob-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mob-ico"><circle cx="12" cy="12" r="2"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="m4.93 4.93 2.83 2.83"/><path d="m16.24 16.24 2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="m4.93 19.07 2.83-2.83"/><path d="m16.24 7.76 2.83-2.83"/></svg></span>Coin Explorer</a>
+      <a class="mob-link" href="/api" onclick="closeMenu()"><span class="mob-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mob-ico"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.4"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.4"/><path d="M19.1 4.9C23 8.8 23 15.2 19.1 19.1"/></svg></span>API Docs</a>
+
+      <div class="mob-divider"></div>
+      <div class="menu-section-label">My Account</div>
+      <a class="mob-link" href="portfolio.html" onclick="closeMenu()"><span class="mob-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mob-ico"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span>Portfolio</a>
+      <button class="mob-link" onclick="closeMenu();togglePortfolio()"><span class="mob-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mob-ico"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></span>Portfolio Tracker</button>
+      <button class="mob-link" onclick="closeMenu();dt('Watchlist')"><span class="mob-icon">⭐</span>Watchlist</button>
+      <button class="mob-link" id="MOB_AUTH_BTN" onclick="closeMenu();openAuthModal()"><span class="mob-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mob-ico"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>Login / Sign Up</button>
+      <button class="mob-link" id="MOB_LOGOUT_BTN" style="display:none;color:var(--dn)" onclick="closeMenu();doSignOut()"><span class="mob-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mob-ico"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>Sign Out</button>
+
+      <div class="mob-divider"></div>
+      <div class="menu-section-label">Settings</div>
+      <div class="menu-setting">
+        <div class="menu-setting-label">Currency</div>
+        <select class="menu-select" id="MOB_CURRENCY_SEL" onchange="setCurrency(this.value);closeMenu()">
+          <option value="USD">$ USD — US Dollar</option>
+          <option value="INR">₹ INR — Indian Rupee</option>
+          <option value="EUR">€ EUR — Euro</option>
+          <option value="GBP">£ GBP — British Pound</option>
+          <option value="AED">د.إ AED — UAE Dirham</option>
+          <option value="JPY">¥ JPY — Japanese Yen</option>
+        </select>
+      </div>
+      <div class="menu-setting">
+        <div class="menu-theme-row">
+          <div class="menu-setting-label" style="margin-bottom:0">Theme</div>
+          <button class="menu-theme-btn" id="MOB_THEME_BTN" onclick="toggleTheme()"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg> Dark</button>
+        </div>
+      </div>
+
+      <div class="mob-divider"></div>
+      <a class="mob-link" href="about.html" onclick="closeMenu()"><span class="mob-icon">ℹ️</span>About Us</a>
+      <a class="mob-link" href="https://t.me/VoidxOxO" target="_blank" rel="noopener" onclick="closeMenu()"><span class="mob-icon" style="background:#229ED9;border-radius:6px;display:flex;align-items:center;justify-content:center;width:26px;height:26px;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></span>Contact</a>
+    </div>
+  </div>
+</div>
+
+
+<div class="auth-modal" id="AUTH_MODAL" onclick="handleAuthOverlayClick(event)">
+  <div class="auth-card">
+    <div class="auth-stripe"></div>
+    <div class="auth-brand">
+      <div id="AM_LOGO_WRAP" style="display:flex;align-items:center;gap:0;margin-bottom:2px;"></div>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="TAB_LOGIN" onclick="switchAuthTab('login')">Sign In</button>
+      <button class="auth-tab" id="TAB_REG" onclick="switchAuthTab('register')">Create Account</button>
+      <button class="auth-tab" id="TAB_FGT" onclick="switchAuthTab('forgot')" style="font-size:12px">Forgot Password</button>
+    </div>
+
+    
+    <div class="auth-panels">
+      <div class="auth-panel active" id="PANEL_LOGIN">
+        <div class="auth-alert auth-alert-err" id="AM_ERR"></div>
+        <button class="auth-btn-google" id="AM_GOOGLE_BTN" onclick="doGoogle()">
+          <svg class="auth-g-logo" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.7 1.22 9.19 3.22l6.86-6.86C35.64 2.36 30.18 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.2C12.43 13.18 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.14 24.55c0-1.64-.15-3.22-.42-4.74H24v8.97h12.44c-.54 2.9-2.18 5.36-4.64 7.02l7.19 5.58C43.17 37.49 46.14 31.45 46.14 24.55z"/><path fill="#FBBC05" d="M10.54 28.57A14.38 14.38 0 0 1 9.5 24c0-1.59.27-3.13.75-4.58l-7.98-6.2A23.93 23.93 0 0 0 0 24c0 3.86.93 7.51 2.56 10.74l7.98-6.17z"/><path fill="#34A853" d="M24 48c6.18 0 11.36-2.05 15.14-5.57l-7.19-5.58c-2 1.36-4.57 2.15-7.95 2.15-6.26 0-11.57-3.68-13.46-8.93l-7.98 6.17C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continue with Google
+        </button>
+        <div class="auth-divider">or sign in with email</div>
+        <div class="auth-field">
+          <label>Email Address</label>
+          <div class="auth-input-wrap">
+            <span class="auth-field-ico"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="auth-field-svg"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span>
+            <input type="email" id="AM_EMAIL" class="auth-input" placeholder="you@example.com" autocomplete="email">
+          </div>
+        </div>
+        <div class="auth-field">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+            <label style="margin-bottom:0">Password</label>
+            <button class="forgot-link" style="margin-bottom:0" onclick="switchAuthTab('forgot')">Forgot?</button>
+          </div>
+          <div class="auth-input-wrap">
+            <span class="auth-field-ico"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="auth-field-svg"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg></span>
+            <input type="password" id="AM_PASS" class="auth-input" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin(event)">
+            <button class="pw-eye" onclick="togglePw('AM_PASS',this)"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pw-eye-ico"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </div>
+        </div>
+        <button class="auth-btn-primary" id="AM_LOGIN_BTN" onclick="doLogin(event)">Sign In →</button>
+      </div>
+
+      
+      <div class="auth-panel" id="PANEL_REG">
+        <div class="auth-alert auth-alert-err" id="AM_REG_ERR"></div>
+        <div class="auth-alert auth-alert-ok" id="AM_REG_OK"></div>
+        <button class="auth-btn-google" id="AM_REG_GOOGLE_BTN" onclick="doGoogle()">
+          <svg class="auth-g-logo" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.7 1.22 9.19 3.22l6.86-6.86C35.64 2.36 30.18 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.2C12.43 13.18 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.14 24.55c0-1.64-.15-3.22-.42-4.74H24v8.97h12.44c-.54 2.9-2.18 5.36-4.64 7.02l7.19 5.58C43.17 37.49 46.14 31.45 46.14 24.55z"/><path fill="#FBBC05" d="M10.54 28.57A14.38 14.38 0 0 1 9.5 24c0-1.59.27-3.13.75-4.58l-7.98-6.2A23.93 23.93 0 0 0 0 24c0 3.86.93 7.51 2.56 10.74l7.98-6.17z"/><path fill="#34A853" d="M24 48c6.18 0 11.36-2.05 15.14-5.57l-7.19-5.58c-2 1.36-4.57 2.15-7.95 2.15-6.26 0-11.57-3.68-13.46-8.93l-7.98 6.17C6.51 42.62 14.62 48 24 48z"/></svg>
+          Sign up with Google
+        </button>
+        <div class="auth-divider">or register with email</div>
+        <div class="auth-field">
+          <label>Full Name <span style="color:var(--t4);font-weight:500">(optional)</span></label>
+          <div class="auth-input-wrap">
+            <span class="auth-field-ico"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="auth-field-svg"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+            <input type="text" id="AM_REG_NAME" class="auth-input" placeholder="Satoshi Nakamoto" autocomplete="name">
+          </div>
+        </div>
+        <div class="auth-field">
+          <label>Email Address</label>
+          <div class="auth-input-wrap">
+            <span class="auth-field-ico"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="auth-field-svg"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span>
+            <input type="email" id="AM_REG_EMAIL" class="auth-input" placeholder="you@example.com" autocomplete="email">
+          </div>
+        </div>
+        <div class="auth-field">
+          <label>Password</label>
+          <div class="auth-input-wrap">
+            <span class="auth-field-ico"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="auth-field-svg"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg></span>
+            <input type="password" id="AM_REG_PASS" class="auth-input" placeholder="Min. 6 characters" oninput="checkStrength(this.value)">
+            <button class="pw-eye" onclick="togglePw('AM_REG_PASS',this)"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pw-eye-ico"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </div>
+          <div class="strength-bar-wrap" id="STR_BAR"><div class="strength-bar-fill" id="STR_FILL"></div></div>
+          <div class="strength-label-txt" id="STR_LBL"></div>
+        </div>
+        <div class="auth-field">
+          <label>Confirm Password</label>
+          <div class="auth-input-wrap">
+            <span class="auth-field-ico"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="auth-field-svg"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+            <input type="password" id="AM_REG_PASS2" class="auth-input" placeholder="Repeat password">
+            <button class="pw-eye" onclick="togglePw('AM_REG_PASS2',this)"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pw-eye-ico"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </div>
+        </div>
+        <button class="auth-btn-primary" id="AM_REG_BTN" onclick="doRegister(event)"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg> Create Account</button>
+      </div>
+
+      
+      <div class="auth-panel" id="PANEL_FGT">
+        <div class="auth-alert auth-alert-err" id="AM_FGT_ERR"></div>
+        <div class="auth-alert auth-alert-ok" id="AM_FGT_OK"></div>
+        <p style="font-size:13px;color:var(--t2);margin-bottom:14px;line-height:1.6">Enter your email and we'll send a password reset link.</p>
+        <div class="auth-field">
+          <label>Email Address</label>
+          <div class="auth-input-wrap">
+            <span class="auth-field-ico"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="auth-field-svg"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span>
+            <input type="email" id="AM_FGT_EMAIL" class="auth-input" placeholder="you@example.com">
+          </div>
+        </div>
+        <button class="auth-btn-primary" id="AM_RESET_BTN" onclick="doReset(event)">Send Reset Email</button>
+      </div>
+    </div>
+
+    <div class="auth-footer">
+      <span class="auth-footer-close" onclick="closeAuthModal()"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Close</span>
+    </div>
+  </div>
+</div>
+
+
+<div class="page">
+
+  
+  <div class="hero fade-up">
+    <div class="hero-left">
+      <div class="hero-tag"><span></span>Powered by PublicDrop Live API</div>
+      <h1 class="hero-h1">The Crypto Market,<br><em>Tracked Live.</em></h1>
+      <p class="hero-sub">Real-time prices via PublicDrop's live data infrastructure. 500+ coins including DeFi, Meme, and AI tokens.</p>
+      <div class="hero-actions">
+        <button class="hero-btn-p" onclick="document.getElementById('market-section').scrollIntoView({behavior:'smooth'})">Explore Markets →</button>
+        <a href="airdrop.html" class="hero-btn-s"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg> Free Airdrops</a>
+      </div>
+      <div class="hero-prices">
+        <div class="hero-price-item"><div class="label">BTC</div><div id="mini-btc" class="val">—</div></div>
+        <div class="hero-price-item"><div class="label">ETH</div><div id="mini-eth" class="val">—</div></div>
+        <div class="hero-price-item"><div class="label">Coins</div><div id="mini-count" class="val">—</div></div>
+      </div>
+    </div>
+    <div class="market-chart-card">
+      <div class="card-header">
+        <div class="card-title"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg> Market Overview</div>
+        <div style="display:flex;gap:4px">
+          <button class="tab-pill active" onclick="setChartView('volume',this)">Volume</button>
+          <button class="tab-pill" onclick="setChartView('dominance',this)">Dominance</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div style="margin-bottom:7px">
+          <div id="chart-val" style="font-size:18px;font-weight:700;letter-spacing:-.5px;font-family:var(--fm)">Loading…</div>
+          <div id="chart-sub" style="font-size:10.5px;color:var(--t3);margin-top:2px;font-family:var(--fm)">Live aggregated data</div>
+        </div>
+        <div class="chart-container"><canvas id="MARKET_CHART"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="hero-stats fade-up delay-1">
+    <div class="hs-cell" id="stat-mcap"><div class="hs-label">Market Cap</div><div class="hs-val sk" style="height:18px;width:100px;margin-bottom:4px"></div><div class="hs-sub sk" style="height:11px;width:75px"></div></div>
+    <div class="hs-cell" id="stat-vol"><div class="hs-label">24H Volume</div><div class="hs-val sk" style="height:18px;width:90px;margin-bottom:4px"></div><div class="hs-sub sk" style="height:11px;width:65px"></div></div>
+    <div class="hs-cell" id="stat-dom"><div class="hs-label">BTC Dominance</div><div class="hs-val sk" style="height:18px;width:70px;margin-bottom:4px"></div><div class="hs-sub sk" style="height:11px;width:85px"></div></div>
+    <div class="hs-cell" id="stat-fng"><div class="hs-label">Fear &amp; Greed</div><div class="hs-val sk" style="height:18px;width:60px;margin-bottom:4px"></div><div class="hs-sub sk" style="height:11px;width:70px"></div></div>
+  </div>
+
+  
+  <div class="sec-header fade-up delay-2" style="margin-top:20px">
+    <div class="sec-title"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg> Trending Now</div>
+    <button class="sec-link" onclick="openTrendingModal()">View all →</button>
+  </div>
+  <div class="trending-strip fade-up delay-2" id="TRENDING_STRIP">
+    <div class="trend-chip"><div class="trend-img sk" style="width:30px;height:30px;border-radius:50%;flex-shrink:0"></div><div><div class="sk" style="height:12px;width:75px;margin-bottom:4px"></div><div class="sk" style="height:10px;width:45px"></div></div></div>
+    <div class="trend-chip"><div class="trend-img sk" style="width:30px;height:30px;border-radius:50%;flex-shrink:0"></div><div><div class="sk" style="height:12px;width:85px;margin-bottom:4px"></div><div class="sk" style="height:10px;width:38px"></div></div></div>
+    <div class="trend-chip"><div class="trend-img sk" style="width:30px;height:30px;border-radius:50%;flex-shrink:0"></div><div><div class="sk" style="height:12px;width:65px;margin-bottom:4px"></div><div class="sk" style="height:10px;width:55px"></div></div></div>
+  </div>
+
+  
+  <div id="market-section">
+    <div class="filters-bar fade-up delay-3">
+      <div class="filters-bar-top">
+        <div class="filter-left">
+          <div class="filter-title">Cryptocurrency Prices</div>
+          <div class="coin-badge" id="coin-count-badge">—</div>
+        </div>
+        <div class="filter-right">
+          <select class="sort-select" id="SORT_SEL" onchange="doSort(this.value)">
+            <option value="vol">Volume</option>
+            <option value="change_d">Top Gainers</option>
+            <option value="change_a">Top Losers</option>
+            <option value="price">Price High→Low</option>
+          </select>
+          <button class="icon-btn" onclick="manualRefresh()" title="Refresh">↺</button>
+        </div>
+      </div>
+      <div class="filters-bar-tabs">
+        <div class="tab-pills">
+          <button class="tab-pill active" onclick="setTab('all',this)">All</button>
+          <button class="tab-pill" onclick="setTab('gainers',this)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:3px"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg> Gainers</button>
+          <button class="tab-pill" onclick="setTab('losers',this)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:3px"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg> Losers</button>
+          <button class="tab-pill" onclick="setTab('new',this)"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:3px"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3z"/></svg> New</button>
+          <button class="tab-pill" onclick="setTab('watchlist',this)">⭐ Watch</button>
+        </div>
+      </div>
+      <div class="filters-bar-bottom">
+        <div class="cat-tags" id="CAT_TAGS">
+          <button class="cat-tag active" onclick="setCat('all',this)">All</button>
+          <button class="cat-tag" onclick="setCat('defi',this)">DeFi</button>
+          <button class="cat-tag" onclick="setCat('meme',this)"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:3px"><path d="M11 9.5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1z"/><path d="M13 9.5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 2.7 1.1 5.1 2.8 6.9L3 22l4.1-1.5C8.5 21.4 10.2 22 12 22s3.5-.6 4.9-1.5L21 22l-1.8-3.1C20.9 17.1 22 14.7 22 12c0-5.5-4.5-10-10-10z"/></svg> Meme</button>
+          <button class="cat-tag" onclick="setCat('ai',this)"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:3px"><rect width="18" height="10" x="3" y="11" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg> AI</button>
+          <button class="cat-tag" onclick="setCat('layer1',this)">Layer 1</button>
+          <button class="cat-tag" onclick="setCat('layer2',this)">Layer 2</button>
+          <button class="cat-tag" onclick="setCat('gaming',this)"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:3px"><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/><rect x="2" y="6" width="20" height="12" rx="2"/></svg> Gaming</button>
+        </div>
+      </div>
+    </div>
+    <div class="table-card">
+      <div class="table-scroll">
+        <div id="TABLE_BODY">
+          <div class="tbl-loading"><div class="spinner"></div><div style="font-size:14px;font-weight:600;color:var(--t2)">Connecting to PublicDrop Live API…</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="pagination" id="PAGINATION" style="display:none"></div>
+  </div>
+
+  
+  <div class="portfolio-section" id="PORTFOLIO_SECTION" style="display:none">
+    <div class="sec-header">
+      <div class="sec-title"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg> Portfolio Tracker</div>
+      <button class="sec-link" onclick="togglePortfolio()"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Close</button>
+    </div>
+    <div class="portfolio-grid">
+      <div class="port-card">
+        <div class="port-header">
+          <div class="port-title">Holdings Overview</div>
+          <button onclick="clearPortfolio()" style="font-size:12px;font-weight:700;color:var(--t3);background:none;border:none;cursor:pointer">Clear All</button>
+        </div>
+        <div class="port-body">
+          <div id="PORT_TOTAL" class="port-total">$0.00</div>
+          <div id="PORT_CHANGE" class="port-change up-c">—</div>
+          <div class="pie-wrap"><canvas id="PORT_PIE"></canvas></div>
+          <div id="PORT_HOLDINGS"><div style="text-align:center;padding:24px;color:var(--t3);font-size:13px">No holdings yet. Add coins →</div></div>
+        </div>
+      </div>
+      <div class="port-card">
+        <div class="port-header"><div class="port-title">Add Holding</div></div>
+        <div class="port-body">
+          <div class="add-holding">
+            <div style="font-size:13px;color:var(--t2);margin-bottom:2px">Track any coin, see P&amp;L in real time.</div>
+            <div class="form-row">
+              <input class="form-input" id="PORT_COIN" placeholder="Coin (BTC, ETH, SOL)" list="coin-datalist" style="text-transform:uppercase">
+              <datalist id="coin-datalist"></datalist>
+            </div>
+            <div class="form-row">
+              <input class="form-input" id="PORT_AMT" type="number" placeholder="Amount" min="0" step="any">
+              <input class="form-input" id="PORT_BUY" type="number" placeholder="Buy price $" min="0" step="any">
+            </div>
+            <button class="form-btn" onclick="addHolding()">+ Add to Portfolio</button>
+          </div>
+          <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border)">
+            <div style="font-size:13px;font-weight:700;margin-bottom:10px">Quick Stats</div>
+            <div id="PORT_STATS" style="display:grid;grid-template-columns:1fr 1fr;gap:7px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand-logo">PublicDrop</div>
+        <p>Real-time crypto market data, airdrops, and portfolio tools. Built for Indian crypto investors.</p>
+        <div class="footer-tags">
+          <div class="f-tag"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:3px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> PublicDrop Live API</div>
+          <div class="f-tag"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:3px"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg> Real-Time Data</div>
+          <div class="f-tag"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:3px"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg> 500+ Coins</div>
+          <div class="f-tag">🇮🇳 publicdrop.in</div>
+        </div>
+        <div class="footer-socials" style="margin-top:12px">
+          <a href="https://x.com/PublicDropIN" target="_blank" rel="noopener" class="f-soc" title="X (Twitter)" style="background:#000;border-color:#000">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.745l7.73-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="https://t.me/VoidxOxO" target="_blank" rel="noopener" class="f-soc" title="Telegram" style="background:#229ED9;border-color:#229ED9">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          </a>
+          <a href="/api" class="f-soc" title="API Docs" style="background:#F59E0B;border-color:#F59E0B">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.4"/><circle cx="12" cy="12" r="2" fill="white" stroke="none"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.4"/><path d="M19.1 4.9C23 8.8 23 15.2 19.1 19.1"/></svg>
+          </a>
+          <a href="https://www.youtube.com/@PublicDrop" target="_blank" rel="noopener" class="f-soc" title="YouTube" style="background:#FF0000;border-color:#FF0000">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Markets</h4>
+        <ul>
+          <li><a href="index.html">Live Prices</a></li>
+          <li><button onclick="setTab('gainers',null);document.getElementById('market-section').scrollIntoView({behavior:'smooth'})">Top Gainers</button></li>
+          <li><button onclick="setCat('meme',null)">Meme Coins</button></li>
+          <li><button onclick="setCat('defi',null)">DeFi Tokens</button></li>
+          <li><button onclick="setCat('ai',null)">AI Tokens</button></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="airdrop.html">Airdrops</a></li>
+          <li><button onclick="togglePortfolio()">Portfolio Tracker</button></li>
+          <li><button onclick="dt('Alerts')">Price Alerts</button></li>
+          <li><button onclick="dt('API Access')">API Access</button></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="news.html">Market News</a></li>
+          <li><a href="learn.html">Beginner Guide</a></li>
+          <li><a href="learn.html#glossary">Crypto Glossary</a></li>
+          <li><button onclick="dt('Blog')">Blog</button></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="about.html#contact">Contact</a></li>
+          <li><a href="about.html#privacy">Privacy Policy</a></li>
+          <li><a href="about.html#terms">Terms of Use</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 PublicDrop.in · All rights reserved · Powered by PublicDrop Live API</p>
+      <div class="disclaimer"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;color:#F59E0B"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> <strong>Not financial advice.</strong> Crypto carries high risk. Always DYOR before investing.</div>
+    </div>
+  </div>
+</footer>
+
+<div id="toast"></div>
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script src="app" defer></script>
+
+<div id="TRENDING_MODAL" style="display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.65);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);align-items:flex-start;justify-content:center;padding:24px 16px;overflow-y:auto;" onclick="if(event.target===this)closeTrendingModal()">
+  <div style="width:100%;max-width:620px;background:var(--surface);border:1.5px solid var(--border2);border-radius:22px;box-shadow:0 24px 64px rgba(0,0,0,.2);overflow:hidden;margin:auto;transform:translateY(24px);transition:transform .35s cubic-bezier(.22,1,.36,1);" id="TRENDING_MODAL_CARD">
+    <div style="height:3px;background:linear-gradient(90deg,#E8334A,#F59E0B 40%,#0EA66A 70%,#1A56DB);background-size:200%;animation:stripeAnim 4s linear infinite;"></div>
+    <div style="padding:20px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-size:18px;font-weight:800;letter-spacing:-.4px;font-family:var(--ff2)"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg> Trending Now</div>
+        <div style="font-size:12px;color:var(--t3);margin-top:2px;font-family:var(--fm)">Top gainers by 24h performance</div>
+      </div>
+      <button onclick="closeTrendingModal()" style="width:34px;height:34px;border-radius:50%;border:1.5px solid var(--border2);background:var(--surface2);color:var(--t2);font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0;" onmouseover="this.style.borderColor='var(--dn)';this.style.color='var(--dn)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--t2)'"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div id="TRENDING_MODAL_BODY" style="padding:12px 14px 20px;display:flex;flex-direction:column;gap:4px;max-height:70vh;overflow-y:auto;"></div>
+  </div>
+</div>
+</body>
+</html>
