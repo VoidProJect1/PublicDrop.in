@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="description" content="PublicDrop Coin Explorer — Browse 14,300+ cryptocurrencies with live prices, market cap, 24h change and full coin details.">
+<title>Coin Explorer — PublicDrop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
+
+<style>
+/* ═══════════════════════════════════════════
+   PUBLICDROP COIN EXPLORER
+   Theme: Paper Clean — matches index-optimized.html
+   Fonts: Instrument Serif (display) + Geist (UI) + Geist Mono (data)
+═══════════════════════════════════════════ */
+:root{
+  --ff:'Geist','Plus Jakarta Sans',sans-serif;
+  --ff2:'Instrument Serif','Georgia',serif;
+  --fm:'Geist Mono','DM Mono',monospace;
+
+  --bg:#F5F3EE;
+  --paper:#FAFAF7;
+  --surface:#FFFFFF;
+  --surface2:#F0EDE6;
+  --surface3:#E8E4DB;
+  --surface4:#DDD8CD;
+
+  --border:rgba(0,0,0,.08);
+  --border2:rgba(0,0,0,.13);
+  --border3:rgba(0,0,0,.22);
+
+  --t1:#1A1814;
+  --t2:#5C5750;
+  --t3:#9B9590;
+  --t4:#C8C3BB;
+
+  --up:#1A7A4A;   --upb:rgba(26,122,74,.09);   --upbr:rgba(26,122,74,.2);
+  --dn:#C0392B;   --dnb:rgba(192,57,43,.09);    --dnbr:rgba(192,57,43,.2);
+  --accent:#1A56DB;--accentb:rgba(26,86,219,.09);--accentbr:rgba(26,86,219,.2);
+  --gold:#B8960C;
+
+  --sha-sm:0 1px 2px rgba(0,0,0,.04),0 2px 6px rgba(0,0,0,.04);
+  --sha:0 2px 10px rgba(0,0,0,.07),0 6px 24px rgba(0,0,0,.05);
+  --sha-lg:0 10px 36px rgba(0,0,0,.11),0 4px 12px rgba(0,0,0,.06);
+
+  --r:10px;--rs:7px;--rx:6px;--pill:999px;--nav-h:58px;
+}
+[data-theme="dark"]{
+  --bg:#131210;
+  --paper:#181714;
+  --surface:#1F1E1A;
+  --surface2:#272521;
+  --surface3:#302E29;
+  --surface4:#3A3830;
+  --border:rgba(255,255,255,.07);
+  --border2:rgba(255,255,255,.11);
+  --border3:rgba(255,255,255,.18);
+  --t1:#F0EDE6;--t2:#9B9590;--t3:#5C5750;--t4:#3A3830;
+  --sha-sm:0 1px 3px rgba(0,0,0,.4),0 2px 8px rgba(0,0,0,.3);
+  --sha:0 2px 12px rgba(0,0,0,.5),0 8px 28px rgba(0,0,0,.4);
+  --sha-lg:0 12px 40px rgba(0,0,0,.6),0 4px 14px rgba(0,0,0,.4);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;min-width:0;}
+html{scroll-behavior:smooth;font-size:16px;overflow-x:hidden;}
+body{font-family:var(--ff);background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;transition:background .25s,color .25s;overflow-x:hidden;width:100%;-webkit-overflow-scrolling:touch;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+input,select{font-family:inherit;}
+img{display:block;max-width:100%;}
+
+/* ══ NAV ══ */
+nav{
+  background:rgba(255,255,255,.94);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:500;
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  transform:translateZ(0);
+}
+[data-theme="dark"] nav{background:rgba(31,30,26,.94);}
+.nav-inner{max-width:1520px;margin:0 auto;padding:0 18px;height:var(--nav-h);display:flex;align-items:center;gap:10px;}
+.logo{display:flex;align-items:center;gap:0;flex-shrink:0;text-decoration:none;cursor:pointer;}
+.nav-links{display:flex;align-items:center;gap:1px;margin-left:12px;}
+.nav-link{padding:6px 10px;border-radius:var(--rx);font-size:13px;font-weight:500;color:var(--t2);background:none;border:none;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:4px;cursor:pointer;text-decoration:none;}
+.nav-link:hover,.nav-link.active{color:var(--t1);background:var(--surface2);}
+.nav-link.active{font-weight:600;}
+.badge-new{font-size:9px;font-weight:700;padding:1px 5px;border-radius:var(--pill);background:var(--upb);color:var(--up);border:1px solid var(--upbr);letter-spacing:.2px;}
+.nav-right{display:flex;align-items:center;gap:5px;margin-left:auto;flex-shrink:0;}
+.theme-toggle{width:34px;height:34px;border-radius:var(--rs);border:1px solid var(--border2);background:transparent;color:var(--t2);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;transition:all .18s;flex-shrink:0;}
+.theme-toggle:hover{border-color:var(--border3);color:var(--t1);background:var(--surface2);}
+.nav-btn{padding:7px 14px;border-radius:var(--pill);font-size:12.5px;font-weight:600;transition:all .18s;border:none;letter-spacing:.1px;}
+.nav-btn-solid{background:var(--t1);color:var(--bg);}
+.nav-btn-solid:hover{opacity:.86;transform:translateY(-1px);}
+
+/* Hamburger — same as index (thin 18px, 1.5px stroke, 4px gap) */
+.hamburger{display:none;flex-direction:column;gap:4px;background:none;border:none;padding:7px;color:var(--t1);cursor:pointer;flex-shrink:0;}
+.hamburger span{width:18px;height:1.5px;background:currentColor;border-radius:2px;display:block;transition:all .3s;transform-origin:center;}
+.hamburger.open span:nth-child(1){transform:translateY(5.5px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.hamburger.open span:nth-child(3){transform:translateY(-5.5px) rotate(-45deg);}
+
+/* ══ ANIMATED LOGO (same as index) ══ */
+#PD_LOGO_WRAP{gap:0;padding:0;cursor:pointer;}
+.pd-logo-badge{width:36px;height:36px;border-radius:10px;background:linear-gradient(145deg,#1a5cff,#0a3dd4);border:1px solid rgba(90,140,255,.5);flex-shrink:0;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(26,92,255,.35);}
+.pd-logo-badge::before{content:'';position:absolute;top:-30%;left:-30%;width:60%;height:60%;background:rgba(255,255,255,.13);border-radius:50%;filter:blur(8px);}
+.pd-logo-badge svg{width:100%;height:100%;}
+.pd-logo-bar{transform-origin:bottom;transform:scaleY(0);}
+.pd-logo-bar1{animation:pdBarUp .35s ease .1s forwards;}
+.pd-logo-bar2{animation:pdBarUp .35s ease .18s forwards;}
+.pd-logo-bar3{animation:pdBarUp .35s ease .26s forwards;}
+.pd-logo-bar4{animation:pdBarUp .35s ease .34s forwards;}
+.pd-logo-bar5{animation:pdBarUp .35s ease .42s forwards;}
+@keyframes pdBarUp{to{transform:scaleY(1);}}
+.pd-logo-line{stroke-dasharray:200;stroke-dashoffset:200;animation:pdLine .8s ease .55s forwards;}
+@keyframes pdLine{to{stroke-dashoffset:0;}}
+.pd-logo-dot{transform:scale(0);transform-origin:center;}
+.pd-logo-dot1{animation:pdDot .25s cubic-bezier(.34,1.56,.64,1) 1.1s forwards;}
+.pd-logo-dot2{animation:pdDot .25s cubic-bezier(.34,1.56,.64,1) 1.18s forwards;}
+.pd-logo-dot3{animation:pdDot .25s cubic-bezier(.34,1.56,.64,1) 1.26s forwards;}
+.pd-logo-dot4{animation:pdDot .3s cubic-bezier(.34,1.56,.64,1) 1.34s forwards;}
+.pd-logo-dot5{animation:pdDot .25s cubic-bezier(.34,1.56,.64,1) 1.42s forwards;}
+@keyframes pdDot{to{transform:scale(1);}}
+.pd-logo-arrow{opacity:0;transform:translateY(4px);animation:pdArrow .4s cubic-bezier(.34,1.56,.64,1) 1.55s forwards;}
+@keyframes pdArrow{to{opacity:1;transform:translateY(0);}}
+.pd-wordmark{display:flex;flex-direction:column;justify-content:center;margin-left:10px;line-height:1;}
+.pd-name-row{display:flex;align-items:baseline;gap:0;line-height:1;}
+.pd-word-public{font-size:18px;font-weight:800;color:var(--t1);letter-spacing:-.5px;opacity:0;transform:translateX(-10px);animation:pdWordL .5s cubic-bezier(.22,1,.36,1) .3s forwards;}
+.pd-word-drop{font-size:18px;font-weight:800;background:linear-gradient(90deg,#1a5cff,#4d8bff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.5px;opacity:0;transform:translateX(10px);animation:pdWordR .5s cubic-bezier(.22,1,.36,1) .42s forwards;}
+@keyframes pdWordL{to{opacity:1;transform:translateX(0);}}
+@keyframes pdWordR{to{opacity:1;transform:translateX(0);}}
+.pd-tagline{font-size:8.5px;font-weight:600;color:var(--t3);letter-spacing:2px;text-transform:uppercase;opacity:0;animation:pdTag .5s ease .85s forwards;}
+@keyframes pdTag{to{opacity:1;}}
+.pd-live-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:#00e8a2;margin-right:4px;vertical-align:middle;position:relative;}
+.pd-live-dot::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:1px solid #00e8a2;animation:pdLivePulse 1.6s ease 2s infinite;opacity:0;}
+@keyframes pdLivePulse{0%{transform:scale(.8);opacity:.7;}100%{transform:scale(2);opacity:0;}}
+@media(max-width:520px){.pd-logo-badge{width:30px;height:30px;border-radius:8px;}.pd-word-public,.pd-word-drop{font-size:15px;}.pd-tagline{display:none;}}
+
+/* ══ MOBILE MENU (index style) ══ */
+.mobile-menu{position:fixed;inset:0;z-index:990;background:rgba(26,24,20,.55);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .25s;}
+.mobile-menu.open{opacity:1;pointer-events:all;}
+.menu-panel{position:absolute;top:0;right:0;bottom:0;width:min(300px,88vw);background:var(--surface);box-shadow:var(--sha-lg);overflow-y:auto;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .3s cubic-bezier(.22,1,.36,1);}
+.mobile-menu.open .menu-panel{transform:translateX(0);}
+.menu-hdr{display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.menu-hdr-logo{font-size:16px;font-weight:700;color:var(--t1);}
+.menu-hdr-logo span{color:var(--accent);}
+.menu-close{width:30px;height:30px;border-radius:var(--rs);background:var(--surface2);border:1px solid var(--border2);color:var(--t2);font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;}
+.menu-close:hover{color:var(--dn);border-color:var(--dn);}
+.menu-body{flex:1;padding:10px 10px 20px;display:flex;flex-direction:column;gap:1px;}
+.menu-section-label{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--t3);padding:10px 10px 4px;}
+.mob-link{display:flex;align-items:center;gap:10px;padding:10px 11px;border-radius:var(--rs);font-size:13.5px;font-weight:500;color:var(--t2);background:none;border:none;width:100%;text-align:left;transition:all .14s;cursor:pointer;text-decoration:none;}
+.mob-link:hover,.mob-link.active{color:var(--t1);background:var(--surface2);}
+.mob-link .mob-icon{width:20px;text-align:center;font-size:14px;flex-shrink:0;}
+.mob-divider{height:1px;background:var(--border);margin:6px 0;}
+.menu-setting{background:var(--surface2);border-radius:var(--rs);padding:12px;margin:4px 0;}
+.menu-setting-label{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;}
+.menu-theme-row{display:flex;align-items:center;justify-content:space-between;}
+.menu-theme-btn{padding:6px 14px;border-radius:var(--pill);border:1px solid var(--border2);background:var(--surface);color:var(--t1);font-size:12.5px;font-weight:600;cursor:pointer;transition:all .14s;display:flex;align-items:center;gap:5px;}
+.menu-theme-btn:hover{background:var(--surface2);}
+
+/* ══ PAGE ══ */
+.page{max-width:1520px;margin:0 auto;padding:20px 18px 80px;}
+footer{content-visibility:auto;contain-intrinsic-size:0 300px;}
+
+/* ══ HERO BANNER ══ */
+.explorer-hero{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:28px 28px 22px;margin-bottom:14px;box-shadow:var(--sha-sm);position:relative;overflow:hidden;}
+.explorer-hero::before{content:'';position:absolute;top:-80px;right:-80px;width:280px;height:280px;background:radial-gradient(circle,rgba(26,86,219,.08) 0%,transparent 70%);pointer-events:none;}
+.explorer-hero::after{content:'';position:absolute;bottom:-60px;left:-40px;width:220px;height:220px;background:radial-gradient(circle,rgba(0,232,162,.05) 0%,transparent 70%);pointer-events:none;}
+.explorer-hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.explorer-title{font-size:26px;font-weight:800;letter-spacing:-.6px;margin-bottom:5px;font-family:var(--ff);}
+.explorer-title span{font-family:var(--ff2);font-style:italic;background:linear-gradient(90deg,#1a5cff,#4d8bff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.explorer-sub{font-size:13.5px;color:var(--t2);line-height:1.6;max-width:500px;}
+.update-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:var(--pill);background:var(--upb);color:var(--up);border:1px solid var(--upbr);font-size:11px;font-weight:700;flex-shrink:0;}
+.update-dot{width:6px;height:6px;border-radius:50%;background:var(--up);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+
+/* ══ STATS GRID ══ */
+.explorer-stats{display:grid;grid-template-columns:repeat(9,1fr);gap:10px;margin-top:18px;}
+@media(max-width:1100px){.explorer-stats{grid-template-columns:repeat(5,1fr);}}
+@media(max-width:700px){.explorer-stats{grid-template-columns:repeat(3,1fr);gap:7px;}}
+@media(max-width:420px){.explorer-stats{grid-template-columns:repeat(3,1fr);gap:6px;}}
+.ex-stat{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:11px 12px;display:flex;flex-direction:column;gap:3px;transition:box-shadow .2s,border-color .2s;}
+.ex-stat:hover{box-shadow:var(--sha-sm);border-color:var(--border2);}
+.ex-stat-val{font-size:16px;font-weight:700;letter-spacing:-.4px;font-family:var(--fm);line-height:1.2;}
+.ex-stat-lbl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:var(--t3);}
+@media(max-width:700px){.ex-stat{padding:9px 9px;}.ex-stat-val{font-size:14px;}.ex-stat-lbl{font-size:8px;letter-spacing:.4px;}}
+
+/* ══ SEARCH ══ */
+.explorer-search-wrap{margin-bottom:14px;position:relative;}
+.explorer-search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--t3);pointer-events:none;display:flex;z-index:2;}
+#EXPLORER_SEARCH{width:100%;padding:13px 16px 13px 44px;background:var(--surface);border:1.5px solid var(--border2);border-radius:var(--r);font-size:14.5px;color:var(--t1);outline:none;transition:all .2s;box-shadow:var(--sha-sm);font-family:var(--ff);}
+#EXPLORER_SEARCH:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accentb);}
+#EXPLORER_SEARCH::placeholder{color:var(--t3);}
+.search-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:26px;height:26px;border-radius:50%;border:1px solid var(--border2);background:var(--surface2);color:var(--t3);font-size:13px;display:none;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;}
+.search-clear:hover{border-color:var(--dn);color:var(--dn);}
+.search-clear.show{display:flex;}
+
+/* ══ FILTERS ══ */
+.filters-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--r) var(--r) 0 0;padding:12px 14px;display:flex;flex-direction:column;gap:9px;box-shadow:var(--sha-sm);}
+.filters-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.filter-left{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+.filter-title{font-size:14.5px;font-weight:700;letter-spacing:-.3px;}
+.coin-badge{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:var(--pill);background:var(--accentb);color:var(--accent);border:1px solid var(--accentbr);}
+.filter-right{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.sort-select{padding:6px 10px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rx);font-size:12px;font-weight:600;color:var(--t1);cursor:pointer;outline:none;transition:border-color .15s;}
+.sort-select:focus{border-color:var(--accent);}
+.filters-tabs{display:flex;gap:5px;flex-wrap:wrap;}
+.tab-pill{padding:5px 12px;border-radius:var(--pill);font-size:12px;font-weight:600;color:var(--t2);background:var(--surface2);border:1px solid var(--border2);cursor:pointer;transition:all .15s;white-space:nowrap;}
+.tab-pill:hover{color:var(--t1);border-color:var(--border3);}
+.tab-pill.active{background:var(--t1);color:var(--bg);border-color:var(--t1);}
+.cat-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;scrollbar-width:none;}
+.cat-scroll::-webkit-scrollbar{display:none;}
+.cat-tags{display:flex;gap:5px;flex-wrap:nowrap;min-width:max-content;}
+.cat-tag{padding:4px 11px;border-radius:var(--pill);font-size:11.5px;font-weight:600;color:var(--t2);background:transparent;border:1px solid var(--border2);cursor:pointer;transition:all .15s;white-space:nowrap;}
+.cat-tag:hover{border-color:var(--border3);color:var(--t1);}
+.cat-tag.active{background:var(--t1);color:var(--bg);border-color:var(--t1);}
+.cat-tags-loading{font-size:11px;color:var(--t3);padding:4px 0;font-style:italic;}
+
+/* ══ TABLE ══ */
+.table-card{background:var(--surface);border:1px solid var(--border);border-top:none;overflow:hidden;box-shadow:var(--sha-sm);}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table{width:100%;border-collapse:collapse;}
+thead th{padding:9px 12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--t3);background:var(--surface2);border-bottom:1px solid var(--border);cursor:pointer;white-space:nowrap;user-select:none;text-align:left;transition:color .15s;font-family:var(--ff);}
+thead th.r{text-align:right;}
+thead th:hover{color:var(--t1);}
+thead th.sorted{color:var(--accent);}
+tbody tr{border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;contain:layout style;}
+tbody tr:hover{background:var(--surface2);}
+tbody tr:last-child{border-bottom:none;}
+td{padding:10px 12px;font-size:13px;vertical-align:middle;}
+td.r{text-align:right;}
+.td-rank{font-family:var(--fm);font-size:11px;color:var(--t3);width:40px;}
+.coin-cell{display:flex;align-items:center;gap:9px;min-width:150px;}
+.coin-img{width:30px;height:30px;border-radius:50%;background:var(--surface3);flex-shrink:0;object-fit:cover;}
+.coin-img-placeholder{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--surface3),var(--surface4));flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--t3);font-family:var(--fm);}
+.coin-name{font-weight:600;font-size:13px;}
+.coin-sym{font-size:10px;color:var(--t3);font-family:var(--fm);text-transform:uppercase;margin-top:1px;}
+.td-price{font-family:var(--fm);font-weight:600;font-size:12.5px;white-space:nowrap;}
+.chg-badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:5px;font-size:11px;font-weight:600;font-family:var(--fm);white-space:nowrap;}
+.chg-up{background:var(--upb);color:var(--up);}
+.chg-dn{background:var(--dnb);color:var(--dn);}
+.chg-na{background:var(--surface2);color:var(--t3);}
+.td-mcap,.td-vol{font-family:var(--fm);font-size:11.5px;color:var(--t2);white-space:nowrap;}
+/* Supply & ATH visible on desktop (≥901px), hidden on mobile */
+.td-supply,.td-ath{font-family:var(--fm);font-size:11.5px;color:var(--t2);white-space:nowrap;}
+.td-arrow{font-size:12px;color:var(--t4);width:22px;text-align:center;transition:color .15s,transform .15s;}
+tbody tr:hover .td-arrow{color:var(--accent);transform:translateX(2px);}
+.tbl-loading{padding:56px 24px;text-align:center;}
+.spinner{width:32px;height:32px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .65s linear infinite;margin:0 auto 12px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tbl-empty{padding:56px 24px;text-align:center;color:var(--t3);font-size:13.5px;}
+.sk{border-radius:5px;background:linear-gradient(90deg,var(--surface2),var(--surface3),var(--surface2));background-size:200% 100%;animation:shimmer 1.5s infinite;}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ══ PAGINATION ══ */
+.pagination{background:var(--surface);border:1px solid var(--border);border-top:1px solid var(--border);border-radius:0 0 var(--r) var(--r);padding:11px 14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.pg-info{font-size:11.5px;color:var(--t3);font-family:var(--fm);}
+.pg-btns{display:flex;gap:3px;flex-wrap:wrap;}
+.pg-btn{min-width:30px;height:30px;border-radius:var(--rx);border:1px solid var(--border2);background:transparent;cursor:pointer;font-size:12px;font-weight:600;color:var(--t2);transition:all .15s;padding:0 6px;}
+.pg-btn:hover{border-color:var(--border3);color:var(--t1);background:var(--surface2);}
+.pg-btn.active{background:var(--t1);border-color:var(--t1);color:var(--bg);}
+.pg-btn:disabled{opacity:.3;cursor:not-allowed;}
+.pg-dots{font-size:12px;color:var(--t3);padding:0 3px;line-height:30px;}
+
+/* ══ STATUS BAR ══ */
+.status-bar{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rx);padding:7px 12px;margin-bottom:12px;display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--t2);}
+.status-bar span{font-weight:700;color:var(--accent);}
+
+/* ══ COIN MODAL ══ */
+.coin-modal{position:fixed;inset:0;z-index:800;background:rgba(26,24,20,.55);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .2s;display:flex;align-items:center;justify-content:center;padding:16px;}
+.coin-modal.open{opacity:1;pointer-events:all;}
+.coin-modal-card{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);box-shadow:var(--sha-lg);width:100%;max-width:680px;max-height:88vh;overflow-y:auto;transform:translateY(20px) scale(.97);transition:transform .25s cubic-bezier(.22,1,.36,1);}
+.coin-modal.open .coin-modal-card{transform:translateY(0) scale(1);}
+.cm-header{padding:18px 18px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:13px;position:sticky;top:0;background:var(--surface);z-index:2;}
+.cm-coin-info{flex:1;min-width:0;}
+.cm-name{font-size:19px;font-weight:700;letter-spacing:-.4px;font-family:var(--ff);}
+.cm-sym{font-size:11.5px;font-family:var(--fm);color:var(--t3);text-transform:uppercase;margin-top:2px;}
+.cm-rank{font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:var(--pill);background:var(--surface2);border:1px solid var(--border);color:var(--t2);display:inline-block;margin-top:4px;}
+.cm-close{width:34px;height:34px;border-radius:50%;border:1px solid var(--border2);background:var(--surface2);color:var(--t2);font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0;}
+.cm-close:hover{border-color:var(--dn);color:var(--dn);}
+.cm-body{padding:16px 18px;}
+.cm-price-row{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+.cm-price{font-size:26px;font-weight:700;letter-spacing:-1px;font-family:var(--ff2);}
+.cm-section{margin-bottom:16px;}
+.cm-section-title{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:8px;font-family:var(--ff);}
+.cm-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.cm-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;}
+.cm-stat{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rx);padding:9px 11px;}
+.cm-stat-label{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);margin-bottom:3px;}
+.cm-stat-val{font-size:13px;font-weight:600;font-family:var(--fm);color:var(--t1);}
+.cm-desc{font-size:13px;line-height:1.7;color:var(--t2);max-height:110px;overflow:hidden;transition:max-height .3s;}
+.cm-desc.expanded{max-height:none;}
+.cm-read-more{font-size:12px;font-weight:600;color:var(--accent);cursor:pointer;background:none;border:none;margin-top:5px;padding:0;}
+.cm-links{display:flex;gap:6px;flex-wrap:wrap;}
+.cm-link{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:var(--rx);background:var(--surface2);border:1px solid var(--border);font-size:11.5px;font-weight:600;color:var(--t2);transition:all .15s;}
+.cm-link:hover{border-color:var(--border3);color:var(--t1);}
+.cm-cats{display:flex;gap:5px;flex-wrap:wrap;}
+.cm-cat{font-size:11px;font-weight:600;padding:3px 9px;border-radius:var(--pill);background:var(--accentb);color:var(--accent);border:1px solid var(--accentbr);}
+.cm-explorers{display:flex;flex-direction:column;gap:4px;}
+.cm-explorer{font-size:11.5px;color:var(--accent);word-break:break-all;}
+
+/* ══ FOOTER ══ */
+footer{background:var(--surface);border-top:1px solid var(--border);padding:32px 20px 20px;margin-top:36px;}
+.footer-inner{max-width:1520px;margin:0 auto;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:32px;margin-bottom:24px;}
+.footer-brand .brand-logo{font-size:18px;font-weight:700;letter-spacing:-.4px;margin-bottom:9px;}
+.footer-brand p{color:var(--t2);font-size:12.5px;line-height:1.65;max-width:240px;margin-bottom:12px;}
+.footer-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.f-tag{font-size:10px;font-weight:600;padding:2px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--pill);color:var(--t2);}
+.footer-socials{display:flex;gap:6px;}
+.f-soc{width:30px;height:30px;border-radius:var(--rx);border:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;justify-content:center;color:var(--t2);font-size:12px;font-weight:700;transition:all .15s;}
+.f-soc:hover{border-color:var(--border3);color:var(--t1);}
+.footer-col h4{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:10px;}
+.footer-col ul{list-style:none;}
+.footer-col ul li{margin-bottom:7px;}
+.footer-col ul li a,.footer-col ul li button{color:var(--t2);font-size:12.5px;font-weight:500;transition:color .15s;background:none;border:none;padding:0;cursor:pointer;display:block;text-align:left;}
+.footer-col ul li a:hover,.footer-col ul li button:hover{color:var(--t1);}
+.footer-bottom{border-top:1px solid var(--border);padding-top:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.footer-bottom p{color:var(--t3);font-size:11.5px;}
+.disclaimer{font-size:11px;color:var(--t3);max-width:500px;line-height:1.5;}
+
+/* ══ TOAST & SCROLL ══ */
+#toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--t1);color:var(--bg);padding:10px 20px;border-radius:var(--pill);font-size:12.5px;font-weight:600;box-shadow:var(--sha-lg);z-index:9999;transition:transform .38s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none;max-width:90vw;text-align:center;}
+#toast.show{transform:translateX(-50%) translateY(0);}
+#scrollTop{position:fixed;bottom:26px;right:18px;width:38px;height:38px;border-radius:50%;background:var(--t1);color:var(--bg);border:none;cursor:pointer;font-size:15px;display:none;align-items:center;justify-content:center;box-shadow:var(--sha);z-index:98;transition:all .2s;}
+#scrollTop.show{display:flex;}
+#scrollTop:hover{transform:translateY(-2px);}
+
+/* ══ ANIMATIONS ══ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.fade-up{animation:fadeUp .38s ease both;}
+.delay-1{animation-delay:.07s;}
+.delay-2{animation-delay:.13s;}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1200px){.footer-grid{grid-template-columns:1fr 1fr;gap:22px;}}
+@media(max-width:900px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  /* Hide ATH & Supply cols on mobile — only show on desktop */
+  .hide-desk{display:none;}
+}
+/* Supply & ATH: show only on desktop */
+.col-supply,.col-ath{/* visible by default on desktop */}
+@media(max-width:900px){.col-supply,.col-ath,.col-arrow{display:none;}}
+
+/* Mobile table compact 3-col: rank · coin · price · 24h */
+@media(max-width:700px){
+  table{table-layout:fixed;width:100%;}
+  thead th:nth-child(1),td:nth-child(1){width:30px;padding:7px 3px 7px 8px;font-size:9.5px;}
+  thead th:nth-child(2),td:nth-child(2){width:auto;}
+  .coin-cell{gap:6px;}
+  .coin-img,.coin-img-placeholder{width:26px;height:26px;font-size:9px;}
+  .coin-name{font-size:12px;}
+  .coin-sym{font-size:9.5px;}
+  thead th:nth-child(3),td:nth-child(3){width:86px;font-size:11px;padding:7px 5px;}
+  thead th:nth-child(4),td:nth-child(4){width:72px;padding:7px 7px 7px 3px;}
+  .chg-badge{font-size:10px;padding:2px 5px;}
+}
+@media(max-width:640px){
+  .page{padding:12px 12px 70px;}
+  .explorer-hero{padding:16px 14px 14px;}
+  .explorer-title{font-size:18px;}
+  .footer-grid{grid-template-columns:1fr;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;}
+  .cm-grid{grid-template-columns:1fr;}
+  .cm-grid-3{grid-template-columns:1fr 1fr;}
+  .cm-price{font-size:22px;}
+}
+@media(max-width:380px){
+  .nav-btn-solid{display:none;}
+  .tab-pill{padding:4px 9px;font-size:11px;}
+  .cat-tag{padding:4px 9px;font-size:10.5px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="index.html" id="PD_LOGO_WRAP" style="text-decoration:none;display:flex;align-items:center;gap:0;padding:0;cursor:pointer;"></a>
+    <div class="nav-links">
+      <button class="nav-link" onclick="location.href='index.html'">
+        <svg class="nav-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Cryptocurrencies
+      </button>
+      <button class="nav-link" onclick="toast('🏛️ Exchanges — Coming soon!')">
+        <svg class="nav-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3L12 7 8 3"/></svg>Exchanges
+      </button>
+      <a class="nav-link" href="airdrop.html">
+        <svg class="nav-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>Airdrops <span class="badge-new">NEW</span>
+      </a>
+      <button class="nav-link" onclick="location.href='news.html'">
+        <svg class="nav-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8z"/></svg>News
+      </button>
+      <a class="nav-link" href="learn.html">
+        <svg class="nav-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Learn
+      </a>
+      <a class="nav-link active" href="CoinExplorer.html">
+        <svg class="nav-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Explorer
+      </a>
+      <a class="nav-link" href="https://docs.publicdrop.in" target="_blank">
+        <svg class="nav-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>API Docs
+      </a>
+    </div>
+    <div class="nav-right">
+      <button class="theme-toggle" id="THEME_BTN" onclick="toggleTheme()" title="Toggle theme">
+        <svg id="THEME_ICO_MOON" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg id="THEME_ICO_SUN" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <button class="nav-btn nav-btn-solid" onclick="toast('🔐 Login — Coming soon!')">Get Started</button>
+      <button class="hamburger" id="HAMBURGER" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="MOBILE_MENU" onclick="if(event.target===this)closeMenu()">
+  <div class="menu-panel">
+    <div class="menu-hdr">
+      <div class="menu-hdr-logo">Public<span>DROP</span></div>
+      <button class="menu-close" onclick="closeMenu()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="menu-body">
+      <div class="menu-section-label">Navigation</div>
+      <button class="mob-link" onclick="closeMenu();location.href='index.html'">
+        <span class="mob-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></span>Cryptocurrencies
+      </button>
+      <a class="mob-link active" href="CoinExplorer.html" onclick="closeMenu()">
+        <span class="mob-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>Coin Explorer
+      </a>
+      <a class="mob-link" href="airdrop.html" onclick="closeMenu()">
+        <span class="mob-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/></svg></span>Airdrops <span class="badge-new" style="margin-left:4px">NEW</span>
+      </a>
+      <button class="mob-link" onclick="closeMenu();location.href='news.html'">
+        <span class="mob-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0-2 2z"/></svg></span>Crypto News
+      </button>
+      <a class="mob-link" href="learn.html" onclick="closeMenu()">
+        <span class="mob-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>Learn
+      </a>
+      <div class="mob-divider"></div>
+      <div class="menu-section-label">More</div>
+      <a class="mob-link" href="https://docs.publicdrop.in" target="_blank" onclick="closeMenu()">
+        <span class="mob-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>API Docs
+      </a>
+      <div class="mob-divider"></div>
+      <div class="menu-section-label">Settings</div>
+      <div class="menu-setting">
+        <div class="menu-theme-row">
+          <div class="menu-setting-label" style="margin-bottom:0">Theme</div>
+          <button class="menu-theme-btn" id="MOB_THEME_BTN" onclick="toggleTheme()">
+            <svg id="MOB_THEME_ICO" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            <span id="MOB_THEME_LBL">Dark</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="page">
+
+  <!-- HERO -->
+  <div class="explorer-hero fade-up">
+    <div class="explorer-hero-top">
+      <div>
+        <div class="explorer-title">🔭 Coin <span>Explorer</span></div>
+        <div class="explorer-sub">Browse <strong>14,300+ cryptocurrencies</strong> with live prices, market dominance, ATH and supply data — powered by the PublicDrop free API.</div>
+      </div>
+      <div class="update-badge" id="UPDATE_BADGE">
+        <span class="update-dot"></span> Live Data
+      </div>
+    </div>
+    <div class="explorer-stats">
+      <div class="ex-stat"><div class="ex-stat-val" id="STAT_TOTAL">—</div><div class="ex-stat-lbl">Total Coins</div></div>
+      <div class="ex-stat"><div class="ex-stat-val" id="STAT_MCAP" style="color:var(--accent)">—</div><div class="ex-stat-lbl">Market Cap</div></div>
+      <div class="ex-stat"><div class="ex-stat-val" id="STAT_VOL" style="color:var(--t2)">—</div><div class="ex-stat-lbl">24h Volume</div></div>
+      <div class="ex-stat"><div class="ex-stat-val" id="STAT_MCAP_CHG">—</div><div class="ex-stat-lbl">MCap 24h %</div></div>
+      <div class="ex-stat"><div class="ex-stat-val" id="STAT_BTC" style="color:#f7931a">—</div><div class="ex-stat-lbl">BTC Dom.</div></div>
+      <div class="ex-stat"><div class="ex-stat-val" id="STAT_ETH" style="color:#627eea">—</div><div class="ex-stat-lbl">ETH Dom.</div></div>
+      <div class="ex-stat"><div class="ex-stat-val" id="STAT_GAINERS" style="color:var(--up)">—</div><div class="ex-stat-lbl">Gainers</div></div>
+      <div class="ex-stat"><div class="ex-stat-val" id="STAT_LOSERS" style="color:var(--dn)">—</div><div class="ex-stat-lbl">Losers</div></div>
+      <div class="ex-stat"><div class="ex-stat-val" id="STAT_NEUTRAL" style="color:var(--t3)">—</div><div class="ex-stat-lbl">Neutral</div></div>
+    </div>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div class="status-bar fade-up delay-1" id="STATUS_BAR">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;color:var(--t3)"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <span id="SB_TEXT">Loading coins from PublicDrop database…</span>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="explorer-search-wrap fade-up delay-1">
+    <div class="explorer-search-icon">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </div>
+    <input type="text" id="EXPLORER_SEARCH" placeholder="Search 14,300+ coins by name or symbol… Bitcoin, BTC, ETH, SOL" autocomplete="off" spellcheck="false" oninput="onSearch(this.value)">
+    <button class="search-clear" id="SEARCH_CLEAR" onclick="clearSearch()">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+
+  <!-- FILTERS + TABLE -->
+  <div class="filters-bar fade-up delay-2">
+    <div class="filters-top">
+      <div class="filter-left">
+        <div class="filter-title" id="FILTER_TITLE">All Coins</div>
+        <div class="coin-badge" id="COIN_COUNT_BADGE">—</div>
+      </div>
+      <div class="filter-right">
+        <select class="sort-select" id="SORT_SEL" onchange="doSort(this.value)">
+          <option value="rank">By Rank</option>
+          <option value="price_h">Price High→Low</option>
+          <option value="price_l">Price Low→High</option>
+          <option value="change_d">Top Gainers</option>
+          <option value="change_a">Top Losers</option>
+          <option value="ath">All Time High</option>
+          <option value="name">Name A→Z</option>
+        </select>
+      </div>
+    </div>
+    <div class="filters-tabs">
+      <button class="tab-pill active" id="TAB_ALL" onclick="setTab('all',this)">All</button>
+      <button class="tab-pill" id="TAB_TOP100" onclick="setTab('top100',this)">⭐ Top 100</button>
+      <button class="tab-pill" id="TAB_TOP500" onclick="setTab('top500',this)">Top 500</button>
+    </div>
+    <div class="cat-scroll">
+      <div class="cat-tags" id="CAT_TAGS">
+        <span class="cat-tags-loading">Loading categories…</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <div class="table-scroll">
+      <div id="TABLE_WRAP">
+        <div class="tbl-loading"><div class="spinner"></div><div style="font-size:13.5px;font-weight:600;color:var(--t2)">Loading coins from PublicDrop database…</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="pagination" id="PAGINATION" style="display:none"></div>
+
+</div>
+
+<!-- COIN DETAIL MODAL -->
+<div class="coin-modal" id="COIN_MODAL" onclick="if(event.target===this)closeCoinModal()">
+  <div class="coin-modal-card" id="COIN_MODAL_CARD">
+    <div class="cm-header">
+      <img id="CM_IMG" src="" alt="" class="coin-img" style="width:46px;height:46px;" onerror="this.style.display='none'">
+      <div class="cm-coin-info">
+        <div class="cm-name" id="CM_NAME">—</div>
+        <div class="cm-sym" id="CM_SYM">—</div>
+        <div class="cm-rank" id="CM_RANK">—</div>
+      </div>
+      <button class="cm-close" onclick="closeCoinModal()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="cm-body" id="CM_BODY">
+      <div class="tbl-loading"><div class="spinner"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand-logo">PublicDrop</div>
+        <p>Real-time crypto market data, airdrops, and portfolio tools. Built for Indian crypto investors.</p>
+        <div class="footer-tags">
+          <div class="f-tag">⚡ PublicDrop Live API</div>
+          <div class="f-tag">🔭 14,300+ Coins</div>
+          <div class="f-tag">📊 Live Prices</div>
+          <div class="f-tag">🇮🇳 publicdrop.in</div>
+        </div>
+        <div class="footer-socials" style="margin-top:10px">
+          <a href="https://x.com/PublicDropIN/" target="_blank" class="f-soc" title="X (Twitter)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.912-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="https://t.me/publicdropIN/" target="_blank" class="f-soc" title="Telegram">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          </a>
+          <a href="https://docs.publicdrop.in" target="_blank" class="f-soc" title="API Docs" style="font-size:9.5px;font-weight:800;width:auto;padding:0 9px;color:var(--accent);border-color:var(--accentbr);background:var(--accentb);">API</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Explorer</h4>
+        <ul>
+          <li><button onclick="setTab('all',document.getElementById('TAB_ALL'))">All Coins</button></li>
+          <li><button onclick="setTab('top100',document.getElementById('TAB_TOP100'))">Top 100</button></li>
+          <li><button onclick="setCat('defi',null)">DeFi Tokens</button></li>
+          <li><button onclick="setCat('meme',null)">Meme Coins</button></li>
+          <li><button onclick="setCat('layer-1',null)">Layer 1</button></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="index.html">Live Prices</a></li>
+          <li><a href="airdrop.html">Airdrops</a></li>
+          <li><button onclick="toast('🚧 Coming soon!')">Price Alerts</button></li>
+          <li><button onclick="toast('🚧 Coming soon!')">API Access</button></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="news.html">Market News</a></li>
+          <li><a href="learn.html">Beginner Guide</a></li>
+          <li><a href="learn.html#glossary">Crypto Glossary</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="about.html#contact">Contact</a></li>
+          <li><a href="about.html#privacy">Privacy Policy</a></li>
+          <li><a href="about.html#terms">Terms of Use</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 PublicDrop.in · All rights reserved · Powered by PublicDrop Live API</p>
+      <div class="disclaimer">⚠️ <strong>Not financial advice.</strong> Crypto carries high risk. Always DYOR before investing.</div>
+    </div>
+  </div>
+</footer>
+
+<div id="toast"></div>
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+/* ═══════════════════════════════════════════
+   CONFIG
+═══════════════════════════════════════════ */
+const API_BASE = 'https://publicdrop.in/APIv3';
+const PER_PAGE = 100;
+
+/* ═══════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════ */
+let MODE        = 'browse';
+let BROWSE_PAGE = 1;
+let BROWSE_TOTAL= 0;
+let BROWSE_CACHE= {};
+
+let SEARCH_RESULTS = [];
+let CAT_RESULTS    = [];
+
+let activeTab   = 'all';
+let activeCat   = 'all';
+let sortKey     = 'rank';
+let searchQ     = '';
+let searchTimer = null;
+
+/* ═══════════════════════════════════════════
+   THEME
+═══════════════════════════════════════════ */
+(function(){
+  const t = localStorage.getItem('pd_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', t);
+  applyThemeIcons(t);
+})();
+
+function applyThemeIcons(t){
+  const moon = document.getElementById('THEME_ICO_MOON');
+  const sun  = document.getElementById('THEME_ICO_SUN');
+  if(moon) moon.style.display = t === 'dark' ? 'none' : 'block';
+  if(sun)  sun.style.display  = t === 'dark' ? 'block' : 'none';
+  const mobLbl = document.getElementById('MOB_THEME_LBL');
+  if(mobLbl) mobLbl.textContent = t === 'dark' ? 'Light' : 'Dark';
+  const mobIco = document.getElementById('MOB_THEME_ICO');
+  if(mobIco){
+    mobIco.innerHTML = t === 'dark'
+      ? '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+      : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+}
+
+function toggleTheme(){
+  const cur  = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  applyThemeIcons(next);
+  localStorage.setItem('pd_theme', next);
+}
+
+/* ═══════════════════════════════════════════
+   MOBILE MENU
+═══════════════════════════════════════════ */
+function toggleMenu(){
+  document.getElementById('MOBILE_MENU').classList.toggle('open');
+  document.getElementById('HAMBURGER').classList.toggle('open');
+}
+function closeMenu(){
+  document.getElementById('MOBILE_MENU').classList.remove('open');
+  document.getElementById('HAMBURGER').classList.remove('open');
+}
+
+/* ═══════════════════════════════════════════
+   TOAST & SCROLL
+═══════════════════════════════════════════ */
+function toast(m, d=3000){
+  const t = document.getElementById('toast');
+  t.textContent = m;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(()=>t.classList.remove('show'), d);
+}
+window.addEventListener('scroll', ()=>{
+  document.getElementById('scrollTop').classList.toggle('show', scrollY > 500);
+});
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeMenu(); closeCoinModal(); } });
+
+/* ═══════════════════════════════════════════
+   FORMATTERS
+═══════════════════════════════════════════ */
+function fmtPrice(n){
+  if(n == null || isNaN(n)) return '—';
+  n = parseFloat(n);
+  if(n >= 10000)      return '$' + n.toLocaleString('en-US',{maximumFractionDigits:2});
+  if(n >= 1)          return '$' + n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:4});
+  if(n >= 0.1)        return '$' + n.toFixed(4);
+  if(n >= 0.01)       return '$' + n.toFixed(5);
+  if(n >= 0.001)      return '$' + n.toFixed(6);
+  if(n >= 0.0001)     return '$' + n.toFixed(7);
+  if(n >= 0.00001)    return '$' + n.toFixed(8);
+  if(n >= 0.000001)   return '$' + n.toFixed(9);
+  if(n >= 0.0000001)  return '$' + n.toFixed(10);
+  if(n > 0){
+    const s = n.toFixed(20).replace(/0+$/,'');
+    const m2 = s.match(/^0\.(0*)([1-9]\d{0,3})/);
+    if(m2) return '$0.'+m2[1]+m2[2];
+    return '$'+n.toFixed(12);
+  }
+  return '$0.00';
+}
+function fmtLarge(n){
+  if(n == null || isNaN(n)) return '—';
+  n = parseFloat(n);
+  if(n >= 1e12) return '$'+(n/1e12).toFixed(2)+'T';
+  if(n >= 1e9)  return '$'+(n/1e9).toFixed(2)+'B';
+  if(n >= 1e6)  return '$'+(n/1e6).toFixed(2)+'M';
+  if(n >= 1e3)  return '$'+(n/1e3).toFixed(2)+'K';
+  return '$'+n.toFixed(2);
+}
+function fmtSupply(n){
+  if(n == null || isNaN(n) || n <= 0) return '—';
+  n = parseFloat(n);
+  if(n >= 1e12) return (n/1e12).toFixed(2)+'T';
+  if(n >= 1e9)  return (n/1e9).toFixed(2)+'B';
+  if(n >= 1e6)  return (n/1e6).toFixed(2)+'M';
+  if(n >= 1e3)  return (n/1e3).toFixed(2)+'K';
+  return n.toLocaleString();
+}
+function fmtChg(n){
+  if(n == null || isNaN(n)) return null;
+  return parseFloat(n).toFixed(2);
+}
+function timeAgo(iso){
+  if(!iso) return '—';
+  const diff = Date.now() - new Date(iso).getTime();
+  const m = Math.floor(diff/60000);
+  if(m < 1) return 'just now';
+  if(m < 60) return m+'m ago';
+  const h = Math.floor(m/60);
+  if(h < 24) return h+'h ago';
+  return Math.floor(h/24)+'d ago';
+}
+
+/* ═══════════════════════════════════════════
+   CATEGORIES — fetch from API and render tabs
+═══════════════════════════════════════════ */
+const CAT_ICONS = {
+  'defi':'💎','meme':'🐸','layer-1':'⛓️','layer-2':'🔗','ai':'🤖',
+  'gaming':'🎮','nft':'🖼️','stablecoin':'💵','exchange':'🏛️',
+  'metaverse':'🌐','privacy':'🔒','oracle':'🔮','infrastructure':'⚙️',
+  'storage':'💾','identity':'🪪','dao':'🗳️','cross-chain':'↔️',
+  'yield':'📈','sports':'⚽','music':'🎵','wrapped':'🎁'
+};
+
+async function loadCategories(){
+  const wrap = document.getElementById('CAT_TAGS');
+  try {
+    const res = await fetch(`${API_BASE}/categories`).then(r=>r.json());
+    // API returns array of category slugs or objects
+    let cats = [];
+    if(Array.isArray(res)){
+      cats = res.map(c => typeof c === 'string' ? {slug:c, name:c} : {slug:c.slug||c.id||c.name, name:c.name||c.slug});
+    } else if(res.categories){
+      cats = res.categories.map(c => typeof c === 'string' ? {slug:c, name:c} : {slug:c.slug||c.id||c.name, name:c.name||c.slug});
+    }
+
+    if(!cats.length){
+      // Fallback to known categories
+      cats = [
+        {slug:'defi',name:'DeFi'},{slug:'meme',name:'Meme'},
+        {slug:'layer-1',name:'Layer 1'},{slug:'layer-2',name:'Layer 2'},
+        {slug:'ai',name:'AI'},{slug:'gaming',name:'Gaming'},
+        {slug:'nft',name:'NFT'},{slug:'stablecoin',name:'Stablecoin'},
+        {slug:'exchange',name:'Exchange'}
+      ];
+    }
+
+    let html = `<button class="cat-tag active" onclick="setCat('all',this)">All Categories</button>`;
+    for(const cat of cats){
+      const slug = cat.slug || '';
+      const name = (cat.name || slug).replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+      const icon = CAT_ICONS[slug] || CAT_ICONS[slug.toLowerCase()] || '';
+      html += `<button class="cat-tag" onclick="setCat('${slug}',this)">${icon ? icon+' ' : ''}${name}</button>`;
+    }
+    wrap.innerHTML = html;
+  } catch(e){
+    // Fallback hardcoded
+    wrap.innerHTML = `
+      <button class="cat-tag active" onclick="setCat('all',this)">All Categories</button>
+      <button class="cat-tag" onclick="setCat('defi',this)">💎 DeFi</button>
+      <button class="cat-tag" onclick="setCat('meme',this)">🐸 Meme</button>
+      <button class="cat-tag" onclick="setCat('layer-1',this)">⛓️ Layer 1</button>
+      <button class="cat-tag" onclick="setCat('layer-2',this)">🔗 Layer 2</button>
+      <button class="cat-tag" onclick="setCat('ai',this)">🤖 AI</button>
+      <button class="cat-tag" onclick="setCat('gaming',this)">🎮 Gaming</button>
+      <button class="cat-tag" onclick="setCat('nft',this)">🖼️ NFT</button>
+      <button class="cat-tag" onclick="setCat('stablecoin',this)">💵 Stablecoin</button>
+      <button class="cat-tag" onclick="setCat('exchange',this)">🏛️ Exchange</button>`;
+    console.warn('Categories load failed, using fallback', e);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   STATUS: Load hero stats from /status
+═══════════════════════════════════════════ */
+async function loadStatus(){
+  try {
+    const s = await fetch(`${API_BASE}/status`).then(r=>r.json());
+    document.getElementById('STAT_TOTAL').textContent = (s.total_coins||0).toLocaleString();
+    const mcap = s.total_market_cap_usd;
+    if(mcap != null) document.getElementById('STAT_MCAP').textContent = mcap >= 1e12 ? '$'+(mcap/1e12).toFixed(2)+'T' : '$'+(mcap/1e9).toFixed(1)+'B';
+    const vol = s.total_volume_24h_usd;
+    if(vol != null) document.getElementById('STAT_VOL').textContent = vol >= 1e9 ? '$'+(vol/1e9).toFixed(2)+'B' : '$'+(vol/1e6).toFixed(1)+'M';
+    const chgEl = document.getElementById('STAT_MCAP_CHG');
+    const chg = s.market_cap_change_24h;
+    if(chg != null){
+      const pct = parseFloat(chg).toFixed(2);
+      const isUp = parseFloat(pct) >= 0;
+      chgEl.textContent = (isUp?'+':'')+pct+'%';
+      chgEl.style.color = isUp ? 'var(--up)' : 'var(--dn)';
+    }
+    document.getElementById('STAT_BTC').textContent = (s.btc_dominance||0).toFixed(2)+'%';
+    document.getElementById('STAT_ETH').textContent = (s.eth_dominance||0).toFixed(2)+'%';
+    document.getElementById('STAT_GAINERS').textContent = (s.gainers||0).toLocaleString();
+    document.getElementById('STAT_LOSERS').textContent  = (s.losers||0).toLocaleString();
+    document.getElementById('STAT_NEUTRAL').textContent = (s.neutral||0).toLocaleString();
+    BROWSE_TOTAL = s.total_coins || 0;
+  } catch(e){ console.warn('Status fetch failed',e); }
+}
+
+/* ═══════════════════════════════════════════
+   BROWSE MODE
+═══════════════════════════════════════════ */
+async function loadBrowsePage(dbPage){
+  // Map UI sortKey to API sort param
+  const sortMap = {
+    'rank':'rank','price_h':'price','price_l':'price',
+    'change_d':'change_24h','change_a':'change_24h',
+    'ath':'volume','name':'rank'
+  };
+  const apiSort = sortMap[sortKey] || 'rank';
+  const cacheKey = `${dbPage}_${apiSort}`;
+  if(BROWSE_CACHE[cacheKey]) return BROWSE_CACHE[cacheKey];
+  showTableLoading();
+  try {
+    const res = await fetch(`${API_BASE}/coins?page=${dbPage}&sort=${apiSort}`).then(r=>r.json());
+    const coins = res.coins || [];
+    const total = res.total || BROWSE_TOTAL;
+    const totalPages = res.total_pages || res.pages || null;
+    BROWSE_TOTAL = total;
+    for(const c of coins){
+      try { c.categories_arr = JSON.parse(c.categories||'[]'); } catch{ c.categories_arr = []; }
+    }
+    BROWSE_CACHE[cacheKey] = {coins, total, totalPages};
+    return BROWSE_CACHE[cacheKey];
+  } catch(e){
+    document.getElementById('TABLE_WRAP').innerHTML = `<div class="tbl-empty">⚠️ Could not load coins. Check if API is reachable at publicdrop.in</div>`;
+    console.error(e); return null;
+  }
+}
+
+async function goBrowsePage(dbPage){
+  MODE = 'browse'; activeCat = 'all';
+  document.querySelectorAll('.cat-tag').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.cat-tag')?.classList.add('active');
+  BROWSE_PAGE = dbPage;
+  const data = await loadBrowsePage(dbPage);
+  if(!data) return;
+  let coins = applyTabFilter([...data.coins]);
+  coins = applySort(coins);
+  // API may not return total_pages; estimate from total_coins / 100
+  const totalDBPages = data.totalPages || Math.ceil((data.total||14626)/100);
+  renderTableDirect(coins);
+  renderBrowsePagination(dbPage, totalDBPages, data.total||14626);
+  updateFilterTitle('All Coins', data.total||14626);
+  updateSBText(`Page ${dbPage} of ${totalDBPages} · <span>${(data.total||14626).toLocaleString()}</span> total coins`);
+}
+
+/* ═══════════════════════════════════════════
+   SEARCH MODE
+═══════════════════════════════════════════ */
+async function runSearch(q){
+  if(!q||q.length<1){ goBrowsePage(1); return; }
+  MODE = 'search'; showTableLoading();
+  updateSBText(`Searching for "<strong>${q}</strong>"…`);
+  try {
+    const res = await fetch(`${API_BASE}/search?q=${encodeURIComponent(q)}`).then(r=>r.json());
+    SEARCH_RESULTS = res.results || [];
+    for(const c of SEARCH_RESULTS){
+      if(typeof c.categories==='string'){
+        try{c.categories_arr=JSON.parse(c.categories);}catch{c.categories_arr=[];}
+      } else c.categories_arr = c.categories||[];
+    }
+    const sorted = applySort([...SEARCH_RESULTS]);
+    renderTableDirect(sorted);
+    renderInMemoryPagination(sorted,1);
+    updateFilterTitle(`Search: "${q}"`, SEARCH_RESULTS.length);
+    updateSBText(`Found <span>${SEARCH_RESULTS.length.toLocaleString()}</span> results for "<strong>${q}</strong>"`);
+    document.getElementById('UPDATE_BADGE').innerHTML = `<span class="update-dot"></span> Live prices`;
+  } catch(e){
+    document.getElementById('TABLE_WRAP').innerHTML = `<div class="tbl-empty">⚠️ Search failed. Try again.</div>`;
+    console.error(e);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   CATEGORY MODE
+═══════════════════════════════════════════ */
+async function loadCategory(cat){
+  MODE = 'category'; showTableLoading();
+  updateSBText(`Loading category: <strong>${cat}</strong>…`);
+  try {
+    const res = await fetch(`${API_BASE}/categories?cat=${encodeURIComponent(cat)}`).then(r=>r.json());
+    CAT_RESULTS = res.coins || [];
+    for(const c of CAT_RESULTS){
+      if(typeof c.categories==='string'){
+        try{c.categories_arr=JSON.parse(c.categories);}catch{c.categories_arr=[];}
+      } else c.categories_arr = c.categories||[];
+    }
+    let coins = applyTabFilter([...CAT_RESULTS]);
+    coins = applySort(coins);
+    renderTableDirect(coins);
+    renderInMemoryPagination(coins,1);
+    const label = cat.charAt(0).toUpperCase()+cat.slice(1).replace(/-/g,' ');
+    updateFilterTitle(label, CAT_RESULTS.length);
+    updateSBText(`<span>${CAT_RESULTS.length.toLocaleString()}</span> coins in <strong>${label}</strong> category`);
+  } catch(e){
+    document.getElementById('TABLE_WRAP').innerHTML = `<div class="tbl-empty">⚠️ Category load failed. Try again.</div>`;
+    console.error(e);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   FILTERS & SORT
+═══════════════════════════════════════════ */
+function applyTabFilter(coins){
+  if(activeTab==='top100') return coins.filter(c=>c.rank&&c.rank<=100);
+  if(activeTab==='top500') return coins.filter(c=>c.rank&&c.rank<=500);
+  return coins;
+}
+
+function applySort(coins){
+  return coins.sort((a,b)=>{
+    if(sortKey==='rank')    return (a.rank||99999)-(b.rank||99999);
+    if(sortKey==='price_h') return (b.price||b.price_usd||0)-(a.price||a.price_usd||0);
+    if(sortKey==='price_l') return (a.price||a.price_usd||0)-(b.price||b.price_usd||0);
+    if(sortKey==='change_d') return (b.change_24h||0)-(a.change_24h||0);
+    if(sortKey==='change_a') return (a.change_24h||0)-(b.change_24h||0);
+    if(sortKey==='ath')     return (b.high_24h||0)-(a.high_24h||0);
+    if(sortKey==='name')    return (a.name||'').localeCompare(b.name||'');
+    return 0;
+  });
+}
+
+function setTab(tab,el){
+  activeTab = tab;
+  document.querySelectorAll('.tab-pill').forEach(b=>b.classList.remove('active'));
+  if(el) el.classList.add('active');
+  refreshCurrentView();
+}
+
+function setCat(cat,el){
+  activeCat = cat;
+  document.querySelectorAll('.cat-tag').forEach(b=>b.classList.remove('active'));
+  if(el) el.classList.add('active');
+  else {
+    document.querySelectorAll('.cat-tag').forEach(b=>{
+      const txt = b.textContent.toLowerCase();
+      if(cat==='all'&&txt.includes('all')) b.classList.add('active');
+      else if(cat!=='all'&&txt.toLowerCase().includes(cat.replace(/-/g,' '))) b.classList.add('active');
+    });
+  }
+  if(cat==='all') goBrowsePage(1);
+  else loadCategory(cat);
+}
+
+function doSort(key){
+  sortKey = key;
+  if((key==='change_d'||key==='change_a')&&MODE==='browse'){
+    runGainersLosers(key); return;
+  }
+  refreshCurrentView();
+}
+
+async function runGainersLosers(key){
+  MODE = 'search'; showTableLoading();
+  const label = key==='change_d'?'📈 Top Gainers':'📉 Top Losers';
+  updateSBText('Loading '+label+'…');
+  try {
+    const sortParam = key==='change_d' ? 'change_24h' : 'change_24h';
+    const res = await fetch(`${API_BASE}/coins?page=1&sort=change_24h`).then(r=>r.json());
+    SEARCH_RESULTS = res.coins || [];
+    for(const c of SEARCH_RESULTS){
+      if(typeof c.categories==='string'){
+        try{c.categories_arr=JSON.parse(c.categories);}catch{c.categories_arr=[];}
+      } else c.categories_arr = c.categories||[];
+    }
+    // Sort descending for gainers, ascending for losers
+    SEARCH_RESULTS.sort((a,b)=> key==='change_d'
+      ? (b.change_24h||0)-(a.change_24h||0)
+      : (a.change_24h||0)-(b.change_24h||0)
+    );
+    if(!SEARCH_RESULTS.length){
+      document.getElementById('TABLE_WRAP').innerHTML = '<div class="tbl-empty">⚠️ Could not load price data.</div>';
+      return;
+    }
+    renderTableDirect(SEARCH_RESULTS);
+    renderInMemoryPagination(SEARCH_RESULTS,1);
+    updateFilterTitle(label, SEARCH_RESULTS.length);
+    updateSBText('<span>'+SEARCH_RESULTS.length.toLocaleString()+'</span> coins sorted by '+label);
+  } catch(e){
+    document.getElementById('TABLE_WRAP').innerHTML = '<div class="tbl-empty">⚠️ Could not load live price data.</div>';
+    console.error(e);
+  }
+}
+
+function refreshCurrentView(){
+  if(MODE==='search'){
+    const sorted = applySort(applyTabFilter([...SEARCH_RESULTS]));
+    renderTableDirect(sorted); renderInMemoryPagination(sorted,1);
+  } else if(MODE==='category'){
+    const sorted = applySort(applyTabFilter([...CAT_RESULTS]));
+    renderTableDirect(sorted); renderInMemoryPagination(sorted,1);
+  } else goBrowsePage(1);
+}
+
+function onSearch(q){
+  searchQ = q.trim();
+  document.getElementById('SEARCH_CLEAR').classList.toggle('show',q.length>0);
+  clearTimeout(searchTimer);
+  if(!searchQ){goBrowsePage(1);return;}
+  searchTimer = setTimeout(()=>runSearch(searchQ),350);
+}
+function clearSearch(){
+  document.getElementById('EXPLORER_SEARCH').value='';
+  document.getElementById('SEARCH_CLEAR').classList.remove('show');
+  searchQ=''; goBrowsePage(1);
+}
+
+/* ═══════════════════════════════════════════
+   COIN REGISTRY
+═══════════════════════════════════════════ */
+const COIN_REG = {};
+let COIN_REG_IDX = 0;
+function regCoin(coin){ const idx=COIN_REG_IDX++; COIN_REG[idx]=coin; return idx; }
+
+/* ═══════════════════════════════════════════
+   RENDER TABLE
+   Desktop: rank · coin · price · 24h · ATH · supply · →
+   Mobile:  rank · coin · price · 24h
+═══════════════════════════════════════════ */
+function coinImgTag(coin){
+  // API returns logo_url (CDN) and logo (publicdrop.in redirect)
+  const src = coin.logo_url || coin.logo || '';
+  if(src) return `<img src="${src}" alt="${coin.symbol||''}" class="coin-img" loading="lazy" onerror="this.outerHTML='<div class=\\'coin-img-placeholder\\'>${(coin.symbol||'?').substring(0,3)}</div>'">`;
+  return `<div class="coin-img-placeholder">${(coin.symbol||'?').substring(0,3)}</div>`;
+}
+
+function showTableLoading(){
+  document.getElementById('TABLE_WRAP').innerHTML = `<div class="tbl-loading"><div class="spinner"></div><div style="font-size:13px;font-weight:600;color:var(--t2)">Loading…</div></div>`;
+  document.getElementById('PAGINATION').style.display = 'none';
+}
+
+function renderTableDirect(coins){
+  if(!coins.length){
+    document.getElementById('TABLE_WRAP').innerHTML = `<div class="tbl-empty">🔍 No coins found. Try a different search or filter.</div>`;
+    return;
+  }
+  const chgSorted   = sortKey==='change_d'||sortKey==='change_a';
+  const priceSorted = sortKey==='price_h'||sortKey==='price_l';
+
+  let html = `<table>
+    <thead><tr>
+      <th style="width:30px">#</th>
+      <th>Coin</th>
+      <th class="r${priceSorted?' sorted':''}">Price${priceSorted?' ↕':''}</th>
+      <th class="r${chgSorted?' sorted':''}">24h${chgSorted?' ↕':''}</th>
+      <th class="r col-ath">ATH</th>
+      <th class="r col-supply">Supply</th>
+      <th class="col-arrow" style="width:22px"></th>
+    </tr></thead>
+    <tbody>`;
+
+  for(const coin of coins){
+    const idx    = regCoin(coin);
+    const usd    = coin.price != null ? coin.price : coin.price_usd;
+    const chg24  = coin.change_24h;
+    const chgFmt = fmtChg(chg24);
+    const chgCls = chgFmt!=null ? (parseFloat(chgFmt)>=0?'chg-up':'chg-dn') : 'chg-na';
+    const chgStr = chgFmt!=null ? `${parseFloat(chgFmt)>=0?'+':''}${chgFmt}%` : '—';
+
+    html += `<tr onclick="window.location.href='https://publicdrop.in/coin/${(coin.symbol||'').toLowerCase()}'" style="cursor:pointer">
+      <td class="td-rank">${coin.rank||'—'}</td>
+      <td>
+        <div class="coin-cell">
+          ${coinImgTag(coin)}
+          <div>
+            <div class="coin-name">${coin.name||coin.id||coin.symbol}</div>
+            <div class="coin-sym">${coin.symbol||''}</div>
+          </div>
+        </div>
+      </td>
+      <td class="r td-price">${usd!=null?fmtPrice(usd):'<span style="color:var(--t4);font-size:10.5px">—</span>'}</td>
+      <td class="r"><span class="chg-badge ${chgCls}">${chgStr}</span></td>
+      <td class="r td-ath col-ath">${coin.high_24h?fmtPrice(coin.high_24h):'—'}</td>
+      <td class="r td-supply col-supply">${fmtSupply(coin.circulating_supply||coin.total_supply)}</td>
+      <td class="td-arrow col-arrow">→</td>
+    </tr>`;
+  }
+  html += '</tbody></table>';
+  document.getElementById('TABLE_WRAP').innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════
+   PAGINATION — BROWSE
+═══════════════════════════════════════════ */
+function renderBrowsePagination(currentDBPage, totalDBPages, totalCoins){
+  const el = document.getElementById('PAGINATION');
+  if(totalDBPages<=1){el.style.display='none';return;}
+  el.style.display='flex';
+  const start=(currentDBPage-1)*100+1;
+  const end=Math.min(currentDBPage*100,totalCoins);
+  let btns = `<button class="pg-btn" onclick="goBrowsePage(${currentDBPage-1})" ${currentDBPage===1?'disabled':''}>‹ Prev</button>`;
+  let pages = new Set([1,totalDBPages,currentDBPage,currentDBPage-1,currentDBPage+1].filter(p=>p>=1&&p<=totalDBPages));
+  const sorted=[...pages].sort((a,b)=>a-b);
+  let prev=0;
+  for(const p of sorted){
+    if(prev&&p-prev>1) btns+=`<span class="pg-dots">…</span>`;
+    btns+=`<button class="pg-btn${p===currentDBPage?' active':''}" onclick="goBrowsePage(${p})">${p}</button>`;
+    prev=p;
+  }
+  btns+=`<button class="pg-btn" onclick="goBrowsePage(${currentDBPage+1})" ${currentDBPage===totalDBPages?'disabled':''}>Next ›</button>`;
+  el.innerHTML=`<div class="pg-info">Showing ${start.toLocaleString()}–${end.toLocaleString()} of ${totalCoins.toLocaleString()}</div><div class="pg-btns">${btns}</div>`;
+}
+
+/* ═══════════════════════════════════════════
+   PAGINATION — IN-MEMORY
+═══════════════════════════════════════════ */
+let imPg=1; let imCoins=[];
+function renderInMemoryPagination(coins,pg){ imCoins=coins; imPg=pg; showIMPage(pg); }
+function showIMPage(pg){
+  imPg=pg;
+  const start=(pg-1)*PER_PAGE;
+  const slice=imCoins.slice(start,start+PER_PAGE);
+  renderTableDirect(slice);
+  const el=document.getElementById('PAGINATION');
+  const total=imCoins.length;
+  const pages=Math.ceil(total/PER_PAGE);
+  if(pages<=1){el.style.display='none';return;}
+  el.style.display='flex';
+  const s=start+1,e=Math.min(pg*PER_PAGE,total);
+  let btns=`<button class="pg-btn" onclick="showIMPage(${pg-1})" ${pg===1?'disabled':''}>‹ Prev</button>`;
+  let pageSet=new Set([1,pages,pg,pg-1,pg+1].filter(p=>p>=1&&p<=pages));
+  const sorted=[...pageSet].sort((a,b)=>a-b);
+  let prev=0;
+  for(const p of sorted){
+    if(prev&&p-prev>1) btns+=`<span class="pg-dots">…</span>`;
+    btns+=`<button class="pg-btn${p===pg?' active':''}" onclick="showIMPage(${p})">${p}</button>`;
+    prev=p;
+  }
+  btns+=`<button class="pg-btn" onclick="showIMPage(${pg+1})" ${pg===pages?'disabled':''}>Next ›</button>`;
+  el.innerHTML=`<div class="pg-info">${s.toLocaleString()}–${e.toLocaleString()} of ${total.toLocaleString()}</div><div class="pg-btns">${btns}</div>`;
+  window.scrollTo({top:document.querySelector('.filters-bar').offsetTop-80,behavior:'smooth'});
+}
+
+/* ═══════════════════════════════════════════
+   UI HELPERS
+═══════════════════════════════════════════ */
+function updateFilterTitle(title,count){
+  document.getElementById('FILTER_TITLE').textContent=title;
+  document.getElementById('COIN_COUNT_BADGE').textContent=(count||0).toLocaleString()+' coins';
+}
+function updateSBText(html){document.getElementById('SB_TEXT').innerHTML=html;}
+
+/* ═══════════════════════════════════════════
+   COIN DETAIL MODAL — uses /details?sym=SYMBOL
+═══════════════════════════════════════════ */
+async function openCoinModal(regIdx, e){
+  if(e){ e.stopPropagation(); e.preventDefault(); }
+  else if(window.event){ window.event.stopPropagation(); window.event.preventDefault(); }
+  const rowCoin = COIN_REG[regIdx]||{};
+  const sym  = rowCoin.symbol||rowCoin.id||'';
+  const name = rowCoin.name||sym;
+
+  const modal=document.getElementById('COIN_MODAL');
+  modal.classList.add('open');
+  document.body.style.overflow='hidden';
+
+  const imgEl=document.getElementById('CM_IMG');
+  const preImg = rowCoin.logo_url || rowCoin.logo || '';
+  if(preImg){imgEl.src=preImg;imgEl.style.display='';}
+  else imgEl.style.display='none';
+
+  document.getElementById('CM_NAME').textContent=name;
+  document.getElementById('CM_SYM').textContent=sym;
+  document.getElementById('CM_RANK').textContent=rowCoin.rank?`Rank #${rowCoin.rank}`:'—';
+  document.getElementById('CM_BODY').innerHTML=`<div class="tbl-loading"><div class="spinner"></div><div style="font-size:13px;color:var(--t2)">Loading details…</div></div>`;
+
+  try {
+    const coin = await fetch(`${API_BASE}/details?sym=${encodeURIComponent(sym)}`).then(r=>r.json());
+    // API returns: price, market_cap, logo_url, logo, website, whitepaper, twitter, reddit, github, explorer, last_updated
+    const usd    = coin.price != null ? coin.price : (rowCoin.price != null ? rowCoin.price : rowCoin.price_usd);
+    const chg24  = coin.change_24h != null ? coin.change_24h : rowCoin.change_24h;
+    const chgFmt = fmtChg(chg24);
+    const chgCls = chgFmt!=null?(parseFloat(chgFmt)>=0?'chg-up':'chg-dn'):'chg-na';
+
+    // Update header image with best available logo
+    const logoSrc = coin.logo_url || coin.logo || preImg;
+    if(logoSrc){imgEl.src=logoSrc;imgEl.style.display='';}
+
+    // Categories: API may return tags array or categories
+    let catsHTML='';
+    const cats = Array.isArray(coin.categories_arr) ? coin.categories_arr
+               : Array.isArray(coin.tags) ? coin.tags
+               : [];
+    if(cats.length){
+      catsHTML=`<div class="cm-section"><div class="cm-section-title">Categories</div><div class="cm-cats">${cats.map(c=>`<span class="cm-cat">${c}</span>`).join('')}</div></div>`;
+    }
+
+    // Links — use actual API field names
+    const links=[];
+    if(coin.website)  links.push(`<a href="${coin.website}" target="_blank" class="cm-link">🌐 Website</a>`);
+    if(coin.whitepaper) links.push(`<a href="${coin.whitepaper}" target="_blank" class="cm-link">📄 Whitepaper</a>`);
+    if(coin.twitter)  links.push(`<a href="${coin.twitter.startsWith('http')?coin.twitter:'https://twitter.com/'+coin.twitter}" target="_blank" class="cm-link">𝕏 Twitter</a>`);
+    if(coin.reddit)   links.push(`<a href="${coin.reddit.startsWith('http')?coin.reddit:'https://reddit.com/r/'+coin.reddit}" target="_blank" class="cm-link">💬 Reddit</a>`);
+    if(coin.github)   links.push(`<a href="${coin.github.startsWith('http')?coin.github:'https://github.com/'+coin.github}" target="_blank" class="cm-link">⌨️ GitHub</a>`);
+
+    // Block explorer — API returns single string `explorer`
+    let explorersHTML='';
+    if(coin.explorer){
+      explorersHTML=`<div class="cm-section"><div class="cm-section-title">Block Explorer</div><div class="cm-explorers"><a href="${coin.explorer}" target="_blank" class="cm-link" style="font-size:11px">🔍 ${coin.explorer.replace(/https?:\/\//,'').replace(/\/.*/,'')}</a></div></div>`;
+    }
+
+    // Contract address — API returns string or null
+    let contractsHTML='';
+    if(coin.contract_address){
+      let contracts=[];
+      try{ contracts=typeof coin.contract_address==='string'?JSON.parse(coin.contract_address):coin.contract_address; }catch{ contracts=[]; }
+      if(!Array.isArray(contracts)) contracts=[];
+      if(contracts.length){
+        contractsHTML=`<div class="cm-section"><div class="cm-section-title">Contract Addresses</div><div class="cm-explorers">${contracts.slice(0,3).map(c=>`<span class="cm-explorer">${c.platform||'Contract'}: ${c.address||c}</span>`).join('')}</div></div>`;
+      }
+    }
+
+    document.getElementById('CM_BODY').innerHTML=`
+      <div class="cm-price-row">
+        <div class="cm-price">${usd!=null?fmtPrice(usd):'<span style="font-size:15px;color:var(--t3)">Price unavailable</span>'}</div>
+        ${chgFmt!=null?`<span class="chg-badge ${chgCls}">${parseFloat(chgFmt)>=0?'+':''}${chgFmt}%</span>`:''}
+      </div>
+
+      <div class="cm-section">
+        <div class="cm-section-title">Market Data</div>
+        <div class="cm-grid-3">
+          <div class="cm-stat"><div class="cm-stat-label">24h High</div><div class="cm-stat-val">${coin.high_24h?fmtPrice(coin.high_24h):'—'}</div></div>
+          <div class="cm-stat"><div class="cm-stat-label">24h Low</div><div class="cm-stat-val">${coin.low_24h?fmtPrice(coin.low_24h):'—'}</div></div>
+          <div class="cm-stat"><div class="cm-stat-label">Market Cap</div><div class="cm-stat-val">${coin.market_cap?fmtLarge(coin.market_cap):'—'}</div></div>
+          <div class="cm-stat"><div class="cm-stat-label">Volume 24h</div><div class="cm-stat-val">${coin.volume_24h?fmtLarge(coin.volume_24h):'—'}</div></div>
+          <div class="cm-stat"><div class="cm-stat-label">Max Supply</div><div class="cm-stat-val">${coin.max_supply?fmtSupply(coin.max_supply):'∞'}</div></div>
+          <div class="cm-stat"><div class="cm-stat-label">Total Supply</div><div class="cm-stat-val">${coin.total_supply?fmtSupply(coin.total_supply):'—'}</div></div>
+          <div class="cm-stat"><div class="cm-stat-label">Circulating</div><div class="cm-stat-val">${coin.circulating_supply?fmtSupply(coin.circulating_supply):'—'}</div></div>
+          <div class="cm-stat"><div class="cm-stat-label">7d Change</div><div class="cm-stat-val" style="color:${coin.change_7d>=0?'var(--up)':'var(--dn)'}">${coin.change_7d!=null?(coin.change_7d>=0?'+':'')+parseFloat(coin.change_7d).toFixed(2)+'%':'—'}</div></div>
+          <div class="cm-stat"><div class="cm-stat-label">Last Updated</div><div class="cm-stat-val">${timeAgo(coin.last_updated)}</div></div>
+        </div>
+      </div>
+
+      <div class="cm-section">
+        <div class="cm-section-title">Details</div>
+        <div class="cm-grid">
+          <div class="cm-stat"><div class="cm-stat-label">Rank</div><div class="cm-stat-val">#${coin.rank||'—'}</div></div>
+          <div class="cm-stat"><div class="cm-stat-label">Category</div><div class="cm-stat-val">${coin.category||'—'}</div></div>
+          <div class="cm-stat"><div class="cm-stat-label">Date Added</div><div class="cm-stat-val">${coin.date_added?coin.date_added.substring(0,10):'—'}</div></div>
+          <div class="cm-stat"><div class="cm-stat-label">Platform</div><div class="cm-stat-val">${coin.platform||'—'}</div></div>
+        </div>
+      </div>
+
+      ${coin.description?`
+      <div class="cm-section">
+        <div class="cm-section-title">About</div>
+        <div class="cm-desc" id="CM_DESC">${coin.description.replace(/\n/g,'<br>').substring(0,600)}${coin.description.length>600?'…':''}</div>
+        ${coin.description.length>200?`<button class="cm-read-more" onclick="toggleDesc()">Read more ↓</button>`:''}
+      </div>`:''}
+
+      ${catsHTML}
+      ${links.length?`<div class="cm-section"><div class="cm-section-title">Links</div><div class="cm-links">${links.join('')}</div></div>`:''}
+      ${explorersHTML}
+      ${contractsHTML}
+    `;
+  } catch(e){
+    document.getElementById('CM_BODY').innerHTML=`<div class="tbl-empty">⚠️ Failed to load coin details.</div>`;
+    console.error(e);
+  }
+}
+
+function closeCoinModal(){
+  document.getElementById('COIN_MODAL').classList.remove('open');
+  document.body.style.overflow='';
+}
+function toggleDesc(){
+  const d=document.getElementById('CM_DESC');
+  const expanded=d.classList.toggle('expanded');
+  document.querySelector('.cm-read-more').textContent=expanded?'Show less ↑':'Read more ↓';
+}
+
+/* ═══════════════════════════════════════════
+   ANIMATED LOGO (same as index)
+═══════════════════════════════════════════ */
+(function(){
+  const logoHTML=`
+  <div class="pd-logo-badge">
+    <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect class="pd-logo-bar pd-logo-bar1" x="4" y="16" width="4" height="14" rx="1" fill="rgba(255,255,255,.12)"/>
+      <rect class="pd-logo-bar pd-logo-bar2" x="10" y="11" width="4" height="19" rx="1" fill="rgba(255,255,255,.16)"/>
+      <rect class="pd-logo-bar pd-logo-bar3" x="16" y="13" width="4" height="17" rx="1" fill="rgba(255,255,255,.13)"/>
+      <rect class="pd-logo-bar pd-logo-bar4" x="22" y="7" width="4" height="23" rx="1" fill="rgba(255,255,255,.2)"/>
+      <rect class="pd-logo-bar pd-logo-bar5" x="28" y="9" width="4" height="21" rx="1" fill="rgba(255,255,255,.16)"/>
+      <polyline class="pd-logo-line" points="5,22 12,16 18,20 24,9 31,12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle class="pd-logo-dot pd-logo-dot1" cx="5" cy="22" r="1.5" fill="rgba(255,255,255,.5)"/>
+      <circle class="pd-logo-dot pd-logo-dot2" cx="12" cy="16" r="1.5" fill="rgba(255,255,255,.6)"/>
+      <circle class="pd-logo-dot pd-logo-dot3" cx="18" cy="20" r="1.5" fill="rgba(255,255,255,.5)"/>
+      <circle class="pd-logo-dot pd-logo-dot4" cx="24" cy="9" r="2.5" fill="white"/>
+      <circle class="pd-logo-dot pd-logo-dot5" cx="31" cy="12" r="1.5" fill="rgba(255,255,255,.6)"/>
+      <g class="pd-logo-arrow">
+        <line x1="24" y1="5" x2="24" y2="2" stroke="#00e8a2" stroke-width="1.5" stroke-linecap="round"/>
+        <polyline points="22,4 24,1 26,4" fill="none" stroke="#00e8a2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    </svg>
+  </div>
+  <div class="pd-wordmark">
+    <div class="pd-name-row">
+      <span class="pd-word-public">Public</span><span class="pd-word-drop">DROP</span>
+    </div>
+    <div class="pd-tagline"><span class="pd-live-dot"></span>Crypto Analytics</div>
+  </div>`;
+  const w=document.getElementById('PD_LOGO_WRAP');
+  if(w) w.innerHTML=logoHTML;
+})();
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+async function init(){
+  loadStatus();
+  loadCategories();
+  await goBrowsePage(1);
+}
+
+init();
+</script>
+</body>
+</html>
